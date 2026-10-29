@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "version": "15.2.35",
-  "updatedAt": "2026-10-29T13:53:04.296Z",
+  "version": "15.2.33",
+  "updatedAt": "2026-10-29T13:54:32.327Z",
   "items": [
     {
       "name": "Axis",
@@ -35,9 +35,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Cosmic",
@@ -71,9 +71,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Delta",
@@ -107,9 +107,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Delta",
@@ -143,9 +143,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "DX9WARE V2",
@@ -179,9 +179,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Isaeva",
@@ -215,9 +215,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Lumen",
@@ -251,9 +251,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "MacSploit",
@@ -287,9 +287,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Madium",
@@ -323,9 +323,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Madius",
@@ -359,9 +359,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Matcha",
@@ -395,9 +395,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Matrix Hub",
@@ -431,9 +431,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Melatonin",
@@ -467,9 +467,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Opiumware",
@@ -503,9 +503,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Photon",
@@ -539,9 +539,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Potassium",
@@ -575,9 +575,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Real",
@@ -611,9 +611,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Seliware",
@@ -647,9 +647,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Serotonin",
@@ -683,9 +683,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Severe",
@@ -719,9 +719,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "SirHurt",
@@ -755,9 +755,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Solara",
@@ -791,9 +791,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Synapse Z",
@@ -827,9 +827,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Vega X",
@@ -863,9 +863,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Velocity",
@@ -899,9 +899,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Volcano",
@@ -935,9 +935,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Volt",
@@ -971,9 +971,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Wave",
@@ -1007,9 +1007,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     },
     {
       "name": "Xeno",
@@ -1043,9 +1043,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T13:53:04.602Z",
-      "modifiedAt": "2026-10-29T13:53:04.602Z",
-      "sourceSyncedAt": "2026-10-29T13:53:04.602Z"
+      "createdAt": "2026-10-29T13:54:32.606Z",
+      "modifiedAt": "2026-10-29T13:54:32.606Z",
+      "sourceSyncedAt": "2026-10-29T13:54:32.606Z"
     }
   ],
   "stats": {
@@ -1067,8 +1067,8 @@
     "Android",
     "iOS"
   ],
-  "sourceLastSuccess": "2026-10-29T13:53:04.322Z",
-  "sourceLastAttempt": "2026-10-29T13:53:04.322Z",
+  "sourceLastSuccess": "2026-10-29T13:54:32.353Z",
+  "sourceLastAttempt": "2026-10-29T13:54:32.353Z",
   "sourceError": "",
   "sourceCount": 29
 }
