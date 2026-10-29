@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.30",
-  "updatedAt": "2026-10-29T07:50:22.038Z",
+  "updatedAt": "2026-10-29T07:54:31.997Z",
   "items": [
     {
       "name": "Madius",
@@ -980,8 +980,8 @@
     "Android",
     "iOS"
   ],
-  "sourceLastSuccess": "2026-10-29T07:54:27.189Z",
-  "sourceLastAttempt": "2026-10-29T07:54:27.189Z",
+  "sourceLastSuccess": "2026-10-29T07:55:50.936Z",
+  "sourceLastAttempt": "2026-10-29T07:55:50.936Z",
   "sourceError": "",
   "sourceCount": 29
 }
