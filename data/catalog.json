@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.30",
-  "updatedAt": "2026-10-29T07:54:31.997Z",
+  "updatedAt": "2026-10-29T08:00:53.885Z",
   "items": [
     {
       "name": "Madius",
@@ -503,9 +503,9 @@
       "platform": "PC",
       "pcCategory": "free",
       "status": "unknown",
-      "version": "v3.2.9.2",
+      "version": "v3.2.9.3",
       "compatibilityVersion": "version-5a21b87bbc2641cf",
-      "updatedAt": "2026-10-28T10:01:00.000Z",
+      "updatedAt": "2026-10-29T07:57:00.000Z",
       "websiteUrl": "https://volcano.wtf",
       "communityUrl": "https://volcano.wtf/discord.html",
       "icon": "🖥️",
@@ -522,14 +522,14 @@
         "free": true,
         "extype": "wexecutor",
         "cost": "",
-        "updatedDate": "10/28/2026 at 10:01 AM UTC",
+        "updatedDate": "10/29/2026 at 7:57 AM UTC",
         "rbxversion": "version-5a21b87bbc2641cf"
       },
       "isSource": true,
       "manualOverrides": [],
       "createdAt": "2026-10-29T07:41:12.161Z",
-      "modifiedAt": "2026-10-29T07:41:12.161Z",
-      "sourceSyncedAt": "2026-10-29T07:41:12.161Z"
+      "modifiedAt": "2026-10-29T08:00:52.771Z",
+      "sourceSyncedAt": "2026-10-29T08:00:52.771Z"
     },
     {
       "name": "Delta",
@@ -980,8 +980,8 @@
     "Android",
     "iOS"
   ],
-  "sourceLastSuccess": "2026-10-29T07:55:50.936Z",
-  "sourceLastAttempt": "2026-10-29T07:55:50.936Z",
+  "sourceLastSuccess": "2026-10-29T08:00:52.123Z",
+  "sourceLastAttempt": "2026-10-29T08:00:52.123Z",
   "sourceError": "",
   "sourceCount": 29
 }
