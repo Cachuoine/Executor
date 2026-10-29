@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.32",
-  "updatedAt": "2026-10-29T11:06:11.716Z",
+  "updatedAt": "2026-10-29T12:26:11.744Z",
   "items": [
     {
       "name": "Axis",
@@ -183,9 +183,9 @@
       "platform": "PC",
       "pcCategory": "paid",
       "status": "unknown",
-      "version": "2.6.1",
+      "version": "2.6.2",
       "compatibilityVersion": "version-5a21b87bbc2641cf",
-      "updatedAt": "2026-10-28T18:52:00.000Z",
+      "updatedAt": "2026-10-29T12:24:00.000Z",
       "websiteUrl": "https://isaeva.xyz/",
       "communityUrl": "https://discord.gg/6xFWKd4Qcr",
       "icon": "🖥️",
@@ -204,14 +204,14 @@
         "free": false,
         "extype": "wexecutor",
         "cost": "$3.99 Weekly",
-        "updatedDate": "10/28/2026 at 6:52 PM UTC",
+        "updatedDate": "10/29/2026 at 12:24 PM UTC",
         "rbxversion": "version-5a21b87bbc2641cf"
       },
       "isSource": true,
       "manualOverrides": [],
       "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "modifiedAt": "2026-10-29T12:26:10.960Z",
+      "sourceSyncedAt": "2026-10-29T12:26:10.960Z"
     },
     {
       "name": "Lumen",
@@ -1042,8 +1042,8 @@
     "Android",
     "iOS"
   ],
-  "sourceLastSuccess": "2026-10-29T11:06:10.550Z",
-  "sourceLastAttempt": "2026-10-29T11:06:10.550Z",
+  "sourceLastSuccess": "2026-10-29T12:26:10.691Z",
+  "sourceLastAttempt": "2026-10-29T12:26:10.691Z",
   "sourceError": "",
   "sourceCount": 29
 }
