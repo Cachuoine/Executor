@@ -1,7 +1,7 @@
 {
   "ok": true,
-  "version": "15.2.32",
-  "updatedAt": "2026-10-29T12:42:19.791Z",
+  "version": "15.2.33",
+  "updatedAt": "2026-10-29T12:58:27.785Z",
   "items": [
     {
       "name": "Axis",
@@ -20,6 +20,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-axis",
       "sourceId": "6a8fee3adb361db6523cd934",
@@ -34,9 +35,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Cosmic",
@@ -55,6 +56,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-cosmic",
       "sourceId": "69cace8670a25244103ea819",
@@ -69,9 +71,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Delta",
@@ -90,6 +92,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-android-delta",
       "sourceId": "66ee1eafe70ddffe81ca0f0b",
@@ -104,9 +107,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Delta",
@@ -125,6 +128,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-ios-delta",
       "sourceId": "68899ac3e376f58c849e0e68",
@@ -139,9 +143,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "DX9WARE V2",
@@ -160,6 +164,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-dx9ware-v2",
       "sourceId": "66837bf003fe5828bec91bc5",
@@ -174,9 +179,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Isaeva",
@@ -195,6 +200,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-isaeva",
       "sourceId": "6a97a0b604f7721eb84803fd",
@@ -209,9 +215,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T12:26:10.960Z",
-      "sourceSyncedAt": "2026-10-29T12:26:10.960Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Lumen",
@@ -230,6 +236,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-lumen",
       "sourceId": "6a0ea99cfd26ad90bea624eb",
@@ -244,9 +251,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "MacSploit",
@@ -265,6 +272,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-macos-macsploit",
       "sourceId": "692794d789eb1e034ad699c3",
@@ -279,9 +287,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Madium",
@@ -300,6 +308,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-madium",
       "sourceId": "69f25c438d1db84cb50c8cfe",
@@ -314,9 +323,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T11:06:10.809Z",
-      "sourceSyncedAt": "2026-10-29T11:06:10.809Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Madius",
@@ -335,6 +344,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-madius",
       "sourceId": "6aa12a9285a6e208beacc14b",
@@ -349,9 +359,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Matcha",
@@ -370,6 +380,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-matcha",
       "sourceId": "67e0d0d87d091e8f8b6d2a35",
@@ -384,9 +395,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Matrix Hub",
@@ -405,6 +416,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-matrix-hub",
       "sourceId": "6705f74ed02338b4f68f9c62",
@@ -419,9 +431,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Melatonin",
@@ -440,6 +452,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-melatonin",
       "sourceId": "6894154c96ca0886daa514bb",
@@ -454,9 +467,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Opiumware",
@@ -475,6 +488,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-macos-opiumware",
       "sourceId": "69a4acadfa8a3af13c8930a9",
@@ -489,9 +503,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Photon",
@@ -510,6 +524,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-photon",
       "sourceId": "680ab721b50548f01fd62715",
@@ -524,28 +539,29 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Potassium",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "maintenance",
+      "status": "unknown",
       "version": "2.5.6",
       "compatibilityVersion": "version-9ac8595712b447a7",
       "updatedAt": "2026-10-24T23:00:00.000Z",
       "websiteUrl": "https://www.potassium.pro/",
       "communityUrl": "https://discord.com/invite/potassium",
-      "icon": "<:potassium:1551958124800249877>",
+      "icon": "🖥️",
       "summary": "Được nhập từ WEAO; trạng thái công khai cần Admin xác minh · Chi phí tham khảo: $22.99 Lifetime",
       "sourceUrl": "https://docs.weao.xyz/weao-api-reference/exploits",
       "thumbImageUrl": "",
-      "websiteMainImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREx8YYuC5uCzuOmI1ouQTmCylFuwa2un0_2TE505i04w&s",
+      "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
-      "sunc": "100",
-      "unc": "99",
+      "sunc": "",
+      "suncUrl": "",
+      "unc": "",
       "id": "feed-pc-potassium",
       "sourceId": "67d6005efa8c791236079278",
       "sourceRbxVersion": "version-9ac8595712b447a7",
@@ -558,16 +574,10 @@
         "rbxversion": "version-9ac8595712b447a7"
       },
       "isSource": true,
-      "manualOverrides": [
-        "websiteMainImageUrl",
-        "sunc",
-        "unc",
-        "status",
-        "icon"
-      ],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T12:42:18.714Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "manualOverrides": [],
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Real",
@@ -586,6 +596,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-real",
       "sourceId": "6a5095abbb457d55d62f8061",
@@ -600,9 +611,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Seliware",
@@ -621,6 +632,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-seliware",
       "sourceId": "671411144ca6cb25603cc3b0",
@@ -635,9 +647,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Serotonin",
@@ -656,6 +668,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-serotonin",
       "sourceId": "688c1b3ccc42af0ea95977e3",
@@ -670,9 +683,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Severe",
@@ -691,6 +704,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-severe",
       "sourceId": "6907cafc4b9bde193883d902",
@@ -705,9 +719,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "SirHurt",
@@ -726,6 +740,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-sirhurt",
       "sourceId": "67c8a2cb376f9e598b466705",
@@ -740,9 +755,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Solara",
@@ -761,6 +776,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-solara",
       "sourceId": "66633ac4b29bacaa7a568fdc",
@@ -775,9 +791,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Synapse Z",
@@ -796,6 +812,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-synapse-z",
       "sourceId": "66a679cc5b36b46c9327b0a7",
@@ -810,9 +827,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Vega X",
@@ -831,6 +848,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-android-vega-x",
       "sourceId": "6949f6f40260ad9e36c736ff",
@@ -845,9 +863,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Velocity",
@@ -866,6 +884,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-velocity",
       "sourceId": "680eaddf8b44717c060fcf8d",
@@ -880,9 +899,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Volcano",
@@ -901,6 +920,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-volcano",
       "sourceId": "681baa53ab565e11d3feba0e",
@@ -915,9 +935,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Volt",
@@ -936,6 +956,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-volt",
       "sourceId": "67576d22d9181811c292bb79",
@@ -950,9 +971,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Wave",
@@ -971,6 +992,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-wave",
       "sourceId": "662ae7576238b7f2082f253b",
@@ -985,9 +1007,9 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
       "name": "Xeno",
@@ -1006,6 +1028,7 @@
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
+      "suncUrl": "",
       "unc": "",
       "id": "feed-pc-xeno",
       "sourceId": "679553cd2eea89d30d0dae57",
@@ -1020,17 +1043,17 @@
       },
       "isSource": true,
       "manualOverrides": [],
-      "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:21:10.285Z",
-      "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
+      "createdAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     }
   ],
   "stats": {
     "total": 29,
     "online": 0,
     "offline": 0,
-    "maintenance": 1,
-    "unknown": 28,
+    "maintenance": 0,
+    "unknown": 29,
     "platforms": {
       "PC": 24,
       "Android": 2,
@@ -1044,8 +1067,8 @@
     "Android",
     "iOS"
   ],
-  "sourceLastSuccess": "2026-10-29T12:41:10.724Z",
-  "sourceLastAttempt": "2026-10-29T12:41:10.724Z",
+  "sourceLastSuccess": "2026-10-29T12:58:27.808Z",
+  "sourceLastAttempt": "2026-10-29T12:58:27.808Z",
   "sourceError": "",
   "sourceCount": 29
 }

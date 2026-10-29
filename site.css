@@ -689,7 +689,7 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
 @media(max-width:600px){.brand-mark.brand-image-mark{width:40px;height:40px;flex-basis:40px}}
 
 
-/* v15.2.32 — image-led executor cards, inline platform/name and compact detail actions. */
+/* v15.2.33 — image-led executor cards, inline platform/name and compact detail actions. */
 .executor-card-body { display:flex; flex-direction:column; min-height:100%; }
 .executor-card-top { align-items:flex-start; }
 .executor-title-wrap { min-width:0; flex:1; }
@@ -729,3 +729,18 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
   .detail-actions { gap:6px; }
   .detail-actions a.detail-action { padding:8px 9px; font-size:9px; }
 }
+
+
+/* v15.2.33 — consistent public status colors and keyboard-friendly sUNC link. */
+.status-label.status-online { color:#40D6A4 !important; background:rgba(64,214,164,.11) !important; }
+.status-label.status-offline { color:#FF627C !important; background:rgba(255,98,124,.11) !important; }
+.status-label.status-maintenance { color:#FFC46B !important; background:rgba(255,196,107,.11) !important; }
+.status-label.status-unknown { color:#FFFFFF !important; background:rgba(255,255,255,.10) !important; border-color:rgba(255,255,255,.15) !important; }
+.status-label.status-online::before { color:#40D6A4 !important; }
+.status-label.status-offline::before { color:#FF627C !important; }
+.status-label.status-maintenance::before { color:#FFC46B !important; }
+.status-label.status-unknown::before { color:#FFFFFF !important; box-shadow:0 0 7px rgba(255,255,255,.35) !important; }
+.executor-score-badge.sunc-link { cursor:pointer; text-decoration:none; transition:border-color .18s ease,background .18s ease,transform .18s ease; }
+.executor-score-badge.sunc-link:hover,.executor-score-badge.sunc-link:focus-visible { border-color:rgba(127,230,224,.62); background:rgba(127,230,224,.14); transform:translateY(-1px); outline:none; }
+.executor-score-badge.sunc-link:focus-visible { box-shadow:0 0 0 2px rgba(127,230,224,.22); }
+.executor-score-badge .score-link-mark { display:inline-block; color:currentColor; font-size:9px; margin-left:1px; }

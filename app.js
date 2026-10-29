@@ -15,7 +15,7 @@
   const PLATFORM_SYMBOLS = { PC: 'PC', Android: 'A', iOS: 'i', macOS: 'M' };
   const PLATFORM_LABELS = { PC: 'PC', Android: 'Android', iOS: 'iOS', macOS: 'macOS' };
   const MUSIC_GENRE_LABELS = { Pop: 'Nhạc Pop', Rock: 'Nhạc rock', 'Dance / EDM': 'Nhạc điện tử (EDM)', Remix: 'Phối lại (Remix)', 'Lo-fi': 'Nhạc Lo-fi', 'Hip-hop': 'Nhạc Hip-hop', 'R&B': 'Nhạc R&B', Jazz: 'Nhạc Jazz', Classical: 'Nhạc cổ điển', Soundtrack: 'Nhạc phim', Other: 'Khác', 'Pop Rock': 'Nhạc Pop rock', 'Synth-pop': 'Nhạc Synth-pop' };
-  const STATUS_LABELS = { online: 'Đang hoạt động', offline: 'Ngoại tuyến', maintenance: 'Bảo trì', unknown: 'Chưa xác minh' };
+  const STATUS_LABELS = { online: 'Đang hoạt động', offline: 'Gián đoạn', maintenance: 'Đang cập nhật', unknown: 'Chưa xác minh' };
   const SAFE_PROTOCOLS = new Set(['https:', 'http:']);
 
   function escapeHtml(value) {
@@ -76,9 +76,14 @@
     return result;
   }
   function scoreBadgesMarkup(item, className = 'executor-score-badges') {
-    return [['sUNC', item?.sunc ?? item?.sUNC], ['UNC', item?.unc ?? item?.UNC]]
+    const suncUrl = safeUrl(item?.suncUrl ?? item?.sUNCUrl);
+    return [['sUNC', item?.sunc ?? item?.sUNC, suncUrl], ['UNC', item?.unc ?? item?.UNC, '']]
       .filter(([, value]) => String(value ?? '').trim() !== '')
-      .map(([label, value]) => `<span class="executor-score-badge ${label.toLowerCase()}" title="${label}"><b>${label}</b><span>${escapeHtml(value)}</span></span>`)
+      .map(([label, value, url]) => {
+        const content = `<b>${label}</b><span>${escapeHtml(value)}</span>${label === 'sUNC' && url ? '<span class="score-link-mark" aria-hidden="true">↗</span>' : ''}`;
+        if (label === 'sUNC' && url) return `<a class="executor-score-badge ${label.toLowerCase()} sunc-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="Mở liên kết sUNC" aria-label="Mở liên kết sUNC cho ${escapeHtml(item?.name || 'executor')}">${content}</a>`;
+        return `<span class="executor-score-badge ${label.toLowerCase()}" title="${label}">${content}</span>`;
+      })
       .join('');
   }
   function cardMarkup(item, index) {
