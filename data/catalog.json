@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.32",
-  "updatedAt": "2026-10-29T12:26:11.744Z",
+  "updatedAt": "2026-10-29T12:42:19.791Z",
   "items": [
     {
       "name": "Axis",
@@ -532,13 +532,13 @@
       "name": "Potassium",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "unknown",
+      "status": "maintenance",
       "version": "2.5.6",
       "compatibilityVersion": "version-9ac8595712b447a7",
       "updatedAt": "2026-10-24T23:00:00.000Z",
       "websiteUrl": "https://www.potassium.pro/",
       "communityUrl": "https://discord.com/invite/potassium",
-      "icon": "🖥️",
+      "icon": "<:potassium:1551958124800249877>",
       "summary": "Được nhập từ WEAO; trạng thái công khai cần Admin xác minh · Chi phí tham khảo: $22.99 Lifetime",
       "sourceUrl": "https://docs.weao.xyz/weao-api-reference/exploits",
       "thumbImageUrl": "",
@@ -561,10 +561,12 @@
       "manualOverrides": [
         "websiteMainImageUrl",
         "sunc",
-        "unc"
+        "unc",
+        "status",
+        "icon"
       ],
       "createdAt": "2026-10-29T09:21:10.285Z",
-      "modifiedAt": "2026-10-29T09:22:22.624Z",
+      "modifiedAt": "2026-10-29T12:42:18.714Z",
       "sourceSyncedAt": "2026-10-29T09:21:10.285Z"
     },
     {
@@ -1027,8 +1029,8 @@
     "total": 29,
     "online": 0,
     "offline": 0,
-    "maintenance": 0,
-    "unknown": 29,
+    "maintenance": 1,
+    "unknown": 28,
     "platforms": {
       "PC": 24,
       "Android": 2,
@@ -1042,8 +1044,8 @@
     "Android",
     "iOS"
   ],
-  "sourceLastSuccess": "2026-10-29T12:26:10.691Z",
-  "sourceLastAttempt": "2026-10-29T12:26:10.691Z",
+  "sourceLastSuccess": "2026-10-29T12:41:10.724Z",
+  "sourceLastAttempt": "2026-10-29T12:41:10.724Z",
   "sourceError": "",
   "sourceCount": 29
 }
