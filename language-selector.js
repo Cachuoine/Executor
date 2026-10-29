@@ -1,37 +1,56 @@
 (() => {
   'use strict';
-  const LANGUAGES = ["en", "ar", "bg", "zh-CN", "zh-TW", "hr", "cs", "da", "nl", "fi", "fr", "de", "el", "hi", "it", "ja", "ko", "no", "pl", "pt", "ro", "ru", "es", "sv", "ca", "tl", "iw", "id", "lv", "lt", "sr", "sk", "sl", "uk", "vi", "sq", "et", "gl", "hu", "mt", "th", "tr", "fa", "af", "ms", "sw", "ga", "cy", "be", "is", "mk", "yi", "hy", "az", "eu", "ka", "ht", "ur", "bn", "bs", "ceb", "eo", "gu", "ha", "hmn", "ig", "jw", "kn", "km", "lo", "la", "mi", "mr", "mn", "ne", "pa", "so", "ta", "te", "yo", "zu", "my", "ny", "kk", "mg", "ml", "si", "st", "su", "tg", "uz", "am", "co", "haw", "ku", "ky", "lb", "ps", "sm", "gd", "sn", "sd", "fy", "xh"];
+  const LANGUAGES = ['en', 'vi'];
+  const LANGUAGE_META = {
+    vi: { label: 'VI', flag: '🇻🇳', message: 'Tiếng Việt đang được chọn · Vietnamese selected' },
+    en: { label: 'EN', flag: '🇬🇧', message: 'English is selected · Đang dùng tiếng Anh' }
+  };
   const $ = (selector, root = document) => root.querySelector(selector);
   const controls = [...document.querySelectorAll('[data-language-control]')];
   if (!controls.length) return;
   let loaderPromise = null;
   let widgetRequested = false;
+  let pendingLanguage = 'vi';
 
-  function codeToLabel(code) {
-    return String(code || 'vi').replace(/^zh-CN$/i, 'ZH-CN').replace(/^zh-TW$/i, 'ZH-TW').split('-')[0].slice(0, 2).toUpperCase();
-  }
-  function setStatus(widget, message, failed = false) {
-    if (!widget || widget.querySelector('.gt_selector, .gt_switcher, .gt_float_switcher, .gt_options, a')) return;
-    widget.innerHTML = `<span class="language-loading${failed ? ' language-load-error' : ''}" role="status"></span>`;
-    widget.querySelector('.language-loading').textContent = message;
-    const control = widget.closest('[data-language-control]');
-    const retry = control && $('.language-retry', control);
-    if (retry) retry.hidden = !failed;
+  function normalizeCode(code) {
+    const value = String(code || '').trim().toLowerCase();
+    return LANGUAGES.includes(value) ? value : 'vi';
   }
   function readSelectedCode() {
     const match = document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/);
     if (match) {
-      const parts = decodeURIComponent(match[1]).split('/').filter(Boolean);
-      if (parts.length > 1) return parts[parts.length - 1];
+      try {
+        const parts = decodeURIComponent(match[1]).split('/').filter(Boolean);
+        const code = parts.length > 1 ? parts[parts.length - 1] : '';
+        if (LANGUAGES.includes(code.toLowerCase())) return code.toLowerCase();
+      } catch (_) { /* Ignore malformed translation cookies. */ }
     }
     const selected = document.querySelector('.gt_selector');
-    if (selected && selected.value) return selected.value;
+    if (selected && LANGUAGES.includes(String(selected.value).toLowerCase())) return String(selected.value).toLowerCase();
     const current = document.querySelector('[data-gt-lang].gt-current-lang, .gt-current-lang[data-gt-lang]');
-    return current?.getAttribute('data-gt-lang') || 'vi';
+    const currentCode = current?.getAttribute('data-gt-lang')?.toLowerCase();
+    return LANGUAGES.includes(currentCode) ? currentCode : 'vi';
   }
-  function refreshLabel(control) {
+  function updateSelection(control, code) {
+    const selected = normalizeCode(code);
+    const meta = LANGUAGE_META[selected];
     const label = $('.language-toggle-label', control);
-    if (label) label.textContent = codeToLabel(readSelectedCode());
+    const flag = $('.language-toggle-flag', control);
+    if (label) label.textContent = meta.label;
+    if (flag) flag.textContent = meta.flag;
+    for (const option of control.querySelectorAll('[data-language-option]')) {
+      const active = option.dataset.languageOption === selected;
+      option.classList.toggle('is-active', active);
+      option.setAttribute('aria-pressed', String(active));
+    }
+  }
+  function feedback(control, message, state = 'ready') {
+    const node = $('.language-feedback', control);
+    if (!node) return;
+    node.textContent = message;
+    node.dataset.state = state;
+    const retry = $('.language-retry', control);
+    if (retry) retry.hidden = state !== 'error';
   }
   function hidePanel(control) {
     const panel = $('.language-popover', control);
@@ -45,102 +64,134 @@
         panel.hidden = true;
         panel.classList.remove('is-closing');
       }
-    }, 190);
+    }, 440);
   }
   function openPanel(control) {
     for (const other of controls) if (other !== control) hidePanel(other);
     const panel = $('.language-popover', control);
     const toggle = $('.language-toggle', control);
     if (!panel) return;
+    updateSelection(control, readSelectedCode());
     panel.hidden = false;
     panel.classList.remove('is-closing');
     toggle?.setAttribute('aria-expanded', 'true');
     requestAnimationFrame(() => panel.classList.add('is-open'));
-    if (widgetRequested) refreshLabel(control);
   }
-  function loadTranslator(control) {
+  function findWidget(widget) {
+    if (!widget) return null;
+    // Wait for the real select, not only the outer switcher shell, before enabling the custom cards.
+    return widget.querySelector('select.gt_selector, select');
+  }
+  const delay = ms => new Promise(resolve => window.setTimeout(resolve, ms));
+  async function waitForWidget(widget, timeout = 5500) {
+    const start = Date.now();
+    while (Date.now() - start < timeout) {
+      const ready = findWidget(widget);
+      if (ready) return ready;
+      await delay(100);
+    }
+    return null;
+  }
+  async function loadTranslator(control) {
     const widget = $('.gtranslate_wrapper', control);
-    if (!widget) return;
-    widgetRequested = true;
-    setStatus(widget, 'Đang tải hơn 100 lựa chọn ngôn ngữ…');
-    const retry = $('.language-retry', control);
-    if (retry) retry.hidden = true;
+    if (!widget) throw new Error('Language engine is missing.');
+    const ready = findWidget(widget);
+    if (ready) {
+      widgetRequested = true;
+      return widget;
+    }
     if (loaderPromise) return loaderPromise;
-
+    widgetRequested = true;
+    feedback(control, 'Đang kết nối dịch vụ · Connecting translation service…', 'loading');
     window.gtranslateSettings = {
       default_language: 'vi',
       native_language_names: true,
       detect_browser_language: false,
       languages: LANGUAGES,
       wrapper_selector: '#languageTranslateWidget',
-      alt_flags: { en: 'usa', pt: 'brazil' }
+      alt_flags: { en: 'usa' }
     };
-
-    loaderPromise = new Promise((resolve, reject) => {
+    loaderPromise = (async () => {
+      const oldScript = document.querySelector('script[data-language-translator="gtranslate"]');
+      if (oldScript) oldScript.remove();
+      widget.innerHTML = '';
       const script = document.createElement('script');
       script.src = 'https://cdn.gtranslate.net/widgets/latest/dropdown.js';
       script.async = true;
       script.dataset.languageTranslator = 'gtranslate';
-      script.onload = () => {
-        window.setTimeout(() => {
-          const hasWidget = widget.querySelector('.gt_selector, .gt_switcher, .gt_float_switcher, .gt_options, a');
-          if (hasWidget) {
-            widget.classList.remove('is-loading');
-            const failed = $('.language-retry', control);
-            if (failed) failed.hidden = true;
-            refreshLabel(control);
-            resolve();
-          } else {
-            setStatus(widget, 'Dịch vụ chưa tạo được danh sách. Hãy thử tải lại hoặc kiểm tra kết nối.', true);
-            loaderPromise = null;
-            reject(new Error('GTranslate did not render a language selector.'));
-          }
-        }, 1200);
-      };
-      script.onerror = () => {
-        setStatus(widget, 'Không tải được dịch vụ ngôn ngữ. Hãy kiểm tra kết nối mạng rồi thử lại.', true);
-        script.remove();
-        loaderPromise = null;
-        widgetRequested = false;
-        reject(new Error('GTranslate script failed to load.'));
-      };
+      const loaded = new Promise((resolve, reject) => {
+        script.addEventListener('load', resolve, { once: true });
+        script.addEventListener('error', () => reject(new Error('Translation service could not be loaded.')), { once: true });
+      });
       document.head.appendChild(script);
-    }).catch(() => {});
+      await loaded;
+      const node = await waitForWidget(widget);
+      if (!node) {
+        script.remove();
+        throw new Error('Translation selector was not generated.');
+      }
+      return widget;
+    })().catch(error => {
+      loaderPromise = null;
+      widgetRequested = false;
+      throw error;
+    });
     return loaderPromise;
   }
-
+  async function applyLanguage(control, code) {
+    const selected = normalizeCode(code);
+    pendingLanguage = selected;
+    const previous = readSelectedCode();
+    updateSelection(control, selected);
+    if (selected === previous) {
+      feedback(control, LANGUAGE_META[selected].message, 'ready');
+      window.setTimeout(() => hidePanel(control), 360);
+      return;
+    }
+    feedback(control, selected === 'en' ? 'Đang chuyển sang English · Switching to English…' : 'Đang chuyển về Tiếng Việt · Switching to Vietnamese…', 'loading');
+    try {
+      const widget = await loadTranslator(control);
+      const selector = widget.querySelector('select.gt_selector, select');
+      if (!selector) throw new Error('Translation language choices are unavailable.');
+      const option = [...selector.options].find(item => String(item.value).toLowerCase() === selected);
+      if (!option) throw new Error('Selected language is not available in the translation service.');
+      selector.value = option.value;
+      selector.dispatchEvent(new Event('change', { bubbles: true }));
+      feedback(control, LANGUAGE_META[selected].message, 'ready');
+      window.setTimeout(() => {
+        const confirmed = readSelectedCode();
+        if (confirmed === selected) updateSelection(control, confirmed);
+        else updateSelection(control, selected);
+        hidePanel(control);
+      }, 900);
+    } catch (error) {
+      updateSelection(control, previous);
+      feedback(control, 'Không thể tải bản dịch. Hãy kiểm tra Internet rồi thử lại. · Translation unavailable. Check your connection and retry.', 'error');
+    }
+  }
   controls.forEach(control => {
     const toggle = $('.language-toggle', control);
     const panel = $('.language-popover', control);
     const close = $('.language-close', control);
     const retry = $('.language-retry', control);
-    const start = $('.language-start', control);
-    start?.addEventListener('click', () => loadTranslator(control).catch(() => {}));
     toggle?.addEventListener('click', () => panel?.hidden ? openPanel(control) : hidePanel(control));
     close?.addEventListener('click', () => hidePanel(control));
+    for (const option of control.querySelectorAll('[data-language-option]')) {
+      option.addEventListener('click', () => applyLanguage(control, option.dataset.languageOption));
+    }
     retry?.addEventListener('click', () => {
-      widgetRequested = false;
       loaderPromise = null;
+      widgetRequested = false;
       const widget = $('.gtranslate_wrapper', control);
       if (widget) widget.innerHTML = '';
-      loadTranslator(control);
+      applyLanguage(control, pendingLanguage);
     });
-    const widget = $('.gtranslate_wrapper', control);
-    widget?.addEventListener('change', event => {
-      if (event.target.matches('select')) {
-        const selected = String(event.target.value || 'vi');
-        $('.language-toggle-label', control).textContent = codeToLabel(selected);
-        window.setTimeout(() => { refreshLabel(control); hidePanel(control); }, 300);
-      }
-    });
-    widget?.addEventListener('click', event => {
-      const option = event.target.closest('[data-gt-lang], .gt_option');
-      if (!option) return;
-      const code = option.getAttribute('data-gt-lang') || option.getAttribute('data-gt-orig-url') || '';
-      if (code) $('.language-toggle-label', control).textContent = codeToLabel(code);
-      window.setTimeout(() => { refreshLabel(control); hidePanel(control); }, 450);
-    });
-    refreshLabel(control);
+    const initialLanguage = readSelectedCode();
+    updateSelection(control, initialLanguage);
+    // The translation engine is lazy-loaded normally, but restore a user's saved English choice on later visits.
+    if (initialLanguage === 'en') {
+      loadTranslator(control).catch(() => feedback(control, 'Không tải được bản dịch đã lưu · Saved translation could not be restored. Check your connection.', 'error'));
+    }
   });
   document.addEventListener('pointerdown', event => {
     for (const control of controls) {
