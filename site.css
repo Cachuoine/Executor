@@ -687,3 +687,45 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
 .brand-mark.brand-image-mark{width:46px;height:46px;flex:0 0 46px;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;}
 .brand-mark.brand-image-mark img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 7px rgba(111,82,226,.20));}
 @media(max-width:600px){.brand-mark.brand-image-mark{width:40px;height:40px;flex-basis:40px}}
+
+
+/* v15.2.32 — image-led executor cards, inline platform/name and compact detail actions. */
+.executor-card-body { display:flex; flex-direction:column; min-height:100%; }
+.executor-card-top { align-items:flex-start; }
+.executor-title-wrap { min-width:0; flex:1; }
+.executor-name-line { display:flex; align-items:center; flex-wrap:wrap; gap:6px; min-width:0; padding-right:1px; }
+.executor-name-line h3 { min-width:0; margin:0; overflow-wrap:anywhere; }
+.executor-score-badges, .detail-score-badges { display:inline-flex; align-items:center; flex-wrap:wrap; gap:5px; min-width:0; }
+.executor-score-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 6px; border-radius:6px; border:1px solid rgba(127,230,224,.2); background:rgba(127,230,224,.07); color:#b8e9e4; font:700 9px/1.1 'DM Mono',monospace; white-space:nowrap; }
+.executor-score-badge b { color:#d2ceff; font-size:8px; }
+.executor-score-badge.unc { border-color:rgba(167,139,250,.24); background:rgba(167,139,250,.08); color:#d1c5ff; }
+.executor-card-image-wrap { display:grid; place-items:center; width:100%; height:116px; margin:14px 0 13px; border:1px solid rgba(184,191,224,.12); border-radius:10px; overflow:hidden; background:linear-gradient(135deg,rgba(31,36,55,.78),rgba(13,17,27,.8)); }
+.executor-card-image { display:block; width:100%; height:100%; object-fit:cover; object-position:center; }
+.executor-card-image-placeholder { background:radial-gradient(ellipse at 50% 45%,rgba(167,139,250,.09),transparent 65%),rgba(255,255,255,.018); }
+.executor-card-image-placeholder span { display:grid; place-items:center; width:38px; height:38px; border:1px solid rgba(167,139,250,.22); border-radius:12px; color:#9990d1; font-size:21px; }
+.executor-meta { margin-top:auto; }
+.detail-title-row { align-items:center; gap:10px; }
+.detail-title-row > .executor-icon { flex:0 0 44px; }
+.detail-title-copy { min-width:0; flex:1; }
+.detail-title-primary { display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; }
+.detail-title-primary .section-tag { flex:0 0 auto; margin:0; padding:0; }
+.detail-title-row h2 { margin:0; font-size:25px; line-height:1.15; }
+.detail-title-row p { margin:5px 0 0; }
+.detail-score-badges { gap:4px; }
+.detail-score-badges:empty { display:none; }
+.detail-score-badges .executor-score-badge { font-size:9px; padding:4px 6px; }
+.detail-actions { gap:8px; align-items:center; }
+.detail-actions a.detail-action { flex:0 0 auto; width:auto; min-width:0; max-width:100%; display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:9px 11px; border-radius:9px; font-size:10px; line-height:1.2; white-space:nowrap; text-decoration:none; }
+.detail-actions a.detail-action svg { display:block; width:14px; height:14px; flex:0 0 14px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.detail-actions a.detail-action.secondary { background:rgba(255,255,255,.035); border-color:var(--line); color:#b5bdcf; }
+.admin-score-chip { display:inline-flex; align-items:center; gap:3px; margin-left:6px; padding:2px 5px; border:1px solid rgba(127,230,224,.2); border-radius:5px; background:rgba(127,230,224,.06); color:#b8e9e4; font-size:10px; white-space:nowrap; }
+.admin-score-chip strong { color:#d2ceff; font:700 9px 'DM Mono',monospace; }
+@media(max-width:520px) {
+  .executor-card-image-wrap { height:132px; }
+  .detail-title-row { gap:8px; }
+  .detail-title-row > .executor-icon { flex-basis:36px; width:36px; height:36px; }
+  .detail-title-row h2 { font-size:20px; }
+  .detail-title-primary { gap:5px; }
+  .detail-actions { gap:6px; }
+  .detail-actions a.detail-action { padding:8px 9px; font-size:9px; }
+}
