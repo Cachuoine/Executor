@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.36",
-  "updatedAt": "2026-10-29T20:45:53.329Z",
+  "updatedAt": "2026-10-29T20:47:26.351Z",
   "items": [
     {
       "name": "POTASSIUM",
@@ -18,7 +18,7 @@
       "websiteUrl": "https://www.potassium.pro/",
       "communityUrl": "https://discord.gg/potassium",
       "icon": "<:potassium:1551958124800249877>",
-      "summary": "```ansi\n\u001b[1;35m╔════════════════════════════════════════╗\u001b[0m\n\u001b[1;35m║ ✦ NIGHTREAPER · POTASSIUM              ║\u001b[0m\n\u001b[90m╟────────────────────────────────────────╢\u001b[0m\n\u001b[1;33m║ 🪙 GIÁ CẢ / GÓI DỊCH VỤ                ║\u001b[0m\n\u001b[33m║ Chưa công bố · kiểm tra liên kết chính ║\u001b[0m\n\u001b[33m║ thức                                   ║\u001b[0m\n\u001b[90m╟────────────────────────────────────────╢\u001b[0m\n\u001b[1;36m║ 🆕 CẬP NHẬT MỚI NHẤT · v2.5.0          ║\u001b[0m\n\u001b[37m║ • [^] Updated Potassium for            ║\u001b[0m\n\u001b[37m║ version-5a21b87bbc2641cf               ║\u001b[0m\n\u001b[37m║ • [+] Added various detection          ║\u001b[0m\n\u001b[37m║ mitigations (self explanatory)         ║\u001b[0m\n\u001b[37m║ • [*] Minor performance improvements   ║\u001b[0m\n\u001b[37m║ • [!] Fixed a get_comm_channel gc      ║\u001b[0m\n\u001b[37m║ issue                                  ║\u001b[0m\n\u001b[1;35m╚════════════════════════════════════════╝\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;35m╔════════════════════════════════════════╗\u001b[0m\n\u001b[1;35m║ ✦ NIGHTREAPER · POTASSIUM              ║\u001b[0m\n\u001b[90m╟────────────────────────────────────────╢\u001b[0m\n\u001b[1;33m║ 🪙 GIÁ CẢ / GÓI DỊCH VỤ                ║\u001b[0m\n\u001b[33m║ Chưa công bố · kiểm tra liên kết chính ║\u001b[0m\n\u001b[33m║ thức                                   ║\u001b[0m\n\u001b[90m╟────────────────────────────────────────╢\u001b[0m\n\u001b[1;36m║ 🆕 CẬP NHẬT MỚI NHẤT · v2.5.0          ║\u001b[0m\n\u001b[37m║ [^] Updated Potassium for version-5a21b87bbc2641cf           ║\u001b[0m\n\u001b[37m║ version-5a21b87bbc2641cf               ║\u001b[0m\n\u001b[37m║ [+] Added various detection mitigations (self explanatory)          ║\u001b[0m\n\u001b[37m║ mitigations (self explanatory)         ║\u001b[0m\n\u001b[37m║ • [*] Minor performance improvements   ║\u001b[0m\n\u001b[37m║ • [!] Fixed a get_comm_channel gc      ║\u001b[0m\n\u001b[37m║ issue                                  ║\u001b[0m\n\u001b[1;35m╚════════════════════════════════════════╝\u001b[0m\n```",
       "sourceUrl": "",
       "thumbImageUrl": "",
       "websiteMainImageUrl": "",
@@ -28,7 +28,7 @@
       "unc": "99",
       "id": "entry-pc-potassium",
       "createdAt": "2026-10-29T20:45:52.423Z",
-      "modifiedAt": "2026-10-29T20:45:52.423Z"
+      "modifiedAt": "2026-10-29T20:47:25.529Z"
     }
   ],
   "stats": {
