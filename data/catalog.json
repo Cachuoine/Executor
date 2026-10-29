@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.33",
-  "updatedAt": "2026-10-29T12:58:27.785Z",
+  "updatedAt": "2026-10-29T13:15:17.533Z",
   "items": [
     {
       "name": "Axis",
@@ -547,21 +547,21 @@
       "name": "Potassium",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "unknown",
+      "status": "maintenance",
       "version": "2.5.6",
       "compatibilityVersion": "version-9ac8595712b447a7",
       "updatedAt": "2026-10-24T23:00:00.000Z",
       "websiteUrl": "https://www.potassium.pro/",
       "communityUrl": "https://discord.com/invite/potassium",
-      "icon": "🖥️",
+      "icon": "<:potassium:1551958124800249877>",
       "summary": "Được nhập từ WEAO; trạng thái công khai cần Admin xác minh · Chi phí tham khảo: $22.99 Lifetime",
       "sourceUrl": "https://docs.weao.xyz/weao-api-reference/exploits",
       "thumbImageUrl": "",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
-      "sunc": "",
+      "sunc": "100",
       "suncUrl": "",
-      "unc": "",
+      "unc": "99",
       "id": "feed-pc-potassium",
       "sourceId": "67d6005efa8c791236079278",
       "sourceRbxVersion": "version-9ac8595712b447a7",
@@ -574,9 +574,14 @@
         "rbxversion": "version-9ac8595712b447a7"
       },
       "isSource": true,
-      "manualOverrides": [],
+      "manualOverrides": [
+        "status",
+        "icon",
+        "sunc",
+        "unc"
+      ],
       "createdAt": "2026-10-29T12:58:28.597Z",
-      "modifiedAt": "2026-10-29T12:58:28.597Z",
+      "modifiedAt": "2026-10-29T13:15:16.578Z",
       "sourceSyncedAt": "2026-10-29T12:58:28.597Z"
     },
     {
@@ -1052,8 +1057,8 @@
     "total": 29,
     "online": 0,
     "offline": 0,
-    "maintenance": 0,
-    "unknown": 29,
+    "maintenance": 1,
+    "unknown": 28,
     "platforms": {
       "PC": 24,
       "Android": 2,
@@ -1067,8 +1072,8 @@
     "Android",
     "iOS"
   ],
-  "sourceLastSuccess": "2026-10-29T12:58:27.808Z",
-  "sourceLastAttempt": "2026-10-29T12:58:27.808Z",
+  "sourceLastSuccess": "2026-10-29T13:13:29.290Z",
+  "sourceLastAttempt": "2026-10-29T13:13:29.290Z",
   "sourceError": "",
   "sourceCount": 29
 }
