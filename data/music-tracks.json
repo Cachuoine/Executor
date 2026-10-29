@@ -1,0 +1,84 @@
+{
+  "tracks": [
+    {
+      "id": "rec-weeknd-blinding-lights",
+      "title": "Blinding Lights",
+      "artist": "The Weeknd",
+      "genre": "Synth-pop",
+      "url": "https://youtu.be/4NRXx6U8ABQ",
+      "videoId": "4NRXx6U8ABQ",
+      "pinned": true,
+      "addedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "rec-one-republic-counting-stars",
+      "title": "Counting Stars",
+      "artist": "OneRepublic",
+      "genre": "Pop Rock",
+      "url": "https://youtu.be/hT_nvWreIhg",
+      "videoId": "hT_nvWreIhg",
+      "pinned": true,
+      "addedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "rec-alan-walker-faded",
+      "title": "Faded",
+      "artist": "Alan Walker",
+      "genre": "EDM",
+      "url": "https://youtu.be/60ItHLz5WEA",
+      "videoId": "60ItHLz5WEA",
+      "pinned": true,
+      "addedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "rec-adele-hello",
+      "title": "Hello",
+      "artist": "Adele",
+      "genre": "Pop",
+      "url": "https://youtu.be/YQHsXMglC9A",
+      "videoId": "YQHsXMglC9A",
+      "pinned": true,
+      "addedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "rec-ed-sheeran-perfect",
+      "title": "Perfect",
+      "artist": "Ed Sheeran",
+      "genre": "Pop",
+      "url": "https://youtu.be/2Vv-BfVoq4g",
+      "videoId": "2Vv-BfVoq4g",
+      "pinned": true,
+      "addedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "rec-ed-sheeran-shape-of-you",
+      "title": "Shape of You",
+      "artist": "Ed Sheeran",
+      "genre": "Pop",
+      "url": "https://youtu.be/JGwWNGJdvx8",
+      "videoId": "JGwWNGJdvx8",
+      "pinned": true,
+      "addedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "rec-maroon5-sugar",
+      "title": "Sugar",
+      "artist": "Maroon 5",
+      "genre": "Pop",
+      "url": "https://youtu.be/09R8_2nJtjg",
+      "videoId": "09R8_2nJtjg",
+      "pinned": true,
+      "addedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "mra",
+      "title": "Tell Me Why",
+      "artist": "Mr.A · Remake by MGM Studio",
+      "genre": "Remix",
+      "url": "https://youtu.be/EMUKd20IbuM",
+      "videoId": "EMUKd20IbuM",
+      "pinned": true,
+      "addedAt": "2026-01-01T00:00:00.000Z"
+    }
+  ]
+}

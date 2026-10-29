@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "version": "15.2.30",
+  "updatedAt": "",
+  "items": [],
+  "stats": {
+    "total": 0,
+    "online": 0,
+    "offline": 0,
+    "maintenance": 0,
+    "unknown": 0,
+    "platforms": {
+      "PC": 0,
+      "Android": 0,
+      "iOS": 0,
+      "macOS": 0
+    }
+  },
+  "platforms": [
+    "PC",
+    "macOS",
+    "Android",
+    "iOS"
+  ],
+  "sourceLastSuccess": "",
+  "sourceLastAttempt": "",
+  "sourceError": "",
+  "sourceCount": 0
+}
