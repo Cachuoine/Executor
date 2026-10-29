@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.34",
-  "updatedAt": "2026-10-29T15:11:09.779Z",
+  "updatedAt": "2026-10-29T15:18:53.049Z",
   "items": [
     {
       "name": "Axis",
@@ -547,21 +547,21 @@
       "name": "Potassium",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "unknown",
+      "status": "maintenance",
       "version": "2.5.6",
       "compatibilityVersion": "version-9ac8595712b447a7",
       "updatedAt": "2026-10-24T23:00:00.000Z",
       "websiteUrl": "https://www.potassium.pro/",
       "communityUrl": "https://discord.com/invite/potassium",
-      "icon": "🖥️",
-      "summary": "Được nhập từ WEAO; trạng thái công khai cần Admin xác minh · Chi phí tham khảo: $22.99 Lifetime",
+      "icon": "<:potassium:1551958124800249877>",
+      "summary": "```ansi\n\u001b[1;32m╭──── ✦ NIGHTREAPER ✦ ────╮\n◆ POTASSIUM EXECUTOR\n├─ ◈ CHANGELOGS\n\u001b[1;31m[!] Final patch for error spoofing\n\u001b[1;31m[!] Fixed getpcd crashing\n\u001b[1;31m[!] Fixed saveinstance incorrectly saving fonts and scripts with their RunContext set as Client\n\u001b[1;36m[~] FYI: The next patch is coming tomorrow, as it needs longer testing.\n       For those DevForum individuals claiming I am communicating with them through these changelogs, please take your medication.\n       Big updates are coming soon; stay tuned!\n╰──── Powered by NightReaper ────╯\n```",
       "sourceUrl": "https://docs.weao.xyz/weao-api-reference/exploits",
       "thumbImageUrl": "",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
-      "sunc": "",
-      "suncUrl": "",
-      "unc": "",
+      "sunc": "100",
+      "suncUrl": "https://sunc.rubis.app/?scrap=H6t0H3yvle51vF78&key=sR7wwmA8U3dNIiLGx1NBEaIPvEMUpJ43",
+      "unc": "99",
       "id": "feed-pc-potassium",
       "sourceId": "67d6005efa8c791236079278",
       "sourceRbxVersion": "version-9ac8595712b447a7",
@@ -574,9 +574,16 @@
         "rbxversion": "version-9ac8595712b447a7"
       },
       "isSource": true,
-      "manualOverrides": [],
+      "manualOverrides": [
+        "status",
+        "icon",
+        "summary",
+        "sunc",
+        "suncUrl",
+        "unc"
+      ],
       "createdAt": "2026-10-29T15:04:33.133Z",
-      "modifiedAt": "2026-10-29T15:04:33.133Z",
+      "modifiedAt": "2026-10-29T15:18:52.176Z",
       "sourceSyncedAt": "2026-10-29T15:04:33.133Z"
     },
     {
@@ -1052,8 +1059,8 @@
     "total": 29,
     "online": 0,
     "offline": 0,
-    "maintenance": 0,
-    "unknown": 29,
+    "maintenance": 1,
+    "unknown": 28,
     "platforms": {
       "PC": 24,
       "Android": 2,
@@ -1067,8 +1074,8 @@
     "Android",
     "iOS"
   ],
-  "sourceLastSuccess": "2026-10-29T15:11:08.726Z",
-  "sourceLastAttempt": "2026-10-29T15:11:08.726Z",
+  "sourceLastSuccess": "2026-10-29T15:14:57.743Z",
+  "sourceLastAttempt": "2026-10-29T15:14:57.743Z",
   "sourceError": "",
   "sourceCount": 29
 }
