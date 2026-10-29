@@ -689,7 +689,7 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
 @media(max-width:600px){.brand-mark.brand-image-mark{width:40px;height:40px;flex-basis:40px}}
 
 
-/* v15.2.35 — image-led executor cards, inline platform/name and compact detail actions. */
+/* v15.2.36 — image-led executor cards, inline platform/name and compact detail actions. */
 .executor-card-body { display:flex; flex-direction:column; min-height:100%; }
 .executor-card-top { align-items:flex-start; }
 .executor-title-wrap { min-width:0; flex:1; }
@@ -731,7 +731,7 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
 }
 
 
-/* v15.2.35 — consistent public status colors and keyboard-friendly sUNC link. */
+/* v15.2.36 — consistent public status colors and keyboard-friendly sUNC link. */
 .status-label.status-online { color:#40D6A4 !important; background:rgba(64,214,164,.11) !important; }
 .status-label.status-offline { color:#FF627C !important; background:rgba(255,98,124,.11) !important; }
 .status-label.status-maintenance { color:#FFC46B !important; background:rgba(255,196,107,.11) !important; }
