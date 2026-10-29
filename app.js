@@ -56,6 +56,10 @@
     const s = String(status || 'unknown').toLowerCase();
     return ['online', 'offline', 'maintenance'].includes(s) ? `status-${s}` : 'status-unknown';
   }
+  function compareExecutorNames(a, b) {
+    return String(a?.name || '').localeCompare(String(b?.name || ''), 'vi', { sensitivity: 'base', numeric: true })
+      || String(a?.id || '').localeCompare(String(b?.id || ''), 'vi', { sensitivity: 'base', numeric: true });
+  }
   function getFilteredItems() {
     const q = state.query.trim().toLowerCase();
     return state.items.filter((item) => {
@@ -63,7 +67,7 @@
       if (state.activePlatform !== 'ALL' && item.platform !== state.activePlatform) return false;
       if (!q) return true;
       return [item.name, item.platform, item.pcCategory, item.status, item.version, item.compatibilityVersion, item.summary].some((x) => String(x || '').toLowerCase().includes(q));
-    });
+    }).sort(compareExecutorNames);
   }
   function getCounts(items = state.items) {
     const visibleItems = items.filter(item => PUBLIC_PLATFORMS.includes(item.platform));
@@ -81,8 +85,8 @@
     return `<article class="executor-card ${isFavorite ? 'is-favorite' : ''}" style="animation-delay:${Math.min(index, 10) * 35}ms"><div class="executor-card-body"><button class="executor-favorite" type="button" data-favorite="${escapeHtml(favoriteId)}" aria-label="${isFavorite ? 'Bỏ yêu thích' : 'Đánh dấu yêu thích'}" aria-pressed="${isFavorite}" title="${isFavorite ? 'Bỏ yêu thích' : 'Yêu thích'}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></button><div class="executor-card-top"><span class="executor-icon">${icon}</span><div class="executor-title-wrap"><h3>${escapeHtml(item.name || 'Mục chưa đặt tên')}</h3><div class="executor-subtitle">${escapeHtml(category)}</div></div><span class="status-label ${statusClass(item.status)}">${escapeHtml(humanizeStatus(item.status))}</span></div><div class="executor-description discord-description-rendered">${window.DiscordDescription ? window.DiscordDescription.render(summary) : escapeHtml(summary)}</div><div class="executor-meta"><span>PHIÊN BẢN · ${escapeHtml(item.version || 'Chưa có thông tin')}</span><button type="button" data-detail="${escapeHtml(item.id || '')}">Xem chi tiết <span>↗</span></button></div></div></article>`;
   }
   function renderCatalog() {
-    const favorites = getFavoriteIds();
-    const filtered = getFilteredItems().sort((a, b) => Number(favorites.has(itemFavoriteKey(b))) - Number(favorites.has(itemFavoriteKey(a))));
+    // Favorites remain marked as favorites, but never break the guaranteed A–Z catalogue order.
+    const filtered = getFilteredItems();
     const grid = $('#executorGrid');
     $('#catalogResultLabel').textContent = `${filtered.length} ${filtered.length === 1 ? 'mục' : 'mục'}${state.query || state.activePlatform !== 'ALL' ? ' khớp bộ lọc' : ' trong danh mục'}`;
     if (!filtered.length) {
