@@ -21,10 +21,13 @@
     s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/__(.+?)__/g, '<u>$1</u>').replace(/~~(.+?)~~/g, '<del>$1</del>').replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>').replace(/(^|[^_])_([^_\n]+)_/g, '$1<em>$2</em>');
     return s.replace(/\u0000(\d+)\u0000/g, (_, n) => stash[Number(n)] || '');
   }
+  // Discord's commonly used ANSI palette (not standard terminal/Xterm shades).
+  // 90–97 and 256/RGB sequences remain supported in preview, but may render differently in Discord clients.
   const BASIC = {
-    30:'#000000',31:'#cd3131',32:'#0dbc79',33:'#e5e510',34:'#2472c8',35:'#bc3fbc',36:'#11a8cd',37:'#e5e5e5',
+    30:'#8e9297',31:'#ed4245',32:'#3ba55c',33:'#faa61a',34:'#5865f2',35:'#eb459e',36:'#00b0f4',37:'#ffffff',
     90:'#666666',91:'#f14c4c',92:'#23d18b',93:'#f5f543',94:'#3b8eea',95:'#d670d6',96:'#29b8db',97:'#ffffff'
   };
+  const DISCORD_BACKGROUNDS = {40:'#232d3f',41:'#e67e22',42:'#95a5a6',43:'#1abc9c',44:'#7f8c8d',45:'#5865f2',46:'#bdc3c7',47:'#ffffff'};
   function xtermColor(n) {
     n = Math.max(0, Math.min(255, Number(n) || 0));
     const base = ['#000000','#800000','#008000','#808000','#000080','#800080','#008080','#c0c0c0','#808080','#ff0000','#00ff00','#ffff00','#0000ff','#ff00ff','#00ffff','#ffffff'];
@@ -84,7 +87,7 @@
         else if (n === 39) current.fg = '';
         else if (n === 49) current.bg = '';
         else if (BASIC[n]) current.fg = BASIC[n];
-        else if (n >= 40 && n <= 47) current.bg = BASIC[n - 10] || '';
+        else if (n >= 40 && n <= 47) current.bg = DISCORD_BACKGROUNDS[n] || '';
         else if (n >= 100 && n <= 107) current.bg = BASIC[n - 10] || '';
         else if ((n === 38 || n === 48) && params[i + 1] === 5 && params[i + 2] !== undefined) {
           current[n === 38 ? 'fg' : 'bg'] = xtermColor(params[i + 2]); i += 2;

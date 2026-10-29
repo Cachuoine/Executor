@@ -736,9 +736,12 @@
     // new commits visible without asking the visitor to refresh the entire website.
     refreshTimer = window.setInterval(() => {
       if (document.visibilityState === 'visible') refreshPublicData().catch(error => console.warn('Không thể tự làm mới bản dữ liệu:', error));
-    }, 15000);
+    }, localHost ? 3000 : 5000);
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && initialDataLoaded) refreshPublicData().catch(error => console.warn('Không thể làm mới dữ liệu khi quay lại trang:', error));
+    });
+    window.addEventListener('focus', () => {
+      if (document.visibilityState === 'visible' && initialDataLoaded) refreshPublicData().catch(error => console.warn('Không thể làm mới dữ liệu khi cửa sổ được kích hoạt:', error));
     });
   }
   async function init() {
