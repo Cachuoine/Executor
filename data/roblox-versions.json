@@ -4,7 +4,7 @@
     "sourceName": "WhatExpsAre.Online (WEAO)",
     "sourceUrl": "https://whatexpsare.online/",
     "apiUrl": "https://weao.xyz/api/versions/current",
-    "fetchedAt": "2026-10-30T04:01:17.636Z",
+    "fetchedAt": "2026-10-30T22:02:14.005Z",
     "error": "",
     "versions": {
       "PC": {
@@ -47,7 +47,7 @@
     "history": {},
     "historyFetchedAt": "",
     "historyError": "",
-    "lastAttemptAt": "2026-10-30T04:01:17.354Z",
+    "lastAttemptAt": "2026-10-30T22:02:13.599Z",
     "lastVersionChangeAt": "2026-10-30T04:01:17.636Z"
   },
   "downloads": {
