@@ -1,40 +1,16 @@
 {
   "ok": true,
   "version": "15.2.35",
-  "updatedAt": "2026-10-31T12:44:31.308Z",
-  "items": [
-    {
-      "name": "POTASSIUM",
-      "platform": "PC",
-      "pcCategory": "paid",
-      "status": "online",
-      "version": "2.5.0",
-      "compatibilityVersion": "9ac8595712b447a7",
-      "updatedAt": "",
-      "websiteUrl": "https://www.potassium.pro/",
-      "communityUrl": "https://discord.gg/potassium",
-      "icon": "<:potassium:1551958124800249877>",
-      "summary": "```ansi\n\u001b[1;35m✦ NIGHTREAPER · POTASSIUM\u001b[0m\n\u001b[36m▸ TRẠNG THÁI  \u001b[1;32mĐANG HOẠT ĐỘNG\u001b[0m\n\u001b[36m▸ NỀN TẢNG   \u001b[37mPC · WINDOWS\u001b[0m\n\u001b[36m▸ PHIÊN BẢN  \u001b[33m2.5.0\u001b[0m\n\u001b[36m▸ TƯƠNG THÍCH \u001b[37m9ac8595712b447a7\u001b[0m\n\u001b[36m▸ sUNC / UNC \u001b[37m100 / 99\u001b[0m\n\u001b[90m──────────────────────────────────\u001b[0m\n\u001b[37mThêm mô tả ngắn, ưu điểm hoặc lưu ý tại đây.\u001b[0m\n```",
-      "sourceUrl": "",
-      "thumbImageUrl": "",
-      "websiteMainImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566070301320544276/4fcbd098-d190-4e03-8f06-8e6e61c83663.png?ex=6ae73420&is=6ae5e2a0&hm=404c58bf53e202b52f7dc31370029d7aed9da27ace8e502d34a979e2a18d3fa8&",
-      "discordMainImageUrl": "",
-      "sunc": "100",
-      "suncUrl": "https://sunc.rubis.app/?scrap=H6t0H3yvle51vF78&key=sR7wwmA8U3dNIiLGx1NBEaIPvEMUpJ43",
-      "unc": "99",
-      "id": "entry-pc-potassium",
-      "createdAt": "2026-10-31T12:44:30.395Z",
-      "modifiedAt": "2026-10-31T12:44:30.395Z"
-    }
-  ],
+  "updatedAt": "2026-10-31T12:44:56.981Z",
+  "items": [],
   "stats": {
-    "total": 1,
-    "online": 1,
+    "total": 0,
+    "online": 0,
     "offline": 0,
     "maintenance": 0,
     "unknown": 0,
     "platforms": {
-      "PC": 1,
+      "PC": 0,
       "Android": 0,
       "iOS": 0,
       "macOS": 0
