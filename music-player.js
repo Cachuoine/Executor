@@ -252,6 +252,12 @@
     const wave = dock.querySelector('.music-wave');
     if (wave) wave.setAttribute('aria-label', isPlaying ? tr('Đang phát nhạc', 'Đang phát nhạc') : tr('Nhạc đang tạm dừng', 'Nhạc đang tạm dừng'));
     const track = activeTrack();
+    const hasTrack = Boolean(track);
+    dock.classList.toggle('has-track', hasTrack);
+    dock.classList.toggle('is-empty', !hasTrack);
+    // The initial/idle Dynamic Island is intentionally a tiny icon-only capsule.
+    // No placeholder title, artist, LED or playback status is shown until a track exists.
+    if (!hasTrack) dock.classList.remove('is-playing');
     // Share live playback state with the Favorite Galaxy so its music cards animate
     // only while the player is truly running, and gracefully power down on pause.
     window.dispatchEvent(new CustomEvent('executor:music-playback-state', {
@@ -784,20 +790,28 @@
   island?.addEventListener('click', handleIslandToggle);
   $('#closeMusicPanel')?.addEventListener('click', () => { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); });
   playbackModeToggle?.addEventListener('click', togglePlaybackMode);
-  searchToggle?.addEventListener('click', () => {
+  searchMorph?.addEventListener('click', event => {
+    // Keep clicks on the icon, input, caret and the morph surface inside this control.
+    // Only a deliberate click/pointer outside the bubble is allowed to collapse it.
+    event.stopPropagation();
+  });
+  searchToggle?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
     if (searchMorph?.classList.contains('is-open')) closeMusicSearch({ clear:true, rerender:true });
     else openMusicSearch();
   });
   search?.addEventListener('keydown', event => {
     if (event.key === 'Escape' && searchMorph?.classList.contains('is-open')) {
-      event.preventDefault(); event.stopPropagation(); searchToggle?.click();
+      event.preventDefault(); event.stopPropagation(); closeMusicSearch({ clear:true, rerender:true });
     }
   });
-  document.addEventListener('click', event => {
+  document.addEventListener('pointerdown', event => {
     if (!searchMorph?.classList.contains('is-open')) return;
-    if (searchMorph.contains(event.target)) return;
+    const target = event.target instanceof Element ? event.target : null;
+    if (target && (searchMorph.contains(target) || target.closest('#musicSearchForm') || target.closest('#musicTrackList'))) return;
     closeMusicSearch({ clear:true, rerender:true });
-  });
+  }, true);
   list?.addEventListener('click', event => { const button = event.target.closest('[data-music-track]'); if (button) playTrack(button.dataset.musicTrack); });
   search?.addEventListener('input', () => { query = String(search.value || '').trim().toLowerCase(); render(); });
   document.addEventListener('click', event => {
