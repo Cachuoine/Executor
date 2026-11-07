@@ -9,7 +9,21 @@
   let favoriteMusicTracks = [];
   let favoriteUniversePlayback = { trackId: '', isPlaying: false };
   window.addEventListener('executor:music-favorites-updated', event => { favoriteMusicTracks = Array.isArray(event.detail?.tracks) ? event.detail.tracks : []; renderFavoriteUniverse(); });
-  window.addEventListener('executor:music-playback-state', event => syncFavoriteUniversePlayback(event.detail || {}));
+  window.addEventListener('executor:music-playback-state', event => {
+    const detail = event.detail || {};
+    syncFavoriteUniversePlayback(detail);
+    const nextId = String(detail.trackId || '');
+    const changedTrack = state.currentTrackId !== nextId;
+    if (changedTrack) {
+      state.currentTrackId = nextId;
+      if (state.tracks.length) renderMusic(state.tracks);
+    } else if (state.tracks.length) {
+      // Keep the visible song row's glow in sync when a track pauses/resumes.
+      renderMusic(state.tracks);
+    }
+    updatePublicNowPlaying(detail);
+    if (changedTrack && nextId) revealPublicMusicTrack(nextId);
+  });
   let toastTimer;
   const PUBLIC_PLATFORMS = ['PC', 'macOS', 'Android', 'iOS'];
   const PLATFORM_SYMBOLS = { PC: 'PC', Android: 'A', iOS: 'i', macOS: 'M' };
@@ -81,6 +95,40 @@
     const node = $('#toast'); if (!node) return;
     node.textContent = message; node.classList.add('show');
     clearTimeout(toastTimer); toastTimer = setTimeout(() => node.classList.remove('show'), 2700);
+  }
+  function updatePublicNowPlaying(detail = {}) {
+    const banner = $('#publicNowPlaying');
+    if (!banner) return;
+    const hasTrack = Boolean(detail.trackId);
+    banner.hidden = !hasTrack;
+    if (!hasTrack) return;
+    const stateLabel = $('#publicNowPlayingState');
+    const title = $('#publicNowPlayingTitle');
+    const artist = $('#publicNowPlayingArtist');
+    const mode = $('#publicNowPlayingMode');
+    if (stateLabel) stateLabel.textContent = detail.isPlaying ? 'DYNAMIC · ĐANG PHÁT' : 'DYNAMIC · ĐANG TẠM DỪNG';
+    if (title) title.textContent = detail.title || 'Bài hát chưa đặt tên';
+    if (artist) artist.textContent = detail.artist || 'Chưa rõ nghệ sĩ';
+    if (mode) mode.textContent = detail.mode === 'repeat' ? 'REPEAT ONE' : 'RANDOM NEXT';
+    banner.classList.toggle('is-playing', Boolean(detail.isPlaying));
+  }
+  function revealPublicMusicTrack(trackId) {
+    const id = String(trackId || '');
+    if (!id) return;
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const behavior = reducedMotion ? 'auto' : 'smooth';
+    // renderMusic inserts the active track even if it is outside the first ten alphabetic rows.
+    requestAnimationFrame(() => {
+      const section = $('#music');
+      const list = $('#musicSectionTrackList');
+      const row = list ? [...list.querySelectorAll('[data-track-id]')].find(node => node.dataset.trackId === id) : null;
+      if (!section || !row) return;
+      section.scrollIntoView({ behavior, block: 'start' });
+      requestAnimationFrame(() => {
+        if (row.isConnected) row.scrollIntoView({ behavior, block: 'center', inline: 'nearest' });
+        row.classList.add('is-current-reveal');
+      });
+    });
   }
   function formatDate(value) {
     if (!value) return 'Chưa có thời gian cập nhật';
@@ -237,11 +285,14 @@
     $('#musicCount').textContent = `${state.tracks.length} ${state.tracks.length === 1 ? 'bài hát' : 'bài hát'} trong thư viện`;
     $('#musicEmpty').hidden = state.tracks.length > 0;
     if (!state.tracks.length) { $('#musicSectionTrackList').innerHTML = '<div class="loading-text">Thư viện nhạc trống. Hãy thêm bài hát trong Admin localhost để hiển thị tại đây.</div>'; return; }
-    $('#musicSectionTrackList').innerHTML = state.tracks.slice(0, 10).map((track, i) => {
+    const topTracks = state.tracks.slice(0, 10);
+    const activeTrack = state.tracks.find(track => String(track.id) === String(state.currentTrackId));
+    if (activeTrack && !topTracks.some(track => String(track.id) === String(activeTrack.id))) topTracks.splice(9, 1, activeTrack);
+    $('#musicSectionTrackList').innerHTML = topTracks.map((track, i) => {
       const playable = isPlayableTrack(track);
       const playing = state.currentTrackId === String(track.id);
       const audioTag = isDirectAudioTrack(track) ? ' <em class="music-source-tag">MP3</em>' : '';
-      return `<div class="music-track${playing ? ' is-playing' : ''}"><div class="track-main"><span class="track-number">${String(i + 1).padStart(2, '0')}</span><span class="track-art">♫</span><span class="track-info"><b>${escapeHtml(track.title || 'Bài hát chưa có tên')}${audioTag}</b><small>${escapeHtml(track.artist || 'Nghệ sĩ chưa rõ')}</small></span></div><span class="track-genre">${escapeHtml(MUSIC_GENRE_LABELS[track.genre] || track.genre || 'Chưa phân loại')}</span><button class="track-play${playing ? ' is-active' : ''}" type="button" data-play-track="${escapeHtml(track.id || '')}" ${playable ? '' : 'disabled'} aria-label="Phát ${escapeHtml(track.title || 'bài hát')}">${playing ? 'Đang phát' : 'Phát'} <span>▶</span></button></div>`;
+      return `<div class="music-track${playing ? ' is-playing is-current-track' : ''}" data-track-id="${escapeHtml(track.id || '')}"><div class="track-main"><span class="track-number">${String(i + 1).padStart(2, '0')}</span><span class="track-art">♫</span><span class="track-info"><b>${escapeHtml(track.title || 'Bài hát chưa có tên')}${audioTag}</b><small>${escapeHtml(track.artist || 'Nghệ sĩ chưa rõ')}</small></span></div><span class="track-genre">${escapeHtml(MUSIC_GENRE_LABELS[track.genre] || track.genre || 'Chưa phân loại')}</span><button class="track-play${playing ? ' is-active' : ''}" type="button" data-play-track="${escapeHtml(track.id || '')}" ${playable ? '' : 'disabled'} aria-label="Phát ${escapeHtml(track.title || 'bài hát')}">${playing ? 'Đang phát' : 'Phát'} <span>▶</span></button></div>`;
     }).join('');
   }
   function playTrack(id) {
@@ -453,6 +504,7 @@
   ];
   let universeVisible = false;
   let universeAnimationFrame = 0;
+  let universeLastFrame = 0;
   const reducedOrbitMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches || false;
 
   function renderFingerprintWingLists(executorFavorites) {
@@ -567,6 +619,9 @@
   function animateUniverseOrbit(now) {
     universeAnimationFrame = 0;
     if (!universeVisible) return;
+    const frameInterval = (window.matchMedia?.('(pointer: coarse)').matches || window.innerWidth <= 760) ? 1000 / 24 : 1000 / 30;
+    if (now - universeLastFrame < frameInterval) { universeAnimationFrame = window.requestAnimationFrame(animateUniverseOrbit); return; }
+    universeLastFrame = now;
     const system = $('#favoriteUniverseSystem');
     if (!system) return;
     const width = system.clientWidth;
@@ -588,8 +643,9 @@
       const x = centerX + localX * Math.cos(rotation) - localY * Math.sin(rotation);
       const y = centerY + localX * Math.sin(rotation) + localY * Math.cos(rotation);
       const depth = (Math.sin(angle) + 1) / 2;
-      node.style.left = `${x.toFixed(2)}px`;
-      node.style.top = `${y.toFixed(2)}px`;
+      const offsetX = x - centerX;
+      const offsetY = y - centerY;
+      node.style.transform = `translate3d(${offsetX.toFixed(1)}px,${offsetY.toFixed(1)}px,0) translate(-50%,-50%) scale(${(.79 + depth * .2).toFixed(3)})`;
       node.style.setProperty('--universe-scale', (.79 + depth * .2).toFixed(3));
       node.style.setProperty('--universe-opacity', (.78 + depth * .22).toFixed(3));
       node.style.zIndex = depth > .55 ? '8' : '3';
@@ -606,8 +662,9 @@
     root.inert = !universeVisible;
     if (universeVisible) {
       stopUniverseOrbit();
+      universeLastFrame = 0;
       universeAnimationFrame = window.requestAnimationFrame(animateUniverseOrbit);
-    } else stopUniverseOrbit();
+    } else { universeLastFrame = 0; stopUniverseOrbit(); }
   }
 
   function initFingerprintControl() {
@@ -744,6 +801,8 @@
   let initialDataLoaded = false;
   let refreshInFlight = false;
   let refreshTimer = null;
+  let localCatalogChannel = null;
+  try { if (localHost && 'BroadcastChannel' in window) { localCatalogChannel = new BroadcastChannel('status-intelligence-catalog'); localCatalogChannel.addEventListener('message', event => { if (event.data?.type === 'catalog-updated' && document.visibilityState === 'visible') refreshPublicData().catch(() => {}); }); } } catch {}
   const fingerprint = value => {
     try { return JSON.stringify(value ?? null); } catch { return String(Date.now()); }
   };
@@ -814,7 +873,7 @@
     // new commits visible without asking the visitor to refresh the entire website.
     refreshTimer = window.setInterval(() => {
       if (document.visibilityState === 'visible') refreshPublicData().catch(error => console.warn('Không thể tự làm mới bản dữ liệu:', error));
-    }, localHost ? 3000 : 5000);
+    }, localHost ? 10000 : 20000);
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && initialDataLoaded) refreshPublicData().catch(error => console.warn('Không thể làm mới dữ liệu khi quay lại trang:', error));
     });

@@ -8,13 +8,13 @@
   <meta name="description" content="NightReaper — trung tâm quản lý executor, phiên bản Roblox và âm nhạc.">
   <base href="./">
   <title>NightReaper — Trung tâm điều hành</title>
-  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.53-r7"/>
+  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.53-r8"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=15.2.53-r7">
-  <script src="discord-description.js?v=15.2.53-r7" defer></script><script src="app.js?v=15.2.53-r7" defer></script>
-  <link rel="stylesheet" href="music-island.css?v=15.2.53-r7">
+  <link rel="stylesheet" href="site.css?v=15.2.53-r8">
+  <script src="discord-description.js?v=15.2.53-r8" defer></script><script src="app.js?v=15.2.53-r8" defer></script>
+  <link rel="stylesheet" href="music-island.css?v=15.2.53-r8">
 </head>
 <body>
   <div class="ambient ambient-a" aria-hidden="true"></div>
@@ -38,6 +38,7 @@
         <div class="music-library-filters" role="group" aria-label="Lọc thư viện nhạc"><button type="button" class="music-library-filter is-active" data-music-filter="all" aria-pressed="true">Tất cả</button><button type="button" class="music-library-filter" data-music-filter="favorites" aria-pressed="false"><span aria-hidden="true">♡</span> Yêu thích <b id="musicFavoriteCount">0</b></button></div>
         <div class="music-search-row" id="musicSearchForm"><input id="musicSearch" type="search" placeholder="Tìm tên bài hát hoặc nghệ sĩ…" autocomplete="off" aria-label="Tìm tên bài hát hoặc nghệ sĩ"></div>
         <div class="music-library-meta"><span id="musicLibraryCount">Đang tải thư viện…</span></div>
+        <div class="music-current-track-banner" id="musicCurrentTrackBanner" hidden aria-live="polite"><span class="music-current-track-signal"><i></i></span><span class="music-current-track-copy"><small id="musicCurrentTrackState">ĐANG PHÁT · VỊ TRÍ TỰ ĐỘNG</small><b id="musicCurrentTrackTitle">Chưa chọn bài hát</b><span id="musicCurrentTrackArtist">Mở thư viện để chọn MP3</span></span><span class="music-current-track-mode" id="musicCurrentTrackMode">SHUFFLE</span></div>
         <div class="music-track-list" id="musicTrackList"><div class="music-library-loading">Đang tải thư viện nhạc…</div></div>
         <div class="music-panel-footer"><span class="music-live-led"></span><span id="musicPlaybackStatus">Sẵn sàng phát nhạc.</span><button type="button" id="musicPlaybackModeToggle" class="music-playback-toggle music-playback-mode-toggle" aria-label="Chế độ chuyển tiếp ngẫu nhiên" aria-pressed="false" title="Chuyển bài ngẫu nhiên khi bài hiện tại kết thúc">⤨ Chuyển tiếp ngẫu nhiên</button><span id="musicOpenSource" class="music-local-only">MP3 NỘI BỘ</span></div>
       </section>
@@ -168,7 +169,7 @@
         <div class="download-panel"><span class="section-tag">LIÊN KẾT NHANH</span><h3>Chọn thiết bị của bạn.</h3><p>Mở trang tải xuống hoặc cửa hàng ứng dụng tương ứng với từng nền tảng.</p><div id="downloadLinks" class="download-links"><span class="loading-text">Đang chuẩn bị liên kết…</span></div><div class="download-disclaimer">Hãy kiểm tra đích đến và yêu cầu hệ thống trước khi tải xuống hoặc cài đặt phần mềm.</div></div></div>
     </section>
 
-    <section class="music-section" id="music"><div class="section-shell music-inner"><div class="music-copy reveal"><span class="section-tag">KHÔNG GIAN ÂM NHẠC</span><h2>Giữ nhịp điệu.<br><em>Tạm quên ồn ào.</em></h2><p>Các tệp MP3 được quản lý trong bảng quản trị localhost sẽ xuất hiện tại đây. Chọn bài để phát — nhạc không tự động phát khi mở trang.</p><div class="music-meta"><span class="music-disc"><i></i></span><span><b id="musicCount">0 bài hát trong thư viện</b><small>QUẢN LÝ TỪ BẢNG QUẢN TRỊ LOCALHOST</small></span></div></div><div class="music-list-wrap reveal"><div class="music-list-heading"><span >BÀI HÁT</span><span>THỂ LOẠI</span><span>PHÁT</span></div><div id="musicSectionTrackList" class="music-track-list"><div class="loading-text">Đang tải thư viện nhạc…</div></div><div id="musicEmpty" class="music-empty" hidden>Chưa có bài hát nào được xuất bản.</div>
+    <section class="music-section" id="music"><div class="section-shell music-inner"><div class="music-copy reveal"><span class="section-tag">KHÔNG GIAN ÂM NHẠC</span><h2>Giữ nhịp điệu.<br><em>Tạm quên ồn ào.</em></h2><p>Các tệp MP3 được quản lý trong bảng quản trị localhost sẽ xuất hiện tại đây. Chọn bài để phát — nhạc không tự động phát khi mở trang.</p><div class="music-meta"><span class="music-disc"><i></i></span><span><b id="musicCount">0 bài hát trong thư viện</b><small>QUẢN LÝ TỪ BẢNG QUẢN TRỊ LOCALHOST</small></span></div></div><div class="music-list-wrap reveal"><div class="public-now-playing" id="publicNowPlaying" hidden aria-live="polite"><span class="public-now-playing-led"></span><span class="public-now-playing-copy"><small id="publicNowPlayingState">DYNAMIC · ĐANG PHÁT</small><b id="publicNowPlayingTitle">Chưa chọn bài hát</b><span id="publicNowPlayingArtist">Bài hát đang chọn sẽ hiển thị tại đây</span></span><span class="public-now-playing-mode" id="publicNowPlayingMode">RANDOM NEXT</span></div><div class="music-list-heading"><span >BÀI HÁT</span><span>THỂ LOẠI</span><span>PHÁT</span></div><div id="musicSectionTrackList" class="music-track-list"><div class="loading-text">Đang tải thư viện nhạc…</div></div><div id="musicEmpty" class="music-empty" hidden>Chưa có bài hát nào được xuất bản.</div>
       </div></div></section>
 
     <section class="closing-section section-shell reveal"><a id="closingBrowseLink" href="#catalog" hidden aria-hidden="true"></a><div class="closing-orbit" aria-hidden="true"><span></span><span></span><span></span></div><div><span class="section-tag">MỘT NGUỒN DỮ LIỆU</span><h2>Thay đổi tại máy.<br><em>Cập nhật lên công khai.</em></h2><p>Quản lý danh mục, phiên bản Roblox, nhạc và Discord từ bảng điều khiển localhost. Dữ liệu công khai được xuất bản lên GitHub Pages mà không tiết lộ cấu hình riêng.</p></div><a class="button button-primary" id="closingAdminLink" href="/admin" hidden>Mở bảng quản trị localhost <span>↗</span></a></section>
@@ -178,7 +179,7 @@
 
   <dialog id="detailDialog" class="detail-dialog" aria-labelledby="detailTitle"><form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Đóng chi tiết">×</button></form><div id="detailContent"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="music-player.js?v=15.2.53-r7" defer></script>
-  <script src="ambient-motion.js?v=15.2.53-r7" defer></script>
+  <script src="music-player.js?v=15.2.53-r8" defer></script>
+  <script src="ambient-motion.js?v=15.2.53-r8" defer></script>
 </body>
 </html>

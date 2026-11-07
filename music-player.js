@@ -44,6 +44,12 @@
   const isDirectAudioTrack = track => Boolean(getDirectAudioUrl(track));
   const search = $('#musicSearch');
   const list = $('#musicTrackList');
+  const currentTrackBanner = $('#musicCurrentTrackBanner');
+  const currentTrackBannerTitle = $('#musicCurrentTrackTitle');
+  const currentTrackBannerArtist = $('#musicCurrentTrackArtist');
+  const currentTrackBannerState = $('#musicCurrentTrackState');
+  const currentTrackBannerMode = $('#musicCurrentTrackMode');
+  let pendingTrackRevealId = '';
   const playbackStatus = $('#musicPlaybackStatus');
   const playbackModeToggle = $('#musicPlaybackModeToggle');
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -226,6 +232,7 @@
     playbackMode = playbackMode === 'shuffle' ? 'repeat' : 'shuffle';
     if (directAudio) directAudio.loop = playbackMode === 'repeat';
     syncPlaybackModeControl();
+    updateCurrentTrackBanner(activeTrack());
     setPlaybackStatus(playbackMode === 'repeat' ? 'Đã bật lặp lại bài đang chọn.' : 'Đã bật chuyển tiếp ngẫu nhiên khi hết bài.');
   }
   function setPlaybackStatus(message) { if (playbackStatus) playbackStatus.textContent = message; }
@@ -242,7 +249,8 @@
         trackId: String(currentTrack || ''),
         isPlaying: Boolean(isPlaying && currentTrack),
         title: String(track?.title || ''),
-        artist: String(track?.artist || '')
+        artist: String(track?.artist || ''),
+        mode: playbackMode
       }
     }));
   }
@@ -395,6 +403,7 @@
   }
   window.ExecutorDynamicStatus = Object.freeze({ runSystemLoading });
   function openMusicCenter() {
+    if (currentTrack) { prepareCurrentTrackReveal(); render(); }
     restoreDockSizeAfterClose();
     if (panelCloseTimer) {
       clearTimeout(panelCloseTimer);
@@ -418,6 +427,7 @@
     requestAnimationFrame(() => requestAnimationFrame(() => {
       panel?.classList.remove('is-opening');
       dock.classList.remove('music-opening');
+      if (currentTrack) { pendingTrackRevealId = String(currentTrack); requestAnimationFrame(revealCurrentTrackInLibrary); }
     }));
     setCollapsed(false);
   }
@@ -464,6 +474,8 @@
     const track = activeTrack();
     if (!track || track.id !== expectedTrackId || !shouldResumePlayback || pageIsLeaving || !directAudio) return false;
     savedPosition = 0;
+    pendingTrackRevealId = String(track.id);
+    prepareCurrentTrackReveal();
     isPlaying = true;
     try { directAudio.currentTime = 0; } catch {}
     directAudio.loop = true;
@@ -478,6 +490,49 @@
     render();
     return true;
   }
+  function prepareCurrentTrackReveal() {
+    if (!currentTrack) return;
+    pendingTrackRevealId = String(currentTrack);
+    // A random next track may be outside the user's old search/favorites filter.
+    // Switch to the full library so the active row can always be located.
+    const hadFilter = query !== '' || libraryMode !== 'all';
+    query = '';
+    libraryMode = 'all';
+    if (search && search.value) search.value = '';
+    if (hadFilter) syncMusicLanguage();
+  }
+  function revealCurrentTrackInLibrary() {
+    if (!list || !pendingTrackRevealId || panel?.classList.contains('hidden') || panel?.classList.contains('is-opening')) return;
+    const target = [...list.querySelectorAll('.music-track-choice')].find(row => row.dataset.trackId === pendingTrackRevealId);
+    if (!target && !tracks.some(track => String(track.id) === pendingTrackRevealId)) { pendingTrackRevealId = ''; return; }
+    if (!target) {
+      // A stale render can briefly race the library update; retry once after its next paint.
+      const wanted = pendingTrackRevealId;
+      requestAnimationFrame(() => { if (pendingTrackRevealId === wanted) revealCurrentTrackInLibrary(); });
+      return;
+    }
+    const listRect = list.getBoundingClientRect();
+    const rowRect = target.getBoundingClientRect();
+    const nextTop = list.scrollTop + rowRect.top - listRect.top - Math.max(0, (list.clientHeight - rowRect.height) / 2);
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    list.scrollTo({ top: Math.max(0, nextTop), behavior: reduceMotion ? 'auto' : 'smooth' });
+    list.querySelectorAll('.music-track-choice.is-current-reveal').forEach(row => row.classList.remove('is-current-reveal'));
+    target.classList.add('is-current-reveal');
+    pendingTrackRevealId = '';
+  }
+  function updateCurrentTrackBanner(track) {
+    if (!currentTrackBanner) return;
+    const hasTrack = Boolean(track);
+    currentTrackBanner.hidden = !hasTrack;
+    if (!hasTrack) return;
+    if (currentTrackBannerTitle) currentTrackBannerTitle.textContent = track.title || 'Bài hát chưa đặt tên';
+    if (currentTrackBannerArtist) currentTrackBannerArtist.textContent = track.artist || 'Chưa rõ nghệ sĩ';
+    if (currentTrackBannerState) currentTrackBannerState.textContent = isPlaying ? 'ĐANG PHÁT · VỊ TRÍ TỰ ĐỘNG' : 'ĐANG CHỌN · VỊ TRÍ TỰ ĐỘNG';
+    if (currentTrackBannerMode) currentTrackBannerMode.textContent = playbackMode === 'repeat' ? 'REPEAT ONE' : 'RANDOM NEXT';
+    currentTrackBanner.classList.toggle('is-playing', isPlaying);
+    currentTrackBanner.classList.toggle('is-paused', !isPlaying);
+    currentTrackBanner.setAttribute('aria-label', `${isPlaying ? 'Đang phát' : 'Đang chọn'}: ${track.title || 'Bài hát'}, ${track.artist || 'Chưa rõ nghệ sĩ'}`);
+  }
   function render() {
     // Always display tracks alphabetically, independent of pinning or insertion order.
     tracks.sort((a, b) => String(a.title || '').localeCompare(String(b.title || ''), undefined, { sensitivity: 'base', numeric: true }));
@@ -489,7 +544,7 @@
     const renderRows = (items, startIndex) => items.map((track, offset) => {
       const id = String(track.id);
       const favorite = musicFavorites.has(id);
-      return `<div class="music-track-choice${id === currentTrack ? ' active' : ''}${id === currentTrack && isPlaying ? ' is-playing' : ''}"><button type="button" class="music-track-main" data-music-track="${escapeHtml(id)}" aria-label="${escapeHtml(id === currentTrack && isPlaying ? `Tạm dừng ${track.title}` : `Phát ${track.title}`)}"><span class="music-track-number">${String(startIndex + offset + 1).padStart(2,'0')}</span><span class="music-track-name"><b>${escapeHtml(track.title)}</b><small>${escapeHtml(track.artist)}</small></span><span class="music-track-play">${id === currentTrack && isPlaying ? 'Ⅱ' : '▶'}</span></button><button type="button" class="music-track-favorite${favorite ? ' is-favorite' : ''}" data-music-favorite="${escapeHtml(id)}" aria-pressed="${favorite}" aria-label="${favorite ? 'Bỏ khỏi nhạc yêu thích' : 'Thêm vào nhạc yêu thích'}" title="${favorite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}">${favorite ? '♥' : '♡'}</button></div>`;
+      return `<div class="music-track-choice${id === currentTrack ? ' active is-current-track' : ''}${id === currentTrack && isPlaying ? ' is-playing' : ''}" data-track-id="${escapeHtml(id)}" aria-current="${id === currentTrack ? 'true' : 'false'}"><button type="button" class="music-track-main" data-music-track="${escapeHtml(id)}" aria-label="${escapeHtml(id === currentTrack && isPlaying ? `Tạm dừng ${track.title}` : `Phát ${track.title}`)}"><span class="music-track-number">${String(startIndex + offset + 1).padStart(2,'0')}</span><span class="music-track-name"><b>${escapeHtml(track.title)}</b><small>${escapeHtml(track.artist)}</small></span><span class="music-track-play">${id === currentTrack && isPlaying ? 'Ⅱ' : '▶'}</span></button><button type="button" class="music-track-favorite${favorite ? ' is-favorite' : ''}" data-music-favorite="${escapeHtml(id)}" aria-pressed="${favorite}" aria-label="${favorite ? 'Bỏ khỏi nhạc yêu thích' : 'Thêm vào nhạc yêu thích'}" title="${favorite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}">${favorite ? '♥' : '♡'}</button></div>`;
     }).join('');
     if (list) {
       if (!rows.length) list.innerHTML = `<div class="music-library-loading">${libraryMode === 'favorites' ? 'Chưa có bài hát yêu thích. Nhấn ♡ ở một bài hát để thêm vào thư mục này.' : 'Không tìm thấy bài hát phù hợp.'}</div>`;
@@ -510,6 +565,8 @@
     if (state) state.textContent = isPlaying ? tr('ĐANG PHÁT', 'ĐANG PHÁT') : tr('TRÌNH PHÁT NHẠC', 'TRÌNH PHÁT NHẠC');
     if (source) source.textContent = 'MP3 NỘI BỘ';
     syncPlaybackModeControl();
+    updateCurrentTrackBanner(track);
+    if (pendingTrackRevealId) requestAnimationFrame(revealCurrentTrackInLibrary);
   }
   function persistMusicState() {
     // Backward-compatible event-hook target only. Playback state is memory-only;
@@ -521,7 +578,7 @@
     if (Number.isFinite(position) && position >= 0) savedPosition = position;
   }
   directAudio?.addEventListener('timeupdate', () => { if (isDirectAudioTrack(activeTrack())) { savedPosition = Number(directAudio.currentTime) || 0; if (Date.now() % 2000 < 1000) persistMusicState(); } });
-  directAudio?.addEventListener('play', () => { if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) { isPlaying = true; syncPlaybackVisuals(); } });
+  directAudio?.addEventListener('play', () => { if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) { isPlaying = true; syncPlaybackVisuals(); render(); } });
   directAudio?.addEventListener('pause', () => { if (isDirectAudioTrack(activeTrack()) && !shouldResumePlayback) { isPlaying = false; syncPlaybackVisuals(); persistMusicState(); render(); } });
   function playRandomNextTrack() {
     const available = tracks.filter(track => isDirectAudioTrack(track));
@@ -550,8 +607,7 @@
     setPlaybackStatus(tr('Không tải được MP3. Kiểm tra URL tệp, quyền truy cập và tên file trên website.', 'Không tải được MP3. Kiểm tra URL tệp, quyền truy cập và tên file trên website.'));
     syncPlaybackVisuals(); persistMusicState(); render();
   });
-  // Refresh the in-memory timestamp while this page stays open; nothing is written to storage.
-  window.setInterval(requestPlayerPosition, 1800);
+  // Native audio timeupdate events keep the position current without a polling timer.
   function stopPlaybackForPageExit() {
     pageIsLeaving = true;
     isPlaying = false;
@@ -596,6 +652,7 @@
     }
 
     currentTrack = track.id;
+    prepareCurrentTrackReveal();
     directAudio.loop = playbackMode === 'repeat';
     if (isNewTrack) {
       try { directAudio.currentTime = 0; } catch {}

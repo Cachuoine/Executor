@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.53",
-  "updatedAt": "2026-11-07T06:24:19.347Z",
+  "updatedAt": "2026-11-07T07:13:09.995Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -165,29 +165,6 @@
       "modifiedAt": "2026-11-06T04:35:54.665Z"
     },
     {
-      "name": "MacSploit",
-      "platform": "macOS",
-      "pcCategory": "",
-      "status": "online",
-      "version": "746.2",
-      "compatibilityVersion": "2fc79d515be6449d",
-      "updatedAt": "2026-11-07T05:51:00.000Z",
-      "websiteUrl": "",
-      "communityUrl": "https://discord.com/invite/opiumware",
-      "icon": "<:opiumware:1566462281628393552>",
-      "summary": "```ansi\n       \u001b[4;32m✦NIGHTREAPER · MacSploit\u001b[0m\n\u001b[36m▸ TRẠNG THÁI  \u001b[1;32mĐANG HOẠT ĐỘNG\u001b[0m\n\u001b[36m▸ NỀN TẢNG   \u001b[37mmacOS\u001b[0m\n\u001b[36m▸ PHIÊN BẢN  \u001b[33m746.2\u001b[0m\n\u001b[36m▸ TƯƠNG THÍCH \u001b[37m2fc79d515be6449d\u001b[0m\n\u001b[36m▸ sUNC / UNC \u001b[37m100 / 99\u001b[0m\n\u001b[90m──────────────────────────────────\u001b[0m\n       \u001b[4;33m✦MacSploit · CHANGELOG\u001b[0m\n\u001b[1;32m[!] fixed an issue with getcallbackvalue where it would crash\n\u001b[1;35m[*] big improvement to fps uncap and setfpscap -> now fixed + can be set higher than refresh rate (suggested by chris_dsc)\n       \u001b[0;37;46mConfig by Nightreaper\n```",
-      "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566462877408297171/ceec87c6-2770-4516-82d7-8f8b8db5462e.png?ex=6ae8a1bd&is=6ae7503d&hm=1be1347e8ba190e81c3e6a031aba025f98bbe5959694b66ecf4112caddbddabc&",
-      "websiteMainImageUrl": "",
-      "discordMainImageUrl": "",
-      "sunc": "100",
-      "suncUrl": "https://r.sunc.su/iAdPGONiDo",
-      "unc": "99",
-      "id": "entry-macos-opiumware",
-      "createdAt": "2026-11-01T14:45:20.401Z",
-      "modifiedAt": "2026-11-07T06:24:18.549Z"
-    },
-    {
       "name": "MADIUM",
       "platform": "PC",
       "pcCategory": "free",
@@ -232,6 +209,29 @@
       "id": "entry-pc-madius",
       "createdAt": "2026-11-01T13:41:01.752Z",
       "modifiedAt": "2026-11-06T04:37:21.602Z"
+    },
+    {
+      "name": "OPIUMWARE",
+      "platform": "macOS",
+      "pcCategory": "",
+      "status": "online",
+      "version": "746.1",
+      "compatibilityVersion": "2fc79d515be6449d",
+      "updatedAt": "2026-11-06T03:30:00.000Z",
+      "websiteUrl": "",
+      "communityUrl": "https://discord.com/invite/opiumware",
+      "icon": "<:opiumware:1566462281628393552>",
+      "summary": "```ansi\n       \u001b[4;32m✦NIGHTREAPER · OPIUMWARE\u001b[0m\n\u001b[36m▸ TRẠNG THÁI  \u001b[1;32mĐANG HOẠT ĐỘNG\u001b[0m\n\u001b[36m▸ NỀN TẢNG   \u001b[37mmacOS\u001b[0m\n\u001b[36m▸ PHIÊN BẢN  \u001b[33m745.1\u001b[0m\n\u001b[36m▸ TƯƠNG THÍCH \u001b[37mb09c93298b5d4cd1\u001b[0m\n\u001b[36m▸ sUNC / UNC \u001b[37m100 / 99\u001b[0m\n\u001b[90m──────────────────────────────────\u001b[0m\n       \u001b[4;33m✦OPIUMWARE · CHANGELOG\u001b[0m\n\u001b[1;36m[^] updated intel and arm to version-2fc79d515be6449d\n\u001b[1;36m[^] updated decompiler too\n       \u001b[0;37;46mConfig by Nightreaper\n```",
+      "sourceUrl": "https://whatexpsare.online/",
+      "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566462877408297171/ceec87c6-2770-4516-82d7-8f8b8db5462e.png?ex=6ae8a1bd&is=6ae7503d&hm=1be1347e8ba190e81c3e6a031aba025f98bbe5959694b66ecf4112caddbddabc&",
+      "websiteMainImageUrl": "",
+      "discordMainImageUrl": "",
+      "sunc": "100",
+      "suncUrl": "https://r.sunc.su/iAdPGONiDo",
+      "unc": "99",
+      "id": "entry-macos-opiumware",
+      "createdAt": "2026-11-01T14:45:20.401Z",
+      "modifiedAt": "2026-11-06T04:37:11.623Z"
     },
     {
       "name": "PHOTON",

@@ -17,8 +17,8 @@
   if (!ctx) { canvas.remove(); return; }
 
   let width = 1, height = 1, ratio = 1;
-  let particles = [], frame = 0, lastFrame = 0, running = true, clock = 0;
-  const FRAME_MS = 1000 / 30;
+  let particles = [], frame = 0, lastFrame = 0, running = true, clock = 0, coarseDevice = false;
+  const frameInterval = () => coarseDevice ? (1000 / 24) : (1000 / 30);
   const palette = [
     { r: 127, g: 230, b: 224 },
     { r: 167, g: 139, b: 250 },
@@ -68,14 +68,17 @@
     }
     width = nextWidth;
     height = nextHeight;
-    ratio = Math.min(window.devicePixelRatio || 1, 1.35);
+    coarseDevice = Boolean(window.matchMedia?.('(pointer: coarse)').matches || nextWidth <= 760);
+    ratio = Math.min(window.devicePixelRatio || 1, coarseDevice ? 1 : 1.2);
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     // More particles, distributed across the whole viewport and capped for performance.
-    const count = Math.max(88, Math.min(360, Math.round((width * height) / 5200)));
+    const count = coarseDevice
+      ? Math.max(36, Math.min(112, Math.round((width * height) / 9200)))
+      : Math.max(72, Math.min(220, Math.round((width * height) / 7600)));
     if (particles.length !== count) seedSpreadParticles(count);
   }
 
@@ -86,7 +89,7 @@
       { y: .59, amp: 12, freq: .0062, speed: .26, phase: 4.1, color: 'rgba(136,182,255,.072)', line: .9 },
       { y: .82, amp: 16, freq: .0045, speed: -.22, phase: 1.4, color: 'rgba(127,230,224,.065)', line: .85 }
     ];
-    for (const wave of waves) {
+    for (const wave of waves.slice(0, coarseDevice ? 2 : waves.length)) {
       ctx.beginPath();
       for (let x = -12; x <= width + 12; x += 7) {
         const y = height * wave.y
@@ -186,8 +189,8 @@
   function render(now) {
     if (!running) return;
     frame = requestAnimationFrame(render);
-    if (now - lastFrame < FRAME_MS) return;
-    const delta = Math.min(1.8, lastFrame ? (now - lastFrame) / FRAME_MS : 1);
+    if (now - lastFrame < frameInterval()) return;
+    const delta = Math.min(1.8, lastFrame ? (now - lastFrame) / frameInterval() : 1);
     lastFrame = now;
     clock += delta * .018;
     ctx.clearRect(0, 0, width, height);
