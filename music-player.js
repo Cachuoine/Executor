@@ -52,7 +52,6 @@
   let pendingTrackRevealId = '';
   const playbackStatus = $('#musicPlaybackStatus');
   const playbackModeToggle = $('#musicPlaybackModeToggle');
-  const panelStateToggle = $('#musicPanelStateToggle');
   const searchMorph = $('#musicSearchForm');
   const searchToggle = $('#musicSearchToggle');
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -224,18 +223,27 @@
     const button = playbackModeToggle || $('#musicPlaybackModeToggle');
     if (!button) return;
     const repeatOne = playbackMode === 'repeat';
-    button.textContent = repeatOne ? '↻ Lặp lại bài này' : '⤨ Chuyển tiếp ngẫu nhiên';
+    button.dataset.playbackMode = playbackMode;
     button.setAttribute('aria-pressed', String(repeatOne));
     button.setAttribute('aria-label', repeatOne ? 'Đang bật chế độ lặp lại một bài' : 'Đang bật chế độ chuyển bài ngẫu nhiên');
     button.title = repeatOne ? 'Lặp lại liên tục bài đang chọn' : 'Chuyển ngẫu nhiên sang một bài khác khi bài hiện tại kết thúc';
-    button.dataset.playbackMode = playbackMode;
+    const label = $('#musicPlaybackModeLabel');
+    if (label) label.textContent = repeatOne ? 'Lặp lại bài này' : 'Chuyển tiếp ngẫu nhiên';
   }
   function togglePlaybackMode() {
     playbackMode = playbackMode === 'shuffle' ? 'repeat' : 'shuffle';
     if (directAudio) directAudio.loop = playbackMode === 'repeat';
     syncPlaybackModeControl();
+    const button = playbackModeToggle || $('#musicPlaybackModeToggle');
+    if (button) {
+      button.classList.remove('is-switching');
+      void button.offsetWidth;
+      button.classList.add('is-switching');
+      window.setTimeout(() => button.classList.remove('is-switching'), 560);
+    }
     updateCurrentTrackBanner(activeTrack());
     setPlaybackStatus(playbackMode === 'repeat' ? 'Đã bật lặp lại bài đang chọn.' : 'Đã bật chuyển tiếp ngẫu nhiên khi hết bài.');
+    render();
   }
   function setPlaybackStatus(message) { if (playbackStatus) playbackStatus.textContent = message; }
   function syncPlaybackVisuals() {
@@ -434,6 +442,7 @@
     setCollapsed(false);
   }
   function finishMusicCenterClose() {
+    closeMusicSearch({ clear:true, rerender:false });
     if (panelCloseTimer) clearTimeout(panelCloseTimer);
     if (dockCloseStartTimer) clearTimeout(dockCloseStartTimer);
     panelCloseTimer = null;
@@ -564,7 +573,7 @@
     const title = $('#musicTrackTitle'), artist = $('#musicTrackArtist'), state = $('#musicNowLabel');
     if (title) title.textContent = track ? track.title : tr('Chọn bài hát', 'Chọn bài hát');
     if (artist) artist.textContent = track ? track.artist : tr('Chưa có nhạc đang phát', 'Chưa có nhạc đang phát');
-    if (state) state.textContent = isPlaying ? tr('ĐANG PHÁT', 'ĐANG PHÁT') : tr('TRÌNH PHÁT NHẠC', 'TRÌNH PHÁT NHẠC');
+    if (state) state.textContent = track ? `${isPlaying ? 'ĐANG PHÁT' : 'ĐANG CHỌN'} · ${playbackMode === 'repeat' ? 'LẶP LẠI' : 'NGẪU NHIÊN'}` : tr('TRÌNH PHÁT NHẠC', 'TRÌNH PHÁT NHẠC');
     syncPlaybackModeControl();
     updateCurrentTrackBanner(track);
     if (pendingTrackRevealId) requestAnimationFrame(revealCurrentTrackInLibrary);
@@ -635,7 +644,34 @@
     setCollapsed(true); syncPlaybackVisuals(); render(); clearLegacyMusicState();
   });
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') requestPlayerPosition(); });
+  function closeMusicSearch({ clear = true, rerender = false } = {}) {
+    if (!searchMorph) return;
+    const wasOpen = searchMorph.classList.contains('is-open');
+    searchMorph.classList.remove('is-open');
+    searchToggle?.setAttribute('aria-expanded', 'false');
+    searchToggle?.setAttribute('aria-label', 'Mở tìm kiếm');
+    if (search) {
+      search.tabIndex = -1;
+      if (clear) {
+        const hadQuery = Boolean(search.value || query);
+        search.value = '';
+        query = '';
+        if (rerender && hadQuery) render();
+      }
+    }
+    return wasOpen;
+  }
+  function openMusicSearch() {
+    if (!searchMorph) return;
+    searchMorph.classList.add('is-open');
+    searchToggle?.setAttribute('aria-expanded', 'true');
+    searchToggle?.setAttribute('aria-label', 'Đóng tìm kiếm');
+    if (search) { search.tabIndex = 0; requestAnimationFrame(() => search.focus({ preventScroll:true })); }
+  }
   function playTrack(trackId) {
+    // Selecting a result collapses the search bubble back to its icon with the same
+    // reverse animation; the selected song then remains visible in the Dynamic pill.
+    closeMusicSearch({ clear:true, rerender:false });
     const track = tracks.find(row => row.id === trackId) || activeTrack();
     const audioUrl = getDirectAudioUrl(track);
     if (!track || !audioUrl || !directAudio) {
@@ -746,25 +782,21 @@
     island?.focus({ preventScroll: true });
   }, true);
   island?.addEventListener('click', handleIslandToggle);
-  $('#closeMusicPanel')?.addEventListener('click', beginIslandClose);
-  panelStateToggle?.addEventListener('click', beginIslandClose);
+  $('#closeMusicPanel')?.addEventListener('click', () => { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); });
   playbackModeToggle?.addEventListener('click', togglePlaybackMode);
   searchToggle?.addEventListener('click', () => {
-    if (!searchMorph) return;
-    const opening = !searchMorph.classList.contains('is-open');
-    searchMorph.classList.toggle('is-open', opening);
-    searchToggle.setAttribute('aria-expanded', String(opening));
-    searchToggle.setAttribute('aria-label', opening ? 'Đóng tìm kiếm' : 'Mở tìm kiếm');
-    if (search) {
-      search.tabIndex = opening ? 0 : -1;
-      if (opening) search.focus({ preventScroll: true });
-      else { search.value = ''; query = ''; render(); }
-    }
+    if (searchMorph?.classList.contains('is-open')) closeMusicSearch({ clear:true, rerender:true });
+    else openMusicSearch();
   });
   search?.addEventListener('keydown', event => {
     if (event.key === 'Escape' && searchMorph?.classList.contains('is-open')) {
-      event.preventDefault(); searchToggle?.click();
+      event.preventDefault(); event.stopPropagation(); searchToggle?.click();
     }
+  });
+  document.addEventListener('click', event => {
+    if (!searchMorph?.classList.contains('is-open')) return;
+    if (searchMorph.contains(event.target)) return;
+    closeMusicSearch({ clear:true, rerender:true });
   });
   list?.addEventListener('click', event => { const button = event.target.closest('[data-music-track]'); if (button) playTrack(button.dataset.musicTrack); });
   search?.addEventListener('input', () => { query = String(search.value || '').trim().toLowerCase(); render(); });
@@ -782,7 +814,8 @@
   // Close finalization is timer-backed (morph duration + settle margin) so it cannot
   // remove the overlay one frame before dock width/height transitions finish.
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !islandTransitionLocked && !panel?.classList.contains('hidden')) beginIslandClose();
+    if (event.key === 'Escape' && searchMorph?.classList.contains('is-open')) return;
+    if (event.key === 'Escape' && !islandTransitionLocked && !panel?.classList.contains('hidden')) { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); }
   });
   window.addEventListener('fishcat:music-library-updated', loadLibrary);
   window.addEventListener('executor:music-play', async event => { const id = String(event.detail?.id || ''); let track = tracks.find(item => String(item.id) === id); if (!track) { await loadLibrary(); track = tracks.find(item => String(item.id) === id); } if (track) playTrack(String(track.id)); else setPlaybackStatus('Không tìm thấy bài hát trong thư viện nhạc.'); });
