@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.53",
-  "updatedAt": "2026-11-07T03:33:02.110Z",
+  "updatedAt": "2026-11-07T03:36:46.169Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -398,7 +398,7 @@
       "name": "VORTEX",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "unknown",
+      "status": "online",
       "version": "1.4.8.31",
       "compatibilityVersion": "f0ea5da9412f4e35",
       "updatedAt": "2026-11-06T08:16:00.000Z",
@@ -415,7 +415,7 @@
       "unc": "100",
       "id": "entry-pc-vortex",
       "createdAt": "2026-11-01T14:00:34.940Z",
-      "modifiedAt": "2026-11-07T03:33:00.596Z"
+      "modifiedAt": "2026-11-07T03:36:45.297Z"
     },
     {
       "name": "WAVE",
@@ -443,10 +443,10 @@
   ],
   "stats": {
     "total": 19,
-    "online": 11,
+    "online": 12,
     "offline": 1,
     "maintenance": 6,
-    "unknown": 1,
+    "unknown": 0,
     "platforms": {
       "PC": 15,
       "Android": 2,
