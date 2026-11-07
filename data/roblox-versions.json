@@ -4,30 +4,30 @@
     "sourceName": "WhatExpsAre.Online (WEAO)",
     "sourceUrl": "https://whatexpsare.online/",
     "apiUrl": "https://weao.xyz/api/versions/current",
-    "fetchedAt": "2026-10-24T23:13:59.726Z",
+    "fetchedAt": "2026-11-07T00:35:39.469Z",
     "error": "",
     "versions": {
       "PC": {
         "label": "Windows / PC",
-        "version": "version-9ac8595712b447a7",
-        "updatedAt": "10/20/2026, 8:15:26 PM UTC",
+        "version": "version-f0ea5da9412f4e35",
+        "updatedAt": "11/6/2026, 12:14:16 AM UTC",
         "metadata": {
-          "version": "0.744.0.7441080",
-          "clientVersionUpload": "version-9ac8595712b447a7",
+          "version": "0.746.0.7461267",
+          "clientVersionUpload": "version-f0ea5da9412f4e35",
           "bootstrapperVersion": "",
-          "timestamp": 1792527326,
+          "timestamp": 1793924056,
           "type": "new"
         }
       },
       "macOS": {
         "label": "macOS",
-        "version": "version-546c6da637854de3",
-        "updatedAt": "10/20/2026, 8:15:45 PM UTC",
+        "version": "version-2fc79d515be6449d",
+        "updatedAt": "11/4/2026, 5:00:16 PM UTC",
         "metadata": {
-          "version": "0.744.0.7441080",
-          "clientVersionUpload": "version-546c6da637854de3",
+          "version": "0.746.0.7461264",
+          "clientVersionUpload": "version-2fc79d515be6449d",
           "bootstrapperVersion": "",
-          "timestamp": 1792527345,
+          "timestamp": 1793811616,
           "type": "new"
         }
       },
@@ -39,16 +39,16 @@
       },
       "iOS": {
         "label": "iOS",
-        "version": "2.744.1077",
-        "updatedAt": "10/22/2026, 3:20:35 AM UTC",
+        "version": "2.746.1264",
+        "updatedAt": "11/5/2026, 12:21:32 PM UTC",
         "metadata": {}
       }
     },
     "history": {},
     "historyFetchedAt": "",
     "historyError": "",
-    "lastAttemptAt": "2026-10-24T23:13:59.172Z",
-    "lastVersionChangeAt": "2026-10-24T23:13:59.726Z"
+    "lastAttemptAt": "2026-11-07T00:35:38.986Z",
+    "lastVersionChangeAt": "2026-11-06T04:08:49.746Z"
   },
   "downloads": {
     "PC": {

@@ -78,25 +78,36 @@
   function scoreBadgesMarkup(item, className = 'executor-score-badges') {
     const suncUrl = safeUrl(item?.suncUrl ?? item?.sUNCUrl);
     return [['sUNC', item?.sunc ?? item?.sUNC, suncUrl], ['UNC', item?.unc ?? item?.UNC, '']]
-      .filter(([, value]) => String(value ?? '').trim() !== '')
-      .map(([label, value, url]) => {
-        const content = `<b>${label}</b><span>${escapeHtml(value)}</span>${label === 'sUNC' && url ? '<span class="score-link-mark" aria-hidden="true">↗</span>' : ''}`;
-        if (label === 'sUNC' && url) return `<a class="executor-score-badge ${label.toLowerCase()} sunc-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="Mở liên kết sUNC" aria-label="Mở liên kết sUNC cho ${escapeHtml(item?.name || 'executor')}">${content}</a>`;
-        return `<span class="executor-score-badge ${label.toLowerCase()}" title="${label}">${content}</span>`;
+      .map(([label, rawValue, url]) => {
+        const hasValue = String(rawValue ?? '').trim() !== '';
+        const value = hasValue ? String(rawValue).trim() : '—';
+        const stateClass = hasValue ? 'is-available' : 'is-unavailable';
+        const content = `<b>${label}</b><span>${escapeHtml(value)}</span>${label === 'sUNC' && url && hasValue ? '<span class="score-link-mark" aria-hidden="true">↗</span>' : ''}`;
+        if (label === 'sUNC' && url && hasValue) return `<a class="executor-score-badge ${label.toLowerCase()} ${stateClass} sunc-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="Mở liên kết sUNC" aria-label="Mở liên kết sUNC cho ${escapeHtml(item?.name || 'executor')}">${content}</a>`;
+        return `<span class="executor-score-badge ${label.toLowerCase()} ${stateClass}" title="${hasValue ? `${label}: ${escapeHtml(value)}` : `${label}: Chưa có dữ liệu`}">${content}</span>`;
       })
       .join('');
   }
   function cardMarkup(item, index) {
     const iconUrl = safeUrl(item.thumbImageUrl);
-    const mainImageUrl = safeUrl(item.websiteMainImageUrl);
+    const mainImageUrl = safeUrl(item.websiteMainImageUrl) || iconUrl;
     const pcCategoryLabels = { paid: 'Trả phí', free: 'Miễn phí', internal: 'External', external: 'External' };
-    const category = item.platform === 'PC' && item.pcCategory ? `PC / ${pcCategoryLabels[item.pcCategory] || item.pcCategory}` : (PLATFORM_LABELS[item.platform] || item.platform || 'Chưa phân loại');
-    const icon = iconUrl ? `<img src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.textContent='◈'">` : escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈');
+    const platformCategory = item.platform === 'PC' && item.pcCategory
+      ? `PC / ${pcCategoryLabels[item.pcCategory] || item.pcCategory}`
+      : (PLATFORM_LABELS[item.platform] || item.platform || 'Chưa phân loại');
+    const icon = iconUrl
+      ? `<img src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.textContent='◈'">`
+      : escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈');
+    const nameBrand = iconUrl
+      ? `<img class="executor-name-brand-image" src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.replaceWith(document.createTextNode('◈'))">`
+      : `<span class="executor-name-brand-fallback">${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}</span>`;
+    const status = `<span class="executor-name-status ${statusClass(item.status)}" title="${escapeHtml(humanizeStatus(item.status))}"><i aria-hidden="true"></i>${escapeHtml(humanizeStatus(item.status))}</span>`;
     const cardImage = mainImageUrl
-      ? `<div class="executor-card-image-wrap"><img class="executor-card-image" src="${escapeHtml(mainImageUrl)}" alt="Ảnh chính của ${escapeHtml(item.name || 'executor')}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('.executor-card-image-wrap')?.remove()"></div>`
-      : `<div class="executor-card-image-wrap executor-card-image-placeholder" aria-hidden="true"><span>◈</span></div>`;
+      ? `<div class="executor-card-media"><img class="executor-card-image" src="${escapeHtml(mainImageUrl)}" alt="${escapeHtml(item.name || 'executor')}" loading="lazy" referrerpolicy="no-referrer" onload="if(this.naturalHeight && this.naturalWidth / this.naturalHeight < 1.55) this.classList.add('is-contained')" onerror="this.closest('.executor-card-media')?.remove()"><span class="executor-card-image-shade" aria-hidden="true"></span></div>`
+      : `<div class="executor-card-media executor-card-media-placeholder"><span class="executor-card-placeholder-icon">${icon}</span><span class="executor-card-placeholder-name">${escapeHtml(item.name || 'NightReaper')}</span><small>NIGHTREAPER EXECUTOR ARCHIVE</small></div>`;
     const favoriteId = itemFavoriteKey(item); const isFavorite = getFavoriteIds().has(favoriteId);
-    return `<article class="executor-card ${isFavorite ? 'is-favorite' : ''}" style="animation-delay:${Math.min(index, 10) * 35}ms"><div class="executor-card-body"><button class="executor-favorite" type="button" data-favorite="${escapeHtml(favoriteId)}" aria-label="${isFavorite ? 'Bỏ yêu thích' : 'Đánh dấu yêu thích'}" aria-pressed="${isFavorite}" title="${isFavorite ? 'Bỏ yêu thích' : 'Yêu thích'}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></button><div class="executor-card-top"><span class="executor-icon">${icon}</span><div class="executor-title-wrap"><div class="executor-name-line"><h3>${escapeHtml(item.name || 'Mục chưa đặt tên')}</h3>${scoreBadgesMarkup(item)}</div><div class="executor-subtitle">${escapeHtml(category)}</div></div><span class="status-label ${statusClass(item.status)}">${escapeHtml(humanizeStatus(item.status))}</span></div>${cardImage}<div class="executor-meta"><span>PHIÊN BẢN · ${escapeHtml(item.version || 'Chưa có thông tin')}</span><button type="button" data-detail="${escapeHtml(item.id || '')}">Xem chi tiết <span>↗</span></button></div></div></article>`;
+    const scoreMarkup = scoreBadgesMarkup(item);
+    return `<article class="executor-card ${isFavorite ? 'is-favorite' : ''}" style="animation-delay:${Math.min(index, 10) * 35}ms"><div class="executor-card-body"><button class="executor-favorite" type="button" data-favorite="${escapeHtml(favoriteId)}" aria-label="${isFavorite ? 'Bỏ yêu thích' : 'Đánh dấu yêu thích'}" aria-pressed="${isFavorite}" title="${isFavorite ? 'Bỏ yêu thích' : 'Yêu thích'}"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="executor-heart-base" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/><path class="executor-heart-facet" d="M5.1 6.1a3.7 3.7 0 0 1 5.2 0L12 7.8l1.7-1.7a3.7 3.7 0 0 1 4.5-.5l-6.4 7.1-6.7-6.6Z"/></svg></button>${cardImage}<div class="executor-product-copy"><div class="executor-product-heading"><div class="executor-name-line">${nameBrand}<h3>${escapeHtml(item.name || 'Mục chưa đặt tên')}</h3>${status}</div></div><div class="executor-score-line">${scoreMarkup}</div><span class="executor-product-platform">${escapeHtml(platformCategory)}</span><div class="executor-product-foot"><span class="executor-product-version">VERSION · ${escapeHtml(item.version || 'Chưa có thông tin')}</span><button type="button" data-detail="${escapeHtml(item.id || '')}">Chi tiết <span>↗</span></button></div></div></div></article>`;
   }
   function renderCatalog() {
     // Favorites remain marked as favorites, but never break the guaranteed A–Z catalogue order.
@@ -231,7 +242,7 @@
   function openDetails(id) {
     const item = state.items.find((row) => String(row.id) === String(id) || itemFavoriteKey(row) === String(id));
     if (!item) { showToast('Không tìm thấy mục này trong bản dữ liệu hiện tại.'); return; }
-    const mainImage = safeUrl(item.websiteMainImageUrl);
+    const mainImage = safeUrl(item.websiteMainImageUrl) || safeUrl(item.thumbImageUrl);
     const website = safeUrl(item.websiteUrl);
     const community = safeUrl(item.communityUrl);
     const source = safeUrl(item.sourceUrl);
@@ -275,17 +286,22 @@
       }
     });
     $('#detailDialog')?.addEventListener('click', (event) => { if (event.target === $('#detailDialog')) $('#detailDialog').close(); });
-    // Scroll-aware navigation for every named link that targets one of the page sections.
-    // Prefer the actual href target; data-main-nav remains a fallback for custom-named links.
-    const sectionKeys = ['top', 'catalog', 'versions', 'music'];
+    // Canonical section URLs: empty fragments and the legacy #top are always normalized to #home.
+    // A reload/reset starts at Home; while scrolling, the hash follows the visible section.
+    const sectionKeys = ['home', 'catalog', 'versions', 'music'];
     const navLinks = [...new Set($$('.main-nav-dynamic [data-main-nav], .main-nav-dynamic a[href*="#"], [data-section-nav]'))];
+    const normalizeSectionKey = value => {
+      const key = String(value ?? '').trim().replace(/^#/, '');
+      return !key || key === 'top' ? 'home' : key;
+    };
     const sectionKeyForLink = link => {
-      const explicit = String(link.dataset.sectionNav || link.dataset.mainNav || '').replace(/^#/, '');
+      const explicit = normalizeSectionKey(link.dataset.sectionNav || link.dataset.mainNav || '');
       const href = link.getAttribute('href') || '';
-      const hash = href.includes('#') ? href.slice(href.lastIndexOf('#') + 1) : '';
+      const rawHash = href.includes('#') ? href.slice(href.lastIndexOf('#') + 1) : '';
+      const hash = normalizeSectionKey(rawHash);
       if (sectionKeys.includes(hash) && document.getElementById(hash)) return hash;
       if (sectionKeys.includes(explicit) && document.getElementById(explicit)) return explicit;
-      if (hash && document.getElementById(hash)) return hash;
+      if (rawHash && document.getElementById(rawHash)) return normalizeSectionKey(rawHash);
       return explicit;
     };
     let navScrollQueued = false;
@@ -302,20 +318,34 @@
         }
       });
     };
+    const setSectionHash = key => {
+      const canonicalKey = sectionKeys.includes(key) ? key : 'home';
+      const nextUrl = new URL(window.location.href);
+      nextUrl.hash = canonicalKey; // Assigning a real key prevents a trailing bare "#".
+      const nextAddress = `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`;
+      const currentAddress = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      if (currentAddress !== nextAddress) window.history.replaceState(window.history.state, '', nextAddress);
+    };
+    const scrollToHomeTop = () => {
+      const rootStyle = document.documentElement.style;
+      const previousScrollBehavior = rootStyle.scrollBehavior;
+      rootStyle.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      rootStyle.scrollBehavior = previousScrollBehavior;
+    };
     const updateActiveNavFromScroll = () => {
       navScrollQueued = false;
-      // The header is not sticky on the public home page, so use a viewport reading line
-      // instead of adding the header height to it (which used to keep the Overview tab stuck).
       const readingLine = Math.max(115, Math.min(260, window.innerHeight * 0.30));
-      let activeKey = 'top';
+      let activeKey = 'home';
       for (const key of sectionKeys) {
         const section = document.getElementById(key);
         if (section && section.getBoundingClientRect().top <= readingLine) activeKey = key;
       }
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8) {
+      if (window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8) {
         activeKey = sectionKeys[sectionKeys.length - 1];
       }
       setActiveSection(activeKey);
+      setSectionHash(activeKey);
     };
     const queueActiveNavUpdate = () => {
       if (navScrollQueued) return;
@@ -324,16 +354,32 @@
     };
     navLinks.forEach(link => link.addEventListener('click', () => {
       const key = sectionKeyForLink(link);
-      if (sectionKeys.includes(key)) setActiveSection(key);
+      if (sectionKeys.includes(key)) {
+        setActiveSection(key);
+        setSectionHash(key);
+      }
       queueActiveNavUpdate();
     }));
     window.addEventListener('scroll', queueActiveNavUpdate, { passive: true });
     window.addEventListener('resize', queueActiveNavUpdate, { passive: true });
     window.addEventListener('hashchange', () => {
-      const key = location.hash.replace(/^#/, '');
-      if (sectionKeys.includes(key)) setActiveSection(key);
+      const rawHash = window.location.hash;
+      const key = normalizeSectionKey(rawHash);
+      if (!rawHash || !sectionKeys.includes(key)) {
+        setSectionHash('home');
+        setActiveSection('home');
+        scrollToHomeTop();
+        return;
+      }
+      setActiveSection(key);
       queueActiveNavUpdate();
     });
+    // Disable browser scroll restoration so F5/Ctrl+R cannot reopen an old tab position.
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+    const startsAtCanonicalHome = window.location.hash === '#home';
+    setSectionHash('home');
+    if (!startsAtCanonicalHome || window.scrollY > 0) scrollToHomeTop();
+    setActiveSection('home');
     updateActiveNavFromScroll();
     document.addEventListener('keydown', (event) => {
       if ((event.key === '/' || (event.key.toLowerCase() === 'k' && (event.ctrlKey || event.metaKey))) && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
@@ -692,6 +738,17 @@
       if (catalogResult.status === 'fulfilled') {
         const data = catalogResult.value || {};
         const nextFingerprint = fingerprint(data);
+        const catalogChangedOnPublicSite = !initial && isGithubPages && dataFingerprint.catalog && nextFingerprint !== dataFingerprint.catalog;
+        if (catalogChangedOnPublicSite) {
+          // Force a complete document navigation with a one-use cache-busting query.
+          // GitHub Pages/CDN caches may otherwise keep a stale HTML shell even when
+          // the JSON snapshot has already changed. The query is removed on init.
+          const resetUrl = new URL(window.location.href);
+          resetUrl.searchParams.set('__nr_catalog_reset', String(Date.now()));
+          resetUrl.hash = 'home';
+          window.location.replace(resetUrl.href);
+          return;
+        }
         if (initial || nextFingerprint !== dataFingerprint.catalog) {
           dataFingerprint.catalog = nextFingerprint;
           state.catalog = data;
@@ -745,6 +802,14 @@
     });
   }
   async function init() {
+    // Remove the one-use full-reload cache buster from the address bar after the
+    // browser has already requested the refreshed document.
+    const currentUrl = new URL(window.location.href);
+    if (currentUrl.searchParams.has('__nr_catalog_reset')) {
+      currentUrl.searchParams.delete('__nr_catalog_reset');
+      currentUrl.hash = 'home';
+      window.history.replaceState(null, '', currentUrl.href);
+    }
     $('#copyrightYear').textContent = String(new Date().getFullYear());
     if (localHost) { $('#adminLink').hidden = false; $('#closingAdminLink').hidden = false; $('#closingBrowseLink').hidden = true; }
     $('#connectionText').textContent = localHost ? 'Đã kết nối bảng điều khiển localhost' : 'Dữ liệu công khai · tự cập nhật';

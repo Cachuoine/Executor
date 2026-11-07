@@ -689,7 +689,7 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
 @media(max-width:600px){.brand-mark.brand-image-mark{width:40px;height:40px;flex-basis:40px}}
 
 
-/* v15.2.35 — image-led executor cards, inline platform/name and compact detail actions. */
+/* v15.2.37 — image-led executor cards, inline platform/name and compact detail actions. */
 .executor-card-body { display:flex; flex-direction:column; min-height:100%; }
 .executor-card-top { align-items:flex-start; }
 .executor-title-wrap { min-width:0; flex:1; }
@@ -699,10 +699,8 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
 .executor-score-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 6px; border-radius:6px; border:1px solid rgba(127,230,224,.2); background:rgba(127,230,224,.07); color:#b8e9e4; font:700 9px/1.1 'DM Mono',monospace; white-space:nowrap; }
 .executor-score-badge b { color:#d2ceff; font-size:8px; }
 .executor-score-badge.unc { border-color:rgba(167,139,250,.24); background:rgba(167,139,250,.08); color:#d1c5ff; }
-.executor-card-image-wrap { display:grid; place-items:center; width:100%; height:116px; margin:14px 0 13px; border:1px solid rgba(184,191,224,.12); border-radius:10px; overflow:hidden; background:linear-gradient(135deg,rgba(31,36,55,.78),rgba(13,17,27,.8)); }
-.executor-card-image { display:block; width:100%; height:100%; object-fit:cover; object-position:center; }
-.executor-card-image-placeholder { background:radial-gradient(ellipse at 50% 45%,rgba(167,139,250,.09),transparent 65%),rgba(255,255,255,.018); }
-.executor-card-image-placeholder span { display:grid; place-items:center; width:38px; height:38px; border:1px solid rgba(167,139,250,.22); border-radius:12px; color:#9990d1; font-size:21px; }
+.executor-card-image-wrap { display:block; width:100%; height:auto; min-height:0; max-height:none; margin:14px 0 13px; padding:0; border:0; border-radius:0; overflow:visible; background:transparent; }
+.executor-card-image { display:block; width:100%; max-width:100%; height:auto; min-height:0; max-height:none; object-fit:initial; object-position:center; border:1px solid rgba(184,191,224,.14); border-radius:10px; box-shadow:0 8px 22px rgba(0,0,0,.16); }
 .executor-meta { margin-top:auto; }
 .detail-title-row { align-items:center; gap:10px; }
 .detail-title-row > .executor-icon { flex:0 0 44px; }
@@ -721,7 +719,6 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
 .admin-score-chip { display:inline-flex; align-items:center; gap:3px; margin-left:6px; padding:2px 5px; border:1px solid rgba(127,230,224,.2); border-radius:5px; background:rgba(127,230,224,.06); color:#b8e9e4; font-size:10px; white-space:nowrap; }
 .admin-score-chip strong { color:#d2ceff; font:700 9px 'DM Mono',monospace; }
 @media(max-width:520px) {
-  .executor-card-image-wrap { height:132px; }
   .detail-title-row { gap:8px; }
   .detail-title-row > .executor-icon { flex-basis:36px; width:36px; height:36px; }
   .detail-title-row h2 { font-size:20px; }
@@ -731,7 +728,7 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
 }
 
 
-/* v15.2.35 — consistent public status colors and keyboard-friendly sUNC link. */
+/* v15.2.37 — consistent public status colors and keyboard-friendly sUNC link. */
 .status-label.status-online { color:#40D6A4 !important; background:rgba(64,214,164,.11) !important; }
 .status-label.status-offline { color:#FF627C !important; background:rgba(255,98,124,.11) !important; }
 .status-label.status-maintenance { color:#FFC46B !important; background:rgba(255,196,107,.11) !important; }
@@ -744,3 +741,250 @@ body:not(.admin-page) .stats-strip{grid-template-columns:minmax(0,1.35fr) minmax
 .executor-score-badge.sunc-link:hover,.executor-score-badge.sunc-link:focus-visible { border-color:rgba(127,230,224,.62); background:rgba(127,230,224,.14); transform:translateY(-1px); outline:none; }
 .executor-score-badge.sunc-link:focus-visible { box-shadow:0 0 0 2px rgba(127,230,224,.22); }
 .executor-score-badge .score-link-mark { display:inline-block; color:currentColor; font-size:9px; margin-left:1px; }
+
+
+/* v15.2.37 — public executor images keep their uploaded aspect ratio; no fixed image slot. */
+body:not(.admin-page) .executor-card-image-wrap {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
+  margin: 14px 0 13px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+body:not(.admin-page) .executor-card-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
+  object-fit: initial;
+  object-position: center;
+  border: 1px solid rgba(167,139,250,.20);
+  border-radius: 10px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.16);
+}
+@media(max-width:520px) {
+  body:not(.admin-page) .executor-card-image-wrap { margin: 13px 0 12px; }
+  body:not(.admin-page) .executor-card-image { border-radius: 9px; }
+}
+
+
+/* v15.2.43 — score badges always sit on their own row below every executor name. */
+body:not(.admin-page) .executor-title-wrap {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 5px;
+}
+body:not(.admin-page) .executor-name-line {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding-right: 1px;
+}
+body:not(.admin-page) .executor-name-line h3 {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+body:not(.admin-page) .executor-score-line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  min-height: 19px;
+}
+body:not(.admin-page) .executor-score-line .executor-score-badges {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 100%;
+}
+body:not(.admin-page) .executor-subtitle {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  margin-top: 0;
+  line-height: 1.25;
+}
+@media(max-width:520px) {
+  body:not(.admin-page) .executor-title-wrap { gap: 5px; }
+  body:not(.admin-page) .executor-score-line { min-height: 18px; }
+}
+
+
+/* v15.2.47 — shop-style executor cards inspired by the supplied product-card reference. */
+body:not(.admin-page) .executor-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+body:not(.admin-page) .executor-card {
+  position: relative; min-width: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.13);
+  border-radius: 14px; background: #171717; box-shadow: 0 5px 18px rgba(0,0,0,.18);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+body:not(.admin-page) .executor-card::after { display: none; }
+body:not(.admin-page) .executor-card:hover {
+  transform: translateY(-3px); border-color: rgba(167,139,250,.4);
+  box-shadow: 0 13px 30px rgba(0,0,0,.3), 0 0 0 1px rgba(167,139,250,.08);
+}
+body:not(.admin-page) .executor-card-body { display: flex; flex-direction: column; min-height: 100%; padding: 12px; gap: 0; }
+body:not(.admin-page) .executor-card-media {
+  position: relative; isolation: isolate; display: block; width: 100%; aspect-ratio: 2 / 1;
+  overflow: hidden; margin: 0 0 13px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px;
+  background: radial-gradient(ellipse at 18% 15%,rgba(167,139,250,.2),transparent 46%),
+              linear-gradient(135deg,#10121b 0%,#1d1c2c 48%,#10151c 100%);
+}
+body:not(.admin-page) .executor-card-image {
+  position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%; max-width: none;
+  border: 0; border-radius: 0; box-shadow: none; object-fit: cover; object-position: center;
+  transition: transform .42s cubic-bezier(.2,.7,.2,1), filter .35s ease;
+}
+body:not(.admin-page) .executor-card-image.is-contained { object-fit: contain; padding: 8px; }
+body:not(.admin-page) .executor-card:hover .executor-card-image { transform: scale(1.045); filter: saturate(1.08); }
+body:not(.admin-page) .executor-card-image-shade {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg,rgba(0,0,0,.18),transparent 36%,rgba(0,0,0,.07) 56%,rgba(0,0,0,.68));
+}
+body:not(.admin-page) .executor-card-image-status {
+  position: absolute; z-index: 2; top: 9px; left: 9px; display: inline-flex; align-items: center; gap: 5px;
+  max-width: calc(100% - 58px); padding: 6px 9px; border: 1px solid rgba(255,255,255,.22); border-radius: 6px;
+  background: rgba(14,16,23,.88); box-shadow: 0 4px 12px rgba(0,0,0,.22); color: #fff;
+  font: 800 9px/1.1 Manrope,system-ui,sans-serif; letter-spacing: .015em; backdrop-filter: blur(8px);
+}
+body:not(.admin-page) .executor-card-image-status::before { content: ""; width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+body:not(.admin-page) .executor-card-image-status.status-online { color: #40d6a4; }
+body:not(.admin-page) .executor-card-image-status.status-offline { color: #ff627c; }
+body:not(.admin-page) .executor-card-image-status.status-maintenance { color: #ffc46b; }
+body:not(.admin-page) .executor-card-image-status.status-unknown { color: #fff; }
+body:not(.admin-page) .executor-card-image-brand {
+  position: absolute; z-index: 2; left: 9px; bottom: 8px; display: flex; align-items: center; gap: 6px;
+  max-width: calc(100% - 18px); min-width: 0; padding: 3px 7px 3px 4px; border-radius: 999px;
+  color: #fff; background: rgba(5,7,12,.58); font-size: 9px; line-height: 1.2; backdrop-filter: blur(7px);
+}
+body:not(.admin-page) .executor-card-image-brand img,
+body:not(.admin-page) .executor-card-image-brand>span {
+  display: grid; place-items: center; width: 17px; height: 17px; flex: 0 0 17px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.2); border-radius: 50%; background: rgba(255,255,255,.12); object-fit: cover;
+}
+body:not(.admin-page) .executor-card-image-brand b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; }
+body:not(.admin-page) .executor-card-media-placeholder { display: grid; place-content: center; justify-items: center; gap: 8px; color: #d5ceff; }
+body:not(.admin-page) .executor-card-placeholder-icon { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid rgba(167,139,250,.27); border-radius: 14px; background: rgba(167,139,250,.1); font-size: 25px; }
+body:not(.admin-page) .executor-card-placeholder-name { color: #fff; font: 700 16px/1.1 'Space Grotesk',sans-serif; }
+body:not(.admin-page) .executor-card-media-placeholder small { color: #939aaf; font: 700 8px 'DM Mono',monospace; letter-spacing: .13em; }
+body:not(.admin-page) .executor-favorite { top: 20px; right: 20px; width: 33px; height: 33px; border-color: rgba(255,255,255,.2); background: rgba(9,11,17,.8); color: #f2f2f5; backdrop-filter: blur(8px); }
+body:not(.admin-page) .executor-product-copy { display: flex; flex: 1; flex-direction: column; min-width: 0; gap: 8px; }
+body:not(.admin-page) .executor-product-heading { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+body:not(.admin-page) .executor-product-heading h3 { margin: 0; color: #f7f7fa; font: 800 15px/1.3 Manrope,system-ui,sans-serif; overflow-wrap: anywhere; }
+body:not(.admin-page) .executor-product-platform { display: inline-flex; align-items: center; min-height: 20px; padding: 3px 7px; border: 1px solid rgba(167,139,250,.2); border-radius: 5px; color: #bdb2ff; background: rgba(167,139,250,.08); font: 800 8px/1.15 'DM Mono',monospace; letter-spacing: .035em; text-transform: uppercase; }
+body:not(.admin-page) .executor-product-copy .executor-score-line { min-height: 19px; }
+body:not(.admin-page) .executor-product-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 9px;
+  border-top: 1px solid rgba(255,255,255,.09);
+}
+body:not(.admin-page) .executor-product-version { min-width: 0; color: #a6acb9; font: 700 8px/1.35 'DM Mono',monospace; overflow-wrap: anywhere; }
+body:not(.admin-page) .executor-product-foot button { flex: 0 0 auto; padding: 5px 7px; border: 1px solid rgba(127,230,224,.19); border-radius: 6px; background: rgba(127,230,224,.055); color: #9de4dc; cursor: pointer; font: 800 9px Manrope,system-ui,sans-serif; }
+body:not(.admin-page) .executor-product-foot button:hover { border-color: rgba(127,230,224,.45); background: rgba(127,230,224,.11); }
+@media(max-width:1100px) { body:not(.admin-page) .executor-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+@media(max-width:800px) { body:not(.admin-page) .executor-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 11px; } body:not(.admin-page) .executor-card-body { padding: 9px; } body:not(.admin-page) .executor-product-heading h3 { font-size: 12px; } body:not(.admin-page) .executor-favorite { top: 17px; right: 17px; width: 29px; height: 29px; } }
+@media(max-width:520px) { body:not(.admin-page) .executor-grid { grid-template-columns: 1fr; gap: 12px; } body:not(.admin-page) .executor-card-body { padding: 11px; } body:not(.admin-page) .executor-card-media { aspect-ratio: 2.05 / 1; margin-bottom: 11px; } body:not(.admin-page) .executor-product-heading h3 { font-size: 14px; } }
+@media(prefers-reduced-motion:reduce) { body:not(.admin-page) .executor-card-image { transition: none; } }
+
+
+/* v15.2.48 — thumbnail identity beside the title, title-row status, ruby favorites and balanced score chips. */
+body:not(.admin-page) .executor-name-line {
+  display:flex; align-items:center; flex-wrap:wrap; gap:7px; width:100%; min-width:0; padding-right:1px;
+}
+body:not(.admin-page) .executor-name-brand-image,
+body:not(.admin-page) .executor-name-brand-fallback {
+  display:grid; place-items:center; flex:0 0 25px; width:25px; height:25px; overflow:hidden;
+  border:1px solid rgba(185,171,255,.28); border-radius:8px; background:linear-gradient(145deg,rgba(167,139,250,.16),rgba(127,230,224,.08));
+  object-fit:cover; box-shadow:0 2px 9px rgba(0,0,0,.2);
+}
+body:not(.admin-page) .executor-name-brand-fallback { color:#d7ceff; font-size:12px; }
+body:not(.admin-page) .executor-name-line h3 {
+  flex:1 1 80px; min-width:65px; max-width:100%; margin:0; color:#f7f7fa;
+  font:800 14px/1.25 Manrope,system-ui,sans-serif; overflow-wrap:anywhere;
+}
+body:not(.admin-page) .executor-name-status {
+  display:inline-flex; align-items:center; gap:5px; flex:0 0 auto; max-width:100%;
+  padding:4px 7px; border:1px solid currentColor; border-radius:7px; font:800 8px/1.1 Manrope,system-ui,sans-serif;
+  white-space:nowrap; background:rgba(10,12,18,.44);
+}
+body:not(.admin-page) .executor-name-status i { width:5px; height:5px; border-radius:50%; background:currentColor; box-shadow:0 0 7px currentColor; }
+body:not(.admin-page) .executor-name-status.status-online { color:#40d6a4; border-color:rgba(64,214,164,.28); background:rgba(64,214,164,.075); }
+body:not(.admin-page) .executor-name-status.status-offline { color:#ff627c; border-color:rgba(255,98,124,.28); background:rgba(255,98,124,.075); }
+body:not(.admin-page) .executor-name-status.status-maintenance { color:#ffc46b; border-color:rgba(255,196,107,.28); background:rgba(255,196,107,.075); }
+body:not(.admin-page) .executor-name-status.status-unknown { color:#c5c9d4; border-color:rgba(197,201,212,.22); background:rgba(197,201,212,.06); }
+body:not(.admin-page) .executor-card-image-status { display:none !important; }
+body:not(.admin-page) .executor-favorite {
+  border-color:rgba(255,255,255,.19); color:#c5c8d2; background:rgba(9,11,17,.84);
+  box-shadow:0 4px 12px rgba(0,0,0,.22); backdrop-filter:blur(9px);
+}
+body:not(.admin-page) .executor-favorite svg { width:18px; height:18px; overflow:visible; }
+body:not(.admin-page) .executor-favorite .executor-heart-base { fill:none; stroke:currentColor; stroke-width:1.8; transition:fill .2s,stroke .2s,filter .2s; }
+body:not(.admin-page) .executor-favorite .executor-heart-facet { fill:transparent; stroke:none; }
+body:not(.admin-page) .executor-favorite[aria-pressed="true"] {
+  color:#ff9ab7; border-color:rgba(255,76,128,.65);
+  background:radial-gradient(circle at 30% 20%,rgba(255,118,165,.2),transparent 54%),linear-gradient(145deg,rgba(91,10,42,.95),rgba(37,7,24,.95));
+  box-shadow:0 0 0 1px rgba(255,56,116,.13),0 0 15px rgba(225,29,72,.25),inset 0 1px 0 rgba(255,255,255,.12);
+}
+body:not(.admin-page) .executor-favorite[aria-pressed="true"] .executor-heart-base {
+  fill:#d81750; stroke:#ff9ab7; stroke-width:1.1; filter:drop-shadow(0 0 4px rgba(255,28,94,.65));
+}
+body:not(.admin-page) .executor-favorite[aria-pressed="true"] .executor-heart-facet { fill:rgba(255,226,238,.62); }
+body:not(.admin-page) .executor-favorite[aria-pressed="true"]:hover { filter:brightness(1.16); }
+body:not(.admin-page) .executor-card.is-favorite { border-color:rgba(225,29,72,.44); box-shadow:0 0 0 1px rgba(225,29,72,.09),0 12px 30px rgba(0,0,0,.2); }
+body:not(.admin-page) .executor-score-badges { display:flex; align-items:center; flex-wrap:nowrap; gap:6px; }
+body:not(.admin-page) .executor-score-badge { min-width:65px; justify-content:center; padding:4px 7px; }
+body:not(.admin-page) .executor-score-badge.is-unavailable {
+  color:#777f91; border-color:rgba(151,159,179,.18); background:rgba(151,159,179,.055);
+  border-style:dashed; opacity:.84;
+}
+body:not(.admin-page) .executor-score-badge.is-unavailable b { color:#9da4b4; }
+body:not(.admin-page) .executor-score-badge.is-available.sunc { border-color:rgba(127,230,224,.29); }
+body:not(.admin-page) .executor-score-badge.is-available.unc { border-color:rgba(167,139,250,.3); }
+@media(max-width:800px) {
+  body:not(.admin-page) .executor-name-line { gap:5px; }
+  body:not(.admin-page) .executor-name-brand-image,body:not(.admin-page) .executor-name-brand-fallback { flex-basis:22px; width:22px; height:22px; border-radius:7px; }
+  body:not(.admin-page) .executor-name-line h3 { flex-basis:70px; font-size:12px; }
+  body:not(.admin-page) .executor-name-status { font-size:7px; padding:3px 5px; }
+  body:not(.admin-page) .executor-score-badge { min-width:58px; padding:4px 5px; }
+}
+
+
+/* v15.2.48-r3 — vertical, single-column music favorites in the Favorite Galaxy. */
+.universe-music-shelf{width:min(380px,calc(100vw - 36px));max-width:100%;padding:10px 11px 9px}
+.universe-music-list{
+  display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;gap:6px;
+  max-height:164px;overflow-x:hidden;overflow-y:auto;flex-wrap:initial;
+  padding:1px 4px 1px 1px;overscroll-behavior:contain;
+  scrollbar-width:thin;scrollbar-color:rgba(127,230,224,.34) transparent
+}
+.universe-music-list::-webkit-scrollbar{width:4px;height:0}
+.universe-music-list::-webkit-scrollbar-track{background:transparent}
+.universe-music-list::-webkit-scrollbar-thumb{border-radius:99px;background:rgba(127,230,224,.34)}
+.universe-music-track{display:flex;width:100%;min-width:0;max-width:none;min-height:38px;flex:none;align-items:center}
+.universe-music-play{min-width:0;width:100%;padding:5px 6px}
+.universe-music-copy b{font-size:10px}
+.universe-music-copy small{font-size:8px}
+@media(max-height:720px){.universe-music-list{max-height:126px}.universe-music-shelf{padding:8px 9px}}
+@media(max-width:520px){.universe-music-shelf{width:min(360px,calc(100vw - 28px))}.universe-music-list{max-height:180px}.universe-music-track{min-height:40px}}

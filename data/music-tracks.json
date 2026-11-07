@@ -1,84 +1,125 @@
 {
   "tracks": [
     {
-      "id": "rec-weeknd-blinding-lights",
+      "id": "track-bb0ac3f74c4030",
+      "title": "Bạn Tình Ơi",
+      "artist": "Yuni Boo ft.Goctoi Mixer",
+      "genre": "Remix",
+      "url": "./music/ban-tinh-oi-d2fa1b3139.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-06T14:52:45.936Z"
+    },
+    {
+      "id": "track-087768418c779a",
       "title": "Blinding Lights",
       "artist": "The Weeknd",
-      "genre": "Synth-pop",
-      "url": "https://youtu.be/4NRXx6U8ABQ",
-      "videoId": "4NRXx6U8ABQ",
-      "pinned": true,
-      "addedAt": "2026-01-01T00:00:00.000Z"
+      "genre": "Pop",
+      "url": "./music/blinding-lights-b6c71a5d87.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-01T03:31:17.585Z"
     },
     {
-      "id": "rec-one-republic-counting-stars",
+      "id": "track-355cf23df44e3b",
+      "title": "Buồn Thì Cứ Khóc Đi",
+      "artist": "Lynk Lee",
+      "genre": "Remix",
+      "url": "./music/buon-thi-cu-khoc-i-3c4e31889b.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-01T15:25:16.317Z"
+    },
+    {
+      "id": "track-6d8c2102db6db5",
+      "title": "Cô Gái Vàng",
+      "artist": "HUYR X TÙNG VIU",
+      "genre": "Remix",
+      "url": "./music/co-gai-vang-93474ea7c1.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-06T14:53:11.939Z"
+    },
+    {
+      "id": "track-5984f9fb278cfd",
       "title": "Counting Stars",
       "artist": "OneRepublic",
-      "genre": "Pop Rock",
-      "url": "https://youtu.be/hT_nvWreIhg",
-      "videoId": "hT_nvWreIhg",
-      "pinned": true,
-      "addedAt": "2026-01-01T00:00:00.000Z"
+      "genre": "Other",
+      "url": "./music/counting-stars-b4f126c566.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-01T03:32:41.268Z"
     },
     {
-      "id": "rec-alan-walker-faded",
-      "title": "Faded",
-      "artist": "Alan Walker",
-      "genre": "EDM",
-      "url": "https://youtu.be/60ItHLz5WEA",
-      "videoId": "60ItHLz5WEA",
-      "pinned": true,
-      "addedAt": "2026-01-01T00:00:00.000Z"
+      "id": "track-8a02d242719860",
+      "title": "Điều Anh Biết",
+      "artist": "Chi Dân [Lyrics Speed Up] Shigure",
+      "genre": "Other",
+      "url": "./music/ieu-anh-biet-9688c78543.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-06T14:54:22.908Z"
     },
     {
-      "id": "rec-adele-hello",
-      "title": "Hello",
-      "artist": "Adele",
-      "genre": "Pop",
-      "url": "https://youtu.be/YQHsXMglC9A",
-      "videoId": "YQHsXMglC9A",
-      "pinned": true,
-      "addedAt": "2026-01-01T00:00:00.000Z"
-    },
-    {
-      "id": "rec-ed-sheeran-perfect",
-      "title": "Perfect",
-      "artist": "Ed Sheeran",
-      "genre": "Pop",
-      "url": "https://youtu.be/2Vv-BfVoq4g",
-      "videoId": "2Vv-BfVoq4g",
-      "pinned": true,
-      "addedAt": "2026-01-01T00:00:00.000Z"
-    },
-    {
-      "id": "rec-ed-sheeran-shape-of-you",
-      "title": "Shape of You",
-      "artist": "Ed Sheeran",
-      "genre": "Pop",
-      "url": "https://youtu.be/JGwWNGJdvx8",
-      "videoId": "JGwWNGJdvx8",
-      "pinned": true,
-      "addedAt": "2026-01-01T00:00:00.000Z"
-    },
-    {
-      "id": "rec-maroon5-sugar",
-      "title": "Sugar",
-      "artist": "Maroon 5",
-      "genre": "Pop",
-      "url": "https://youtu.be/09R8_2nJtjg",
-      "videoId": "09R8_2nJtjg",
-      "pinned": true,
-      "addedAt": "2026-01-01T00:00:00.000Z"
-    },
-    {
-      "id": "mra",
-      "title": "Tell Me Why",
-      "artist": "Mr.A · Remake by MGM Studio",
+      "id": "track-dea06c35091feb",
+      "title": "Đường Quyền Tình Yêu",
+      "artist": "DatKaa",
       "genre": "Remix",
-      "url": "https://youtu.be/EMUKd20IbuM",
-      "videoId": "EMUKd20IbuM",
-      "pinned": true,
-      "addedAt": "2026-01-01T00:00:00.000Z"
+      "url": "./music/uong-quyen-tinh-yeu-a8076b4e93.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-06T14:54:46.794Z"
+    },
+    {
+      "id": "track-aea3e193945edd",
+      "title": "Hãy Ra Khỏi Người Đó Đi",
+      "artist": "Phan Mạnh Quỳnh",
+      "genre": "Dance / EDM",
+      "url": "./music/hay-ra-khoi-nguoi-o-i-a32df53233.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-06T14:55:37.875Z"
+    },
+    {
+      "id": "track-ad00ea945fa07e",
+      "title": "Hẹn Em Ở Lần Yêu Thứ 2",
+      "artist": "Nguyenn x Đặng Tuấn VŨ",
+      "genre": "Other",
+      "url": "./music/hen-em-o-lan-yeu-thu-2-3aaef80d4c.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-06T14:32:24.260Z"
+    },
+    {
+      "id": "track-4c1b0ebe91fe3f",
+      "title": "She Neva Knows",
+      "artist": "CM1X - JustaTee",
+      "genre": "Remix",
+      "url": "./music/she-neva-knows-f5613d5410.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-06T14:57:44.835Z"
+    },
+    {
+      "id": "track-99b807966ef744",
+      "title": "Tell Me Why",
+      "artist": "Mr.A Remake by MarchGMusic",
+      "genre": "Remix",
+      "url": "./music/tell-me-why-a061f513bc.mp3",
+      "videoId": "",
+      "sourceType": "audio",
+      "pinned": false,
+      "addedAt": "2026-11-01T03:31:53.054Z"
     }
   ]
 }

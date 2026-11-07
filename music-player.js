@@ -27,6 +27,27 @@
   let directAudio = document.getElementById('musicDirectAudio');
   if (!directAudio && player) { directAudio = document.createElement('audio'); directAudio.id = 'musicDirectAudio'; directAudio.preload = 'metadata'; directAudio.hidden = true; player.parentElement?.appendChild(directAudio); }
   let directAudioTrackId = '';
+  let soundCloudWidget = null;
+  let soundCloudWidgetTrackId = '';
+  let soundCloudApiPromise = null;
+  const ensureSoundCloudWidgetApi = () => {
+    if (window.SC?.Widget) return Promise.resolve(window.SC);
+    if (soundCloudApiPromise) return soundCloudApiPromise;
+    soundCloudApiPromise = new Promise((resolve, reject) => {
+      const existing = document.querySelector('script[data-soundcloud-widget-api]');
+      const script = existing || document.createElement('script');
+      const finish = () => window.SC?.Widget ? resolve(window.SC) : reject(new Error('SoundCloud Widget API did not initialize.'));
+      script.addEventListener('load', finish, { once: true });
+      script.addEventListener('error', () => reject(new Error('Unable to load SoundCloud Widget API.')), { once: true });
+      if (!existing) {
+        script.src = 'https://w.soundcloud.com/player/api.js';
+        script.async = true;
+        script.dataset.soundcloudWidgetApi = 'true';
+        document.head.appendChild(script);
+      } else if (window.SC?.Widget) finish();
+    }).catch(error => { soundCloudApiPromise = null; throw error; });
+    return soundCloudApiPromise;
+  };
   const getDirectAudioUrl = track => {
     if (!track || track.sourceType !== 'audio' || track.videoId) return '';
     try {
@@ -52,16 +73,8 @@
   ];
   // Curated starters are merged with server-managed tracks so existing installations
   // also receive a useful library without overwriting their saved/admin-added songs.
-  const RECOMMENDED_TRACKS = [
-    { id: 'rec-alan-walker-faded', title: 'Faded', artist: 'Alan Walker', genre: 'EDM', videoId: '60ItHLz5WEA', url: 'https://youtu.be/60ItHLz5WEA', recommended: true },
-    { id: 'rec-adele-hello', title: 'Hello', artist: 'Adele', genre: 'Pop', videoId: 'YQHsXMglC9A', url: 'https://youtu.be/YQHsXMglC9A', recommended: true },
-    { id: 'rec-maroon5-sugar', title: 'Sugar', artist: 'Maroon 5', genre: 'Pop', videoId: '09R8_2nJtjg', url: 'https://youtu.be/09R8_2nJtjg', recommended: true },
-    { id: 'rec-ed-sheeran-perfect', title: 'Perfect', artist: 'Ed Sheeran', genre: 'Pop', videoId: '2Vv-BfVoq4g', url: 'https://youtu.be/2Vv-BfVoq4g', recommended: true },
-    { id: 'rec-one-republic-counting-stars', title: 'Counting Stars', artist: 'OneRepublic', genre: 'Pop Rock', videoId: 'hT_nvWreIhg', url: 'https://youtu.be/hT_nvWreIhg', recommended: true },
-    { id: 'rec-ed-sheeran-shape-of-you', title: 'Shape of You', artist: 'Ed Sheeran', genre: 'Pop', videoId: 'JGwWNGJdvx8', url: 'https://youtu.be/JGwWNGJdvx8', recommended: true },
-    { id: 'rec-weeknd-blinding-lights', title: 'Blinding Lights', artist: 'The Weeknd', genre: 'Synth-pop', videoId: '4NRXx6U8ABQ', url: 'https://youtu.be/4NRXx6U8ABQ', recommended: true }
-  ];
-  let tracks = [...FALLBACK, ...RECOMMENDED_TRACKS];
+  // The library is managed by Admin; do not silently re-add removed recommendations.
+  let tracks = [...FALLBACK];
   const MUSIC_STATE_KEY = 'fishcat-music-playback-state-v1';
   const MUSIC_FAVORITES_KEY = 'executor-music-favorite-ids-v1';
   // Playback is intentionally ephemeral: never restore the selected track, playback
@@ -455,6 +468,64 @@
     panelCloseTimer = setTimeout(finishMusicCenterClose, Math.max(getLibraryRevealDurationMs(), getIslandMorphDurationMs()) + 150);
   }
   function activeTrack() { return currentTrack ? (tracks.find(track => track.id === currentTrack) || null) : null; }
+  function restartCurrentTrack(expectedTrackId = currentTrack) {
+    const track = activeTrack();
+    if (!track || track.id !== expectedTrackId || !shouldResumePlayback || pageIsLeaving) return false;
+    savedPosition = 0;
+    isPlaying = true;
+    if (isDirectAudioTrack(track) && directAudio) {
+      try { directAudio.currentTime = 0; } catch {}
+      directAudio.play().catch(() => {
+        isPlaying = false;
+        shouldResumePlayback = false;
+        setPlaybackStatus(tr('Không thể tự phát lại MP3. Hãy nhấn phát để thử lại.', 'Không thể tự phát lại MP3. Hãy nhấn phát để thử lại.'));
+        syncPlaybackVisuals(); render();
+      });
+    } else if (isTikTokTrack(track) && player) {
+      player.contentWindow?.postMessage({ type: 'seekTo', value: 0, 'x-tiktok-player': true }, 'https://www.tiktok.com');
+      window.setTimeout(() => {
+        if (currentTrack === expectedTrackId && shouldResumePlayback && !pageIsLeaving) {
+          player.contentWindow?.postMessage({ type: 'play', value: '', 'x-tiktok-player': true }, 'https://www.tiktok.com');
+        }
+      }, 100);
+    } else if (isSoundCloudTrack(track)) {
+      if (soundCloudWidget && soundCloudWidgetTrackId === expectedTrackId) {
+        soundCloudWidget.seekTo(0);
+        soundCloudWidget.play();
+      } else {
+        // Try to reconnect if the widget API was still loading when the track ended.
+        connectSoundCloudWidget(expectedTrackId);
+      }
+    } else if (player) {
+      player.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'seekTo', args: [0, true] }), 'https://www.youtube-nocookie.com');
+      player.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), 'https://www.youtube-nocookie.com');
+    }
+    setPlaybackStatus(tr('Đang phát lặp lại bài đã chọn.', 'Đang phát lặp lại bài đã chọn.'));
+    syncPlaybackVisuals();
+    render();
+    return true;
+  }
+  async function connectSoundCloudWidget(trackId) {
+    try {
+      await ensureSoundCloudWidgetApi();
+      if (pageIsLeaving || currentTrack !== trackId || !isSoundCloudTrack(activeTrack()) || !player) return;
+      const widget = window.SC.Widget(player);
+      soundCloudWidget = widget;
+      soundCloudWidgetTrackId = trackId;
+      const events = window.SC.Widget.Events;
+      widget.unbind(events.FINISH);
+      widget.unbind(events.PLAY);
+      widget.bind(events.FINISH, () => restartCurrentTrack(trackId));
+      widget.bind(events.PLAY, () => {
+        if (currentTrack !== trackId || pageIsLeaving || !shouldResumePlayback) return;
+        isPlaying = true;
+        syncPlaybackVisuals();
+        render();
+      });
+    } catch (error) {
+      console.warn('[Dynamic Music] Không thể kết nối SoundCloud lặp lại:', error.message || error);
+    }
+  }
   function render() {
     // Always display tracks alphabetically, independent of pinning or insertion order.
     tracks.sort((a, b) => String(a.title || '').localeCompare(String(b.title || ''), undefined, { sensitivity: 'base', numeric: true }));
@@ -518,7 +589,8 @@
       } else if (data.type === 'onStateChange') {
         const state = Number(payload);
         if (state === 1) { if (!shouldResumePlayback) return; isPlaying = true; persistMusicState(); syncPlaybackVisuals(); }
-        else if (state === 2 || state === 0) { isPlaying = false; shouldResumePlayback = false; persistMusicState(); syncPlaybackVisuals(); }
+        else if (state === 0) { restartCurrentTrack(currentTrack); }
+        else if (state === 2) { isPlaying = false; shouldResumePlayback = false; persistMusicState(); syncPlaybackVisuals(); render(); }
       }
       return;
     }
@@ -532,14 +604,23 @@
     if (data.event === 'onStateChange' && Number(data.info) === 1) {
       if (!shouldResumePlayback) return;
       isPlaying = true; persistMusicState(); syncPlaybackVisuals();
-    } else if (data.event === 'onStateChange' && [0, 2, 5].includes(Number(data.info))) {
-      isPlaying = false; shouldResumePlayback = false; persistMusicState(); syncPlaybackVisuals();
+    } else if (data.event === 'onStateChange' && Number(data.info) === 0) {
+      // YouTube's loop parameter is supplemented by an explicit replay fallback.
+      restartCurrentTrack(currentTrack);
+    } else if (data.event === 'onStateChange' && Number(data.info) === 2) {
+      isPlaying = false; shouldResumePlayback = false; persistMusicState(); syncPlaybackVisuals(); render();
     }
   });
   directAudio?.addEventListener('timeupdate', () => { if (isDirectAudioTrack(activeTrack())) { savedPosition = Number(directAudio.currentTime) || 0; if (Date.now() % 2000 < 1000) persistMusicState(); } });
   directAudio?.addEventListener('play', () => { if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) { isPlaying = true; syncPlaybackVisuals(); } });
   directAudio?.addEventListener('pause', () => { if (isDirectAudioTrack(activeTrack())) { isPlaying = false; shouldResumePlayback = false; syncPlaybackVisuals(); persistMusicState(); } });
-  directAudio?.addEventListener('ended', () => { if (isDirectAudioTrack(activeTrack())) { isPlaying = false; shouldResumePlayback = false; syncPlaybackVisuals(); render(); } });
+  directAudio?.addEventListener('ended', () => {
+    if (!isDirectAudioTrack(activeTrack())) return;
+    // loop=true normally handles this natively; this fallback covers browsers or
+    // media servers that still emit ended at the end of a looping MP3.
+    if (shouldResumePlayback) restartCurrentTrack(currentTrack);
+    else { isPlaying = false; syncPlaybackVisuals(); render(); }
+  });
   directAudio?.addEventListener('error', () => {
     const track = activeTrack();
     if (!isDirectAudioTrack(track)) return;
@@ -555,6 +636,8 @@
     shouldResumePlayback = false;
     currentTrack = '';
     savedPosition = 0;
+    soundCloudWidget = null;
+    soundCloudWidgetTrackId = '';
     try {
       directAudio?.pause();
       if (directAudio) { directAudio.removeAttribute('src'); directAudio.load(); }
@@ -587,6 +670,10 @@
       player.contentWindow?.postMessage({ type: 'play', value: '', 'x-tiktok-player': true }, 'https://www.tiktok.com');
       isPlaying = true; shouldResumePlayback = true; hasPlaybackAttempt = true; persistMusicState(); syncPlaybackVisuals(); render(); return;
     }
+    if (track.id === currentTrack && !isPlaying && isSoundCloudTrack(track) && soundCloudWidget && soundCloudWidgetTrackId === track.id) {
+      shouldResumePlayback = true; isPlaying = true; hasPlaybackAttempt = true;
+      soundCloudWidget.play(); persistMusicState(); syncPlaybackVisuals(); render(); return;
+    }
     if (currentTrack !== track.id) savedPosition = 0;
     currentTrack = track.id;
     isPlaying = true;
@@ -598,14 +685,16 @@
     const startAt = Math.max(0, Math.floor(savedPosition || 0));
     if (isDirectAudioTrack(track) && directAudio) {
       if (player) player.src = 'about:blank';
+      directAudio.loop = true;
       const audioUrl = getDirectAudioUrl(track);
       if (!audioUrl) { isPlaying = false; shouldResumePlayback = false; setPlaybackStatus(tr('Đường dẫn MP3 không hợp lệ. Hãy kiểm tra tệp trong thư mục music/.', 'Đường dẫn MP3 không hợp lệ. Hãy kiểm tra tệp trong thư mục music/.')); syncPlaybackVisuals(); persistMusicState(); render(); return; }
       if (directAudioTrackId !== track.id || directAudio.src !== audioUrl) { directAudio.src = audioUrl; directAudio.currentTime = startAt; directAudioTrackId = track.id; }
       directAudio.play().catch(() => { isPlaying = false; shouldResumePlayback = false; syncPlaybackVisuals(); setPlaybackStatus(tr('Trình duyệt chưa phát được âm thanh. Nhấn phát lại để thử.', 'Trình duyệt chưa phát được âm thanh. Nhấn phát lại để thử.')); });
     } else if (isSoundCloudTrack(track)) {
       if (directAudio) directAudio.pause();
-      if (player) player.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(track.url)}&auto_play=true&hide_related=true&show_comments=false&show_user=true&visual=false`;
+      if (player) player.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(track.url)}&auto_play=true&hide_related=true&show_comments=false&show_user=true&visual=false&enable_api=true`;
       savedPosition = 0;
+      connectSoundCloudWidget(track.id);
     } else if (isTikTokTrack(track)) {
       if (directAudio) directAudio.pause();
       if (!track.videoId) {
@@ -616,7 +705,7 @@
         persistMusicState(); syncPlaybackVisuals(); render();
         return;
       } else if (player) {
-        player.src = `https://www.tiktok.com/player/v1/${encodeURIComponent(track.videoId)}?autoplay=1&controls=1&loop=0&music_info=1&description=1`;
+        player.src = `https://www.tiktok.com/player/v1/${encodeURIComponent(track.videoId)}?autoplay=1&controls=1&music_info=1&description=1`;
         savedPosition = 0;
       } else {
         isPlaying = false; shouldResumePlayback = false;
@@ -640,11 +729,12 @@
     // Ask YouTube for the freshest timestamp before pausing, then persist it.
     const track = activeTrack();
     if (directAudio && !directAudio.paused && isDirectAudioTrack(track)) { savedPosition = Number(directAudio.currentTime) || savedPosition; directAudio.pause(); }
-    else if (!isTikTokTrack(track)) requestPlayerPosition();
+    else if (!isTikTokTrack(track) && !isSoundCloudTrack(track)) requestPlayerPosition();
     // Pause the current source without resetting its position.
-    if (player && player.src !== 'about:blank' && !isDirectAudioTrack(track)) {
+    if (isSoundCloudTrack(track) && soundCloudWidget && soundCloudWidgetTrackId === track.id) soundCloudWidget.pause();
+    else if (player && player.src !== 'about:blank' && !isDirectAudioTrack(track)) {
       if (isTikTokTrack(track)) player.contentWindow?.postMessage({ type: 'pause', value: '', 'x-tiktok-player': true }, 'https://www.tiktok.com');
-      else player.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), 'https://www.youtube-nocookie.com');
+      else if (!isSoundCloudTrack(track)) player.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), 'https://www.youtube-nocookie.com');
     }
     isPlaying = false;
     shouldResumePlayback = false;
@@ -670,11 +760,19 @@
         const data = await response.json();
         if (!Array.isArray(data?.tracks)) continue;
         if (candidate.managed) {
-          const managed = data.tracks.filter(track => track.id !== 'supermode' && track.videoId !== 'tWK8kLIYxF0' && !/supermode/i.test(String(track.artist || '')));
-          const seenVideoIds = new Set(managed.map(track => track.videoId).filter(Boolean));
-          tracks = [...managed, ...RECOMMENDED_TRACKS.filter(track => !seenVideoIds.has(track.videoId))];
+          const managed = data.tracks.filter(track =>
+            track.id !== 'supermode' &&
+            track.videoId !== 'tWK8kLIYxF0' &&
+            track.id !== 'rec-weeknd-blinding-lights' &&
+            track.videoId !== '4NRXx6U8ABQ' &&
+            !/supermode/i.test(String(track.artist || ''))
+          );
+          tracks = managed;
         } else {
-          tracks = data.tracks;
+          tracks = data.tracks.filter(track =>
+            track.id !== 'rec-weeknd-blinding-lights' &&
+            track.videoId !== '4NRXx6U8ABQ'
+          );
         }
         break;
       } catch { /* Try the next source, especially the static JSON on GitHub Pages. */ }
