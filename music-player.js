@@ -24,6 +24,8 @@
   const island = $('#musicIslandToggle');
   const islandTrackTitle = $('#musicIslandTrackTitle');
   const islandTrackArtist = $('#musicIslandTrackArtist');
+  const islandRecordArt = $('#musicIslandRecordArt');
+  islandRecordArt?.addEventListener('error', () => { islandRecordArt.hidden = true; islandRecordArt.closest('.music-island-record')?.classList.remove('has-artwork'); });
   const panel = $('#musicPanel');
   const musicEngine = document.querySelector('.music-engine');
   let directAudio = document.getElementById('musicDirectAudio');
@@ -57,6 +59,11 @@
   const searchMorph = $('#musicSearchForm');
   const searchToggle = $('#musicSearchToggle');
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  const LOCAL_ARTWORK_PATTERN = /^\.\/uploads\/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:png|jpe?g|gif|webp|avif|bmp|tiff?|ico|heic|heif|jxl|svg)$/i;
+  function getTrackArtworkUrl(track) {
+    const value = String(track?.artworkUrl || '').trim();
+    return LOCAL_ARTWORK_PATTERN.test(value) ? value : '';
+  }
   const FALLBACK = []; // Public music is sourced exclusively from Admin-uploaded local MP3 files.
   // The library is managed by Admin; deleted tracks are never silently restored.
   let tracks = [];
@@ -254,6 +261,19 @@
     dock.classList.toggle('is-playing', Boolean(hasTrack && isPlaying));
     if (islandTrackTitle) islandTrackTitle.textContent = hasTrack ? String(track.title || 'Bài hát chưa đặt tên') : '';
     if (islandTrackArtist) islandTrackArtist.textContent = hasTrack ? String(track.artist || 'Chưa rõ nghệ sĩ') : '';
+    if (islandRecordArt) {
+      const artworkUrl = getTrackArtworkUrl(track);
+      islandRecordArt.closest('.music-island-record')?.classList.toggle('has-artwork', Boolean(artworkUrl));
+      if (artworkUrl) {
+        if (islandRecordArt.getAttribute('src') !== artworkUrl) islandRecordArt.src = artworkUrl;
+        islandRecordArt.hidden = false;
+        islandRecordArt.alt = '';
+      } else {
+        islandRecordArt.hidden = true;
+        islandRecordArt.removeAttribute('src');
+        islandRecordArt.alt = '';
+      }
+    }
     if (island) island.setAttribute('aria-label', panel && !panel.classList.contains('hidden')
       ? (hasTrack ? `Đang mở thư viện: ${track.title || 'Bài hát'}, ${track.artist || 'Chưa rõ nghệ sĩ'}` : 'Đang mở thư viện nhạc')
       : 'Mở thư viện nhạc');
@@ -412,7 +432,7 @@
     savedPosition = 0;
     pendingTrackRevealId = String(track.id);
     prepareCurrentTrackReveal();
-    isPlaying = true;
+    isPlaying = false;
     try { directAudio.currentTime = 0; } catch {}
     directAudio.loop = true;
     directAudio.play().catch(() => {
@@ -480,7 +500,11 @@
     const renderRows = (items, startIndex) => items.map((track, offset) => {
       const id = String(track.id);
       const favorite = musicFavorites.has(id);
-      return `<div class="music-track-choice${id === currentTrack ? ' active is-current-track' : ''}${id === currentTrack && isPlaying ? ' is-playing' : ''}" data-track-id="${escapeHtml(id)}" aria-current="${id === currentTrack ? 'true' : 'false'}"><button type="button" class="music-track-main" data-music-track="${escapeHtml(id)}" aria-label="${escapeHtml(id === currentTrack && isPlaying ? `Tạm dừng ${track.title}` : `Phát ${track.title}`)}"><span class="music-track-number">${String(startIndex + offset + 1).padStart(2,'0')}</span><span class="music-track-name"><b>${escapeHtml(track.title)}</b><small>${escapeHtml(track.artist)}</small></span><span class="music-track-play">${id === currentTrack && isPlaying ? 'Ⅱ' : '▶'}</span></button><button type="button" class="music-track-favorite${favorite ? ' is-favorite' : ''}" data-music-favorite="${escapeHtml(id)}" aria-pressed="${favorite}" aria-label="${favorite ? 'Bỏ khỏi nhạc yêu thích' : 'Thêm vào nhạc yêu thích'}" title="${favorite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}">${favorite ? '♥' : '♡'}</button></div>`;
+      const artworkUrl = getTrackArtworkUrl(track);
+      const trackBadge = artworkUrl
+        ? `<span class="music-track-number music-track-number-art"><img src="${escapeHtml(artworkUrl)}" alt="" loading="lazy"></span>`
+        : `<span class="music-track-number">${String(startIndex + offset + 1).padStart(2,'0')}</span>`;
+      return `<div class="music-track-choice${id === currentTrack ? ' active is-current-track' : ''}${id === currentTrack && isPlaying ? ' is-playing' : ''}" data-track-id="${escapeHtml(id)}" aria-current="${id === currentTrack ? 'true' : 'false'}"><button type="button" class="music-track-main" data-music-track="${escapeHtml(id)}" aria-label="${escapeHtml(id === currentTrack && isPlaying ? `Tạm dừng ${track.title}` : `Phát ${track.title}`)}">${trackBadge}<span class="music-track-name"><b>${escapeHtml(track.title)}</b><small>${escapeHtml(track.artist)}</small></span><span class="music-track-play">${id === currentTrack && isPlaying ? 'Ⅱ' : '▶'}</span></button><button type="button" class="music-track-favorite${favorite ? ' is-favorite' : ''}" data-music-favorite="${escapeHtml(id)}" aria-pressed="${favorite}" aria-label="${favorite ? 'Bỏ khỏi nhạc yêu thích' : 'Thêm vào nhạc yêu thích'}" title="${favorite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}">${favorite ? '♥' : '♡'}</button></div>`;
     }).join('');
     if (list) {
       if (!rows.length) list.innerHTML = `<div class="music-library-loading">${libraryMode === 'favorites' ? 'Chưa có bài hát yêu thích. Nhấn ♡ ở một bài hát để thêm vào thư mục này.' : 'Không tìm thấy bài hát phù hợp.'}</div>`;
@@ -510,7 +534,7 @@
     if (Number.isFinite(position) && position >= 0) savedPosition = position;
   }
   directAudio?.addEventListener('timeupdate', () => { if (isDirectAudioTrack(activeTrack())) { savedPosition = Number(directAudio.currentTime) || 0; if (Date.now() % 2000 < 1000) persistMusicState(); } });
-  directAudio?.addEventListener('play', () => { if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) { isPlaying = true; syncPlaybackVisuals(); render(); } });
+  directAudio?.addEventListener('playing', () => { if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) { isPlaying = true; syncPlaybackVisuals(); render(); } });
   directAudio?.addEventListener('pause', () => { if (isDirectAudioTrack(activeTrack()) && !shouldResumePlayback) { isPlaying = false; syncPlaybackVisuals(); persistMusicState(); render(); } });
   function playRandomNextTrack() {
     const available = tracks.filter(track => isDirectAudioTrack(track));
@@ -618,7 +642,7 @@
     } else if (Number.isFinite(savedPosition) && savedPosition > 0) {
       try { directAudio.currentTime = savedPosition; } catch {}
     }
-    isPlaying = true;
+    isPlaying = false;
     shouldResumePlayback = true;
     hasPlaybackAttempt = true;
     persistMusicState();

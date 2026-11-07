@@ -1578,3 +1578,64 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
   transition:opacity 1.65s ease,transform 1.9s cubic-bezier(.42,.02,.72,.34),
     visibility 0s linear 1.65s!important;
 }
+
+/* v15.2.55 — album artwork vinyl: artist cover is clipped into the record label and spins with the disc. */
+.music-island-record{
+  isolation:isolate!important;
+  width:40px!important;height:40px!important;flex:0 0 40px!important;
+  min-width:40px!important;min-height:40px!important;
+  border:1px solid rgba(222,235,255,.34)!important;
+  background:
+    radial-gradient(circle at 29% 21%,rgba(255,255,255,.2) 0 2%,transparent 23%),
+    conic-gradient(from 28deg,rgba(202,219,246,.24),rgba(9,13,24,.08) 22%,rgba(127,230,224,.2) 46%,rgba(8,12,23,.08) 72%,rgba(202,219,246,.22)),
+    radial-gradient(circle at 50% 50%,#343c54 0 44%,#121827 49%,#050812 100%)!important;
+  box-shadow:0 0 17px rgba(127,230,224,.2),0 0 30px rgba(167,139,250,.12),inset 0 1px 4px rgba(255,255,255,.2),inset 0 -4px 9px rgba(0,0,0,.8)!important;
+  animation:none!important;
+}
+.music-island-record::before{
+  inset:3px!important;
+  border:1px solid rgba(213,228,248,.16)!important;
+  background:
+    repeating-radial-gradient(circle at 50% 50%,rgba(210,225,249,.22) 0 0.55px,rgba(7,11,20,.1) 1.1px 2.05px,rgba(205,218,240,.12) 2.5px 2.9px),
+    radial-gradient(circle at 38% 27%,rgba(255,255,255,.11),transparent 54%)!important;
+  box-shadow:inset 0 0 9px rgba(0,0,0,.68)!important;
+  opacity:.9;
+}
+.music-island-record::after{
+  z-index:2!important;
+  width:8px!important;height:8px!important;
+  background:radial-gradient(circle at 32% 28%,#f2ffff 0 7%,#91e8e0 27%,#9b82e8 65%,#29233f 100%)!important;
+  border:1px solid rgba(237,249,255,.5);
+  box-shadow:0 0 8px rgba(127,230,224,.45),0 0 16px rgba(167,139,250,.25)!important;
+}
+.music-island-record.has-artwork::after{opacity:0!important;}
+.music-island-record-art{
+  position:absolute!important;z-index:3!important;left:50%!important;top:50%!important;
+  display:block!important;width:58%!important;height:58%!important;max-width:none!important;
+  aspect-ratio:1/1!important;object-fit:cover!important;
+  border:1px solid rgba(244,247,255,.76)!important;border-radius:50%!important;
+  background:#20283a!important;
+  box-shadow:0 0 0 2px rgba(5,9,17,.75),0 0 11px rgba(127,230,224,.23),inset 0 1px 3px rgba(255,255,255,.24)!important;
+  transform:translate(-50%,-50%)!important;pointer-events:none!important;
+}
+.music-island-record-art[hidden]{display:none!important;}
+.music-island-record i{
+  z-index:4!important;inset:1px!important;
+  border:1px solid rgba(255,255,255,.19)!important;
+  box-shadow:inset 0 0 4px rgba(255,255,255,.08),0 0 3px rgba(0,0,0,.6)!important;
+}
+.music-dock.music-centered.is-playing .music-island-record{
+  display:block!important;opacity:1!important;visibility:visible!important;
+  animation:nrDynamicVinylSpin 5.8s linear infinite!important;
+}
+.music-dock.music-centered:not(.is-playing) .music-island-record{
+  display:none!important;opacity:0!important;visibility:hidden!important;animation:none!important;
+}
+.music-track-number-art{overflow:hidden!important;padding:0!important;border:1px solid rgba(220,232,255,.2)!important;background:rgba(255,255,255,.04)!important;}
+.music-track-number-art img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:inherit!important;}
+@media(max-width:560px){
+  .music-island-record{width:36px!important;height:36px!important;flex-basis:36px!important;min-width:36px!important;min-height:36px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  .music-dock.music-centered.is-playing .music-island-record{animation-duration:18s!important;}
+}
