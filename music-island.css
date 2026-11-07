@@ -469,73 +469,7 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 .music-dock.is-transition-locked .music-panel { pointer-events: auto !important; }
 
 
-/* v15.2.17 — slower Dynamic Island open/close and four-second progress with a short midpoint pause. */
-.site-header>.main-nav-dynamic.music-system-checking{
-  --si-library-morph-duration:900ms;
-  --si-library-reveal-duration:520ms;
-}
-.site-header>.main-nav-dynamic .music-dock.is-system-checking:not(.is-system-closing){
-  width:min(330px,calc(100vw - 36px))!important;
-  max-width:min(330px,calc(100vw - 36px))!important;
-  height:50px!important;flex-basis:min(330px,calc(100vw - 36px))!important;
-  margin:0!important;filter:saturate(1.04);
-}
-.site-header>.main-nav-dynamic .music-dock.is-system-checking.is-system-closing{
-  width:84px!important;max-width:84px!important;height:38px!important;flex-basis:84px!important;margin:0!important;
-}
-.site-header>.main-nav-dynamic .music-dock.is-system-checking.is-system-closing .music-island{height:38px!important;min-height:38px!important;padding:4px 10px!important;}
-
-.site-header>.main-nav-dynamic .music-dock.is-system-checking .music-island{
-  height:50px!important;min-height:50px!important;padding:6px 12px!important;gap:0!important;
-  justify-content:flex-start!important;cursor:progress!important;pointer-events:none!important;
-  border-color:rgba(127,230,224,.42)!important;
-  box-shadow:0 10px 28px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.075)!important;
-}
-.site-header>.main-nav-dynamic .music-dock.is-system-checking .music-art,
-.site-header>.main-nav-dynamic .music-dock.is-system-checking .music-copy,
-.site-header>.main-nav-dynamic .music-dock.is-system-checking .music-wave,
-.site-header>.main-nav-dynamic .music-dock.is-system-checking .music-state-led{
-  display:none!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;
-}
-.site-header>.main-nav-dynamic .music-dock.is-system-checking .music-panel{display:none!important}
-.dynamic-status-view{
-  display:none;align-items:center;gap:12px;width:100%;min-width:0;height:100%;padding:0 3px;
-  color:#f3f3fb;opacity:0;visibility:hidden;transform:translateY(5px) scale(.985);
-  transition:opacity 420ms ease,transform 560ms cubic-bezier(.2,.8,.2,1),visibility 0s linear 420ms;
-}
-.site-header>.main-nav-dynamic .music-dock.is-system-checking .dynamic-status-view{
-  display:flex!important;opacity:1;visibility:visible;transform:translateY(0) scale(1);
-  transition-delay:80ms,80ms,0s;
-}
-.dynamic-status-copy{display:flex;flex:1 1 auto;min-width:0;flex-direction:column;gap:4px;overflow:hidden}
-.dynamic-status-copy small{color:#a9a4d9;font:600 7px/1.1 'DM Mono',monospace;letter-spacing:.12em;white-space:nowrap}
-.dynamic-status-copy b{color:#f4f5fc;font:700 10px/1.15 'Space Grotesk',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dynamic-status-progress-wrap{display:flex;flex:0 0 92px;flex-direction:column;gap:6px;min-width:0}
-.dynamic-status-progress{display:block;position:relative;width:100%;height:4px;overflow:hidden;border-radius:999px;background:rgba(210,211,238,.14);box-shadow:inset 0 1px 2px rgba(0,0,0,.26)}
-.dynamic-status-progress i{display:block;width:100%;height:100%;border-radius:inherit;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,#8c84ce 0%,#8edbd2 100%);box-shadow:0 0 8px rgba(142,219,210,.28);will-change:transform}
-.dynamic-status-progress-wrap small{align-self:flex-end;color:#bfc2d8;font:600 8px/1 'DM Mono',monospace;font-variant-numeric:tabular-nums}
-.dynamic-status-state{position:relative;display:grid;place-items:center;flex:0 0 22px;width:22px;height:22px;border:1px solid rgba(146,220,213,.3);border-radius:50%;color:#9de0d7;background:rgba(124,211,204,.055)}
-.dynamic-status-spinner{display:block;width:10px;height:10px;border:1.5px solid rgba(157,224,215,.22);border-top-color:#a5e3da;border-right-color:#b6a8ef;border-radius:50%;animation:dynamicSystemSpin .65s linear infinite}
-.dynamic-status-check{display:none;font:700 13px/1 'Manrope',sans-serif;transform:scale(.45);opacity:0;color:#baf0d5}
-.dynamic-status-state.is-complete{border-color:rgba(154,225,192,.72);background:rgba(88,175,136,.14);box-shadow:0 0 0 3px rgba(108,193,152,.055)}
-.dynamic-status-state.is-complete .dynamic-status-spinner{display:none}
-.dynamic-status-state.is-complete .dynamic-status-check{display:block;animation:dynamicSystemTick 320ms cubic-bezier(.16,1,.3,1) forwards}
-.site-header>.main-nav-dynamic .music-dock.is-system-checking.is-system-complete .music-island{border-color:rgba(154,225,192,.6)!important}
-.site-header>.main-nav-dynamic .music-dock.is-system-checking.is-system-closing .dynamic-status-view{
-  opacity:0;visibility:hidden;transform:translateY(4px) scale(.94);transition:opacity 360ms ease,transform 520ms cubic-bezier(.2,.8,.2,1),visibility 0s linear 360ms;
-}
-@keyframes dynamicSystemSpin{to{transform:rotate(360deg)}}
-@keyframes dynamicSystemTick{to{transform:scale(1);opacity:1}}
-@media(max-width:480px){
-  .site-header>.main-nav-dynamic .music-dock.is-system-checking:not(.is-system-closing){width:min(278px,calc(100vw - 24px))!important;max-width:min(278px,calc(100vw - 24px))!important;flex-basis:min(278px,calc(100vw - 24px))!important}
-  .dynamic-status-view{gap:8px;padding:0 1px}.dynamic-status-progress-wrap{flex-basis:70px}.dynamic-status-copy small{font-size:6px}.dynamic-status-copy b{font-size:9px}
-}
-@media(prefers-reduced-motion:reduce){
-  .dynamic-status-spinner{animation:none}
-  .dynamic-status-check{animation-duration:.01ms!important}
-  .dynamic-status-view,.dynamic-status-progress i{transition-duration:.01ms!important}
-}
-
+/* Dynamic no longer hosts the old system-progress/status presentation. Fingerprint timing is handled independently. */
 
 /* v15.2.20 — Dynamic playback motion is linked only to actual playback, never to an open/loading island. */
 .music-dock:not(.is-playing) .music-art img,
@@ -887,11 +821,9 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 }
 .site-header .music-dock.is-collapsed.is-empty .music-copy,
 .site-header .music-dock.is-collapsed.is-empty .music-wave,
-.site-header .music-dock.is-collapsed.is-empty .music-state-led,
-.site-header .music-dock.is-collapsed.is-empty .dynamic-status-view{
+.site-header .music-dock.is-collapsed.is-empty .music-state-led{
   display:none!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;
 }
-.site-header .music-dock.is-empty:not(.is-system-checking) .dynamic-status-view{display:none!important;}
 .site-header .music-dock.has-track.is-collapsed{width:218px!important;max-width:218px!important;flex:0 0 218px!important;}
 
 /* Search grows from the magnifier to its RIGHT. The icon stays on the left edge. */
@@ -989,11 +921,6 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
   box-shadow:0 0 7px #c8f169,0 0 16px rgba(200,241,105,.48)!important;
   animation:siLed 1.25s ease-in-out infinite!important;
 }
-.site-header>.main-nav-dynamic .music-dock:not(.is-system-checking) .dynamic-status-view,
-.admin-page .admin-site-header .music-dock .dynamic-status-view{
-  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
-}
-.site-header>.main-nav-dynamic .music-dock.is-system-checking .dynamic-status-view{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
 /* The same blank capsule is retained while the library is open and while a track plays. */
 .site-header>.main-nav-dynamic .music-dock.is-playing .music-island,
 .site-header>.main-nav-dynamic .music-dock.has-track .music-island,
@@ -1050,3 +977,94 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
   }
   .music-search-morph{--search-open-width:108px!important;}
 }
+
+
+/* v15.2.53-r14 — restore the original compact-to-open Dynamic morph; never expose track state in the capsule. */
+.site-header>.main-nav-dynamic .music-dock,
+.site-header>.main-nav-dynamic .music-dock.is-collapsed,
+.site-header>.main-nav-dynamic .music-dock.has-track,
+.site-header>.main-nav-dynamic .music-dock.is-playing,
+.site-header>.main-nav-dynamic .music-dock.is-empty,
+.admin-page .admin-site-header .music-dock,
+.admin-page .admin-site-header .music-dock.is-collapsed,
+.admin-page .admin-site-header .music-dock.has-track,
+.admin-page .admin-site-header .music-dock.is-playing,
+.admin-page .admin-site-header .music-dock.is-empty{
+  justify-self:center!important;flex:0 0 84px!important;width:84px!important;min-width:84px!important;max-width:84px!important;
+  height:38px!important;min-height:38px!important;margin:0!important;overflow:visible!important;
+  transition:flex-basis var(--si-library-morph-duration,2.4s) cubic-bezier(.2,.85,.25,1),width var(--si-library-morph-duration,2.4s) cubic-bezier(.2,.85,.25,1),height var(--si-library-morph-duration,2.4s) cubic-bezier(.2,.85,.25,1),filter .45s ease!important;
+}
+.site-header>.main-nav-dynamic .music-dock.music-centered,
+.site-header>.main-nav-dynamic .music-dock.music-centered.is-playing,
+.site-header>.main-nav-dynamic .music-dock.music-centered.has-track,
+.admin-page .admin-site-header .music-dock.music-centered,
+.admin-page .admin-site-header .music-dock.music-centered.is-playing,
+.admin-page .admin-site-header .music-dock.music-centered.has-track{
+  flex:0 1 min(330px,calc(100vw - 36px))!important;width:min(330px,calc(100vw - 36px))!important;
+  min-width:84px!important;max-width:min(330px,calc(100vw - 36px))!important;height:50px!important;min-height:50px!important;
+}
+.site-header>.main-nav-dynamic .music-dock.is-closing,
+.site-header>.main-nav-dynamic .music-dock.music-centered.is-closing,
+.admin-page .admin-site-header .music-dock.is-closing,
+.admin-page .admin-site-header .music-dock.music-centered.is-closing{
+  flex:0 0 84px!important;width:84px!important;min-width:84px!important;max-width:84px!important;height:38px!important;min-height:38px!important;
+}
+.site-header>.main-nav-dynamic .music-dock .music-island,
+.admin-page .admin-site-header .music-dock .music-island{
+  position:relative!important;display:flex!important;align-items:center!important;justify-content:space-between!important;
+  width:100%!important;min-width:0!important;height:100%!important;min-height:0!important;padding:4px 10px!important;
+  gap:0!important;border-radius:999px!important;overflow:hidden!important;cursor:pointer!important;
+  transition:height var(--si-library-morph-duration,2.4s) cubic-bezier(.2,.85,.25,1),padding var(--si-library-morph-duration,2.4s) cubic-bezier(.2,.85,.25,1),border-radius .5s ease,box-shadow .45s ease,border-color .45s ease!important;
+}
+.site-header>.main-nav-dynamic .music-dock.music-centered .music-island,
+.admin-page .admin-site-header .music-dock.music-centered .music-island{
+  height:50px!important;min-height:50px!important;padding:6px 13px!important;justify-content:space-between!important;
+}
+.site-header>.main-nav-dynamic .music-dock .music-island>.music-art,
+.site-header>.main-nav-dynamic .music-dock .music-island>.music-copy,
+.site-header>.main-nav-dynamic .music-dock .music-island>.music-wave,
+.admin-page .admin-site-header .music-dock .music-island>.music-art,
+.admin-page .admin-site-header .music-dock .music-island>.music-copy,
+.admin-page .admin-site-header .music-dock .music-island>.music-wave{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;width:0!important;max-width:0!important;flex:0 0 0!important;
+}
+.music-island-empty-space{display:block!important;flex:1 1 auto!important;width:auto!important;height:100%!important;min-width:0!important;pointer-events:none!important;}
+.site-header>.main-nav-dynamic .music-dock .music-state-led,
+.admin-page .admin-site-header .music-dock .music-state-led{
+  position:static!important;display:grid!important;place-items:center!important;flex:0 0 9px!important;width:9px!important;height:9px!important;
+  margin:0!important;opacity:1!important;visibility:visible!important;transform:none!important;pointer-events:none!important;
+}
+.site-header>.main-nav-dynamic .music-dock .music-live-led,
+.admin-page .admin-site-header .music-dock .music-live-led{
+  display:block!important;width:7px!important;height:7px!important;min-width:7px!important;min-height:7px!important;border-radius:50%!important;
+  background:#c8f169!important;box-shadow:0 0 7px #c8f169,0 0 16px rgba(200,241,105,.48)!important;animation:siLed 1.25s ease-in-out infinite!important;
+}
+@media(max-width:1160px){
+ .site-header>.main-nav-dynamic .music-dock,.site-header>.main-nav-dynamic .music-dock.is-collapsed{flex-basis:84px!important;width:84px!important;max-width:84px!important;}
+ .site-header>.main-nav-dynamic .music-dock.music-centered{flex-basis:min(330px,calc(100vw - 24px))!important;width:min(330px,calc(100vw - 24px))!important;max-width:min(330px,calc(100vw - 24px))!important;}
+}
+@media(max-width:560px){
+ .site-header>.main-nav-dynamic{grid-template-columns:minmax(0,1fr) 84px minmax(0,1fr)!important;}
+ .site-header>.main-nav-dynamic .music-dock,.site-header>.main-nav-dynamic .music-dock.is-collapsed{flex-basis:84px!important;width:84px!important;max-width:84px!important;}
+ .site-header>.main-nav-dynamic .music-dock.music-centered{flex-basis:min(330px,calc(100vw - 18px))!important;width:min(330px,calc(100vw - 18px))!important;max-width:min(330px,calc(100vw - 18px))!important;}
+ .admin-page .admin-site-header .music-dock,.admin-page .admin-site-header .music-dock.is-collapsed{flex-basis:84px!important;width:84px!important;max-width:84px!important;}
+ .admin-page .admin-site-header .music-dock.music-centered{flex-basis:min(330px,calc(100vw - 18px))!important;width:min(330px,calc(100vw - 18px))!important;max-width:min(330px,calc(100vw - 18px))!important;}
+}
+/* Search bubble keeps a real input area when open, without affecting the Dynamic capsule. */
+.music-search-morph{--search-open-width:min(210px,calc(100vw - 215px))!important;display:flex!important;flex:0 0 34px!important;width:34px!important;min-width:34px!important;flex-shrink:0!important;overflow:hidden!important;}
+.music-library-filters>#musicSearchForm{flex:0 0 34px!important;width:34px!important;min-width:34px!important;}
+.music-library-filters>#musicSearchForm.is-open{flex:0 0 var(--search-open-width)!important;width:var(--search-open-width)!important;min-width:132px!important;max-width:var(--search-open-width)!important;}
+.music-search-morph.is-open input{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;left:40px!important;right:9px!important;width:auto!important;min-width:0!important;}
+@media(max-width:760px){.music-search-morph{--search-open-width:min(174px,calc(100vw - 150px))!important;}.music-library-filters>#musicSearchForm.is-open{min-width:118px!important;}}
+@media(max-width:420px){.music-search-morph{--search-open-width:min(152px,calc(100vw - 138px))!important;}.music-library-filters>#musicSearchForm.is-open{min-width:108px!important;}}
+@media(prefers-reduced-motion:reduce){.music-dock,.music-dock .music-island,.music-live-led{transition:none!important;animation:none!important;}}
+
+/* The capsule is strictly an open/close affordance; playback must never recolor or resize it. */
+.site-header>.main-nav-dynamic .music-dock.is-playing .music-island,
+.site-header>.main-nav-dynamic .music-dock.has-track .music-island,
+.admin-page .admin-site-header .music-dock.is-playing .music-island,
+.admin-page .admin-site-header .music-dock.has-track .music-island{
+  border-color:rgba(127,230,224,.22)!important;box-shadow:0 8px 24px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.06)!important;
+}
+.site-header>.main-nav-dynamic .music-dock.is-playing .music-island::before,
+.admin-page .admin-site-header .music-dock.is-playing .music-island::before{opacity:0!important;}

@@ -200,7 +200,7 @@
     scheduleTransitionUnlock();
   }
   function handleIslandToggle() {
-    if (islandTransitionLocked || dock.classList.contains('is-system-checking')) return;
+    if (islandTransitionLocked) return;
     if (panel?.classList.contains('hidden')) {
       lockIslandTransition('opening');
       openMusicCenter();
@@ -247,19 +247,10 @@
   }
   function setPlaybackStatus(message) { if (playbackStatus) playbackStatus.textContent = message; }
   function syncPlaybackVisuals() {
-    // Wave animation is a playback indicator, not ambient decoration.
-    dock.classList.toggle('is-playing', isPlaying);
-    const wave = dock.querySelector('.music-wave');
-    if (wave) wave.setAttribute('aria-label', isPlaying ? tr('Đang phát nhạc', 'Đang phát nhạc') : tr('Nhạc đang tạm dừng', 'Nhạc đang tạm dừng'));
+    // Dynamic is a pure open/close trigger. Playback state is kept inside the
+    // library and the Favorite Galaxy event; it never changes the capsule.
+    dock.classList.remove('is-playing', 'has-track', 'is-empty');
     const track = activeTrack();
-    const hasTrack = Boolean(track);
-    dock.classList.toggle('has-track', hasTrack);
-    dock.classList.toggle('is-empty', !hasTrack);
-    // Dynamic stays deliberately content-free in every playback state. The capsule
-    // is only a neutral opener with a pulsing LED; track details live in the library.
-    if (!hasTrack) dock.classList.remove('is-playing');
-    // Share live playback state with the Favorite Galaxy so its music cards animate
-    // only while the player is truly running, and gracefully power down on pause.
     window.dispatchEvent(new CustomEvent('executor:music-playback-state', {
       detail: {
         trackId: String(currentTrack || ''),
@@ -306,116 +297,21 @@
       island.setAttribute('aria-label', panelOpen ? tr('Đóng thư viện nhạc', 'Đóng thư viện nhạc') : tr('Mở thư viện nhạc', 'Mở thư viện nhạc'));
     }
   }
-  // The fingerprint interaction borrows this same Dynamic Island as a short-lived
-  // system-status surface. It never expands the Music Library and never starts audio.
-  const dynamicStatusView = $('#dynamicStatusView');
-  const dynamicStatusLabel = $('#dynamicStatusLabel');
-  const dynamicStatusValue = $('#dynamicStatusValue');
-  const dynamicStatusFill = $('#dynamicStatusFill');
-  const dynamicStatusPercent = $('#dynamicStatusPercent');
-  const dynamicStatusState = $('#dynamicStatusState');
-  let dynamicStatusPromise = null;
+  // The Music Dynamic is only an open/close control. Fingerprint opening keeps
+  // its established timing, but no system or selected-track status is rendered here.
   const waitForMotion = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
-  function hardCollapseMusicLibraryForSystemCheck() {
-    // Cancel any in-flight Library morph and hide the panel immediately. The loading
-    // surface shares the island shell, not the Library DOM or its playback controls.
-    if (panelCloseTimer) clearTimeout(panelCloseTimer);
-    if (dockCloseStartTimer) clearTimeout(dockCloseStartTimer);
-    if (islandTransitionTimer) clearTimeout(islandTransitionTimer);
-    panelCloseTimer = null;
-    dockCloseStartTimer = null;
-    islandTransitionTimer = null;
-    if (islandTransitionLocked) unlockIslandTransition();
-    if (panel) {
+  async function runSystemLoading({ duration = 2000 } = {}) {
+    const loadingDuration = Math.max(100, Math.min(6000, Number(duration) || 2000));
+    if (panel && !panel.classList.contains('hidden')) {
+      closeMusicSearch({ clear: true, rerender: false });
       panel.classList.add('hidden');
       panel.classList.remove('is-opening', 'is-closing');
-      panel.removeAttribute('aria-busy');
     }
-    dock.classList.remove('is-transition-locked', 'is-closing', 'music-centered', 'music-opening', 'is-system-closing', 'is-system-complete');
-    dynamicNav?.classList.remove('music-nav-transition-locked', 'music-nav-morphing', 'music-nav-restoring');
-    if (island) {
-      island.setAttribute('aria-expanded', 'false');
-      island.setAttribute('aria-label', tr('Đang khởi tạo hệ thống', 'Đang khởi tạo hệ thống'));
-      island.removeAttribute('aria-busy');
-      island.removeAttribute('aria-disabled');
-    }
+    dock.classList.remove('is-transition-locked', 'is-closing', 'music-centered', 'music-opening', 'is-system-checking', 'is-system-closing', 'is-system-complete');
+    dynamicNav?.classList.remove('music-nav-transition-locked', 'music-nav-morphing', 'music-nav-restoring', 'music-system-checking');
     setCollapsed(true);
-  }
-  async function runSystemLoading({ duration = 2000 } = {}) {
-    if (dynamicStatusPromise) return dynamicStatusPromise;
-    const loadingDuration = Math.max(100, Math.min(6000, Number(duration) || 2000));
-    if (!dock || !island || !dynamicStatusView || !dynamicNav) {
-      await waitForMotion(loadingDuration);
-      return true;
-    }
-    dynamicStatusPromise = (async () => {
-      hardCollapseMusicLibraryForSystemCheck();
-      dynamicNav.style.setProperty('--si-library-morph-duration', '900ms');
-      dynamicNav.style.setProperty('--si-library-reveal-duration', '520ms');
-      dynamicNav.classList.add('music-system-checking', 'music-nav-morphing');
-      dock.classList.remove('is-collapsed');
-      dock.classList.add('music-centered', 'is-system-checking');
-      dock.classList.remove('is-system-closing', 'is-system-complete');
-      dynamicStatusView.setAttribute('aria-hidden', 'false');
-      dynamicStatusLabel.textContent = 'EXECUTOR · SYSTEM';
-      dynamicStatusValue.textContent = 'Đang khởi tạo';
-      dynamicStatusPercent.textContent = '0%';
-      dynamicStatusFill.style.transform = 'scaleX(0)';
-      dynamicStatusState.classList.remove('is-complete');
-      island.setAttribute('aria-expanded', 'false');
-      island.setAttribute('aria-label', tr('Đang khởi tạo hệ thống', 'Đang khởi tạo hệ thống'));
-      // Let the pill finish its slower opening morph before the 2-second loading clock starts.
-      await nextFrame();
-      await nextFrame();
-      await waitForMotion(920);
-
-      // Two-second continuous progress, without a midpoint pause.
-      const animateProgress = (from, to, phaseDuration) => new Promise(resolve => {
-        const startedAt = performance.now();
-        const paint = now => {
-          const phase = Math.max(0, Math.min(1, (now - startedAt) / phaseDuration));
-          const progress = from + (to - from) * phase;
-          const percent = Math.floor(progress * 100);
-          dynamicStatusPercent.textContent = `${percent}%`;
-          dynamicStatusValue.textContent = phase >= 1 ? `Đang tải ${Math.round(to * 100)}%` : `Đang tải ${percent}%`;
-          dynamicStatusFill.style.transform = `scaleX(${progress})`;
-          if (phase < 1) requestAnimationFrame(paint);
-          else resolve();
-        };
-        requestAnimationFrame(paint);
-      });
-      await animateProgress(0, 1, loadingDuration);
-      dynamicStatusPercent.textContent = '100%';
-      dynamicStatusValue.textContent = 'Hệ thống sẵn sàng';
-      dynamicStatusLabel.textContent = 'KHỞI TẠO HOÀN TẤT';
-      dynamicStatusState.classList.add('is-complete');
-      dock.classList.add('is-system-complete');
-      await waitForMotion(520);
-
-      // Retract the status island first. The wing reveal is started by app.js only
-      // after this promise resolves, so the two visual sequences never overlap.
-      dock.classList.add('is-system-closing');
-      dock.classList.remove('music-centered');
-      dynamicNav.classList.remove('music-nav-morphing');
-      dynamicNav.classList.add('music-nav-restoring');
-      await waitForMotion(960);
-      dock.classList.remove('is-system-checking', 'is-system-closing', 'is-system-complete', 'music-centered', 'music-opening', 'is-closing');
-      dynamicNav.classList.remove('music-system-checking', 'music-nav-restoring');
-      dynamicNav.style.removeProperty('--si-library-morph-duration');
-      dynamicNav.style.removeProperty('--si-library-reveal-duration');
-      dynamicStatusView.setAttribute('aria-hidden', 'true');
-      dynamicStatusState.classList.remove('is-complete');
-      dynamicStatusLabel.textContent = 'EXECUTOR · SYSTEM';
-      dynamicStatusValue.textContent = 'Đang khởi tạo';
-      dynamicStatusPercent.textContent = '0%';
-      dynamicStatusFill.style.transform = 'scaleX(0)';
-      setCollapsed(true);
-      island.setAttribute('aria-expanded', 'false');
-      island.setAttribute('aria-label', tr('Mở thư viện nhạc', 'Mở thư viện nhạc'));
-      return true;
-    })().finally(() => { dynamicStatusPromise = null; });
-    return dynamicStatusPromise;
+    await waitForMotion(loadingDuration);
+    return true;
   }
   window.ExecutorDynamicStatus = Object.freeze({ runSystemLoading });
   function openMusicCenter() {
@@ -576,10 +472,6 @@
     });
     syncMusicLanguage();
     const track = activeTrack();
-    const title = $('#musicTrackTitle'), artist = $('#musicTrackArtist'), state = $('#musicNowLabel');
-    if (title) title.textContent = track ? track.title : tr('Chọn bài hát', 'Chọn bài hát');
-    if (artist) artist.textContent = track ? track.artist : tr('Chưa có nhạc đang phát', 'Chưa có nhạc đang phát');
-    if (state) state.textContent = track ? `${isPlaying ? 'ĐANG PHÁT' : 'ĐANG CHỌN'} · ${playbackMode === 'repeat' ? 'LẶP LẠI' : 'NGẪU NHIÊN'}` : tr('TRÌNH PHÁT NHẠC', 'TRÌNH PHÁT NHẠC');
     syncPlaybackModeControl();
     updateCurrentTrackBanner(track);
     if (pendingTrackRevealId) requestAnimationFrame(revealCurrentTrackInLibrary);
@@ -773,7 +665,7 @@
   // locked. This also protects against nested controls or other scripts calling
   // click() before the transition lock has expired.
   const blockDockInteraction = event => {
-    if (!islandTransitionLocked && !dock.classList.contains('is-system-checking')) return;
+    if (!islandTransitionLocked) return;
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
