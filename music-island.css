@@ -1639,3 +1639,55 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 @media(prefers-reduced-motion:reduce){
   .music-dock.music-centered.is-playing .music-island-record{animation-duration:18s!important;}
 }
+
+
+/* v15.2.56 — audio-reactive waveform + resumable vinyl position. */
+.music-dock.music-centered.has-track .music-island-record{
+  display:block!important;opacity:1!important;visibility:visible!important;
+  transform:scale(1) rotate(var(--nr-record-angle,0deg))!important;
+  animation:none!important;pointer-events:none!important;
+  transition:opacity .42s ease,visibility 0s linear 0s,transform .25s ease!important;
+}
+.music-dock.music-centered.has-track.is-playing .music-island-record,
+.music-dock.music-centered.has-track:not(.is-playing) .music-island-record{
+  display:block!important;opacity:1!important;visibility:visible!important;
+}
+.music-dock.music-centered.has-track:not(.is-playing) .music-island-record{
+  /* The inline angle is intentionally preserved when playback pauses. */
+  transform:scale(1) rotate(var(--nr-record-angle,0deg))!important;
+  animation:none!important;
+}
+.music-dock.music-centered.is-playing .music-island-record{
+  transform:scale(1) rotate(var(--nr-record-angle,0deg))!important;
+  animation:none!important;
+}
+.music-dock.music-centered.has-track .music-island-wave{display:flex!important;opacity:.72;}
+.music-dock.music-centered.is-playing .music-island-wave{opacity:1;}
+.music-island-wave i{
+  height:var(--nr-wave-height,5px)!important;min-height:3px!important;
+  transform:none!important;animation:none!important;opacity:.96!important;
+  transition:height 54ms linear,filter 90ms linear!important;
+  box-shadow:0 0 7px rgba(127,230,224,.3),0 0 13px rgba(167,139,250,.16)!important;
+  will-change:height;
+}
+.music-dock.music-centered:not(.is-playing) .music-island-wave i{
+  animation:none!important;transform:none!important;opacity:.72!important;
+}
+.music-dock.music-centered.is-playing .music-island-wave i{
+  opacity:1!important;filter:drop-shadow(0 0 4px rgba(127,230,224,.5));
+}
+.music-dock.music-centered:not(.has-track) .music-island-wave{
+  display:none!important;opacity:0!important;visibility:hidden!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .music-island-wave i{transition:none!important;}
+}
+/* Preserve the established close choreography for the waveform and record. */
+.music-dock.music-centered.is-closing .music-island-record,
+.music-dock.music-centered.is-closing .music-island-track-copy,
+.music-dock.music-centered.is-closing .music-island-wave{
+  opacity:0!important;visibility:hidden!important;
+  transform:translateY(5px) scale(.76)!important;
+  transition:opacity 1.65s ease,transform 1.9s cubic-bezier(.42,.02,.72,.34),
+    visibility 0s linear 1.65s!important;
+}

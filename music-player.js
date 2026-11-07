@@ -36,6 +36,105 @@
     directAudio.hidden = true;
     musicEngine?.appendChild(directAudio);
   }
+  const islandRecord = $('.music-island-record');
+  const islandWaveBars = [...document.querySelectorAll('.music-island-wave i')];
+  let recordAngle = 0;
+  let visualFrameId = 0;
+  let lastVisualFrameTime = 0;
+  let audioContext = null;
+  let audioAnalyser = null;
+  let audioSourceNode = null;
+  let audioFrequencyData = null;
+  const waveformHeights = islandWaveBars.map(() => 5);
+  const initialWaveformHeights = [4, 6, 9, 12, 9, 6, 4];
+
+  function setWaveformHeight(index, height) {
+    const bar = islandWaveBars[index];
+    if (bar) bar.style.setProperty('--nr-wave-height', `${Math.max(3, height).toFixed(1)}px`);
+  }
+  function resetPlaybackVisuals() {
+    recordAngle = 0;
+    islandRecord?.style.setProperty('--nr-record-angle', '0deg');
+    waveformHeights.forEach((_, index) => {
+      const height = initialWaveformHeights[index % initialWaveformHeights.length];
+      waveformHeights[index] = height;
+      setWaveformHeight(index, height);
+    });
+  }
+  function ensureAudioAnalyser() {
+    if (audioAnalyser) return true;
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass || !directAudio) return false;
+    try {
+      audioContext = new AudioContextClass();
+      audioAnalyser = audioContext.createAnalyser();
+      audioAnalyser.fftSize = 1024;
+      audioAnalyser.smoothingTimeConstant = 0.82;
+      audioAnalyser.minDecibels = -88;
+      audioAnalyser.maxDecibels = -18;
+      audioFrequencyData = new Uint8Array(audioAnalyser.frequencyBinCount);
+      audioSourceNode = audioContext.createMediaElementSource(directAudio);
+      audioSourceNode.connect(audioAnalyser);
+      audioAnalyser.connect(audioContext.destination);
+      return true;
+    } catch {
+      // Keep playback audible on browsers that do not allow a media-element analyser.
+      try { audioSourceNode?.connect(audioContext?.destination); } catch {}
+      audioAnalyser = null;
+      audioFrequencyData = null;
+      return false;
+    }
+  }
+  function updateWaveformFromAudio() {
+    if (!audioAnalyser || !audioFrequencyData || !islandWaveBars.length) return;
+    audioAnalyser.getByteFrequencyData(audioFrequencyData);
+    const count = islandWaveBars.length;
+    const maxBin = Math.max(8, Math.min(audioFrequencyData.length - 1, 190));
+    for (let index = 0; index < count; index += 1) {
+      const start = Math.max(1, Math.floor(Math.pow(index / count, 1.75) * maxBin));
+      const end = Math.max(start + 1, Math.min(maxBin, Math.floor(Math.pow((index + 1) / count, 1.75) * maxBin)));
+      let sum = 0;
+      let peak = 0;
+      let samples = 0;
+      for (let bin = start; bin <= end; bin += 1) {
+        const value = audioFrequencyData[bin] || 0;
+        sum += value;
+        peak = Math.max(peak, value);
+        samples += 1;
+      }
+      const average = samples ? sum / samples : 0;
+      const level = Math.min(1, (average * 0.7 + peak * 0.3) / 185);
+      const target = 3.5 + level * 21;
+      waveformHeights[index] += (target - waveformHeights[index]) * 0.42;
+      setWaveformHeight(index, waveformHeights[index]);
+    }
+  }
+  function drawPlaybackVisuals(timestamp) {
+    if (!isPlaying || directAudio?.paused) {
+      visualFrameId = 0;
+      lastVisualFrameTime = 0;
+      return;
+    }
+    const delta = lastVisualFrameTime ? Math.min(48, Math.max(0, timestamp - lastVisualFrameTime)) : 0;
+    lastVisualFrameTime = timestamp;
+    recordAngle = (recordAngle + (delta * 360 / 5800)) % 360;
+    islandRecord?.style.setProperty('--nr-record-angle', `${recordAngle.toFixed(2)}deg`);
+    updateWaveformFromAudio();
+    visualFrameId = window.requestAnimationFrame(drawPlaybackVisuals);
+  }
+  function startPlaybackVisuals() {
+    if (visualFrameId || !isPlaying) return;
+    lastVisualFrameTime = 0;
+    visualFrameId = window.requestAnimationFrame(drawPlaybackVisuals);
+  }
+  function stopPlaybackVisuals() {
+    if (visualFrameId) window.cancelAnimationFrame(visualFrameId);
+    visualFrameId = 0;
+    lastVisualFrameTime = 0;
+    // Deliberately leave the CSS variables untouched: both the vinyl angle and
+    // the last measured waveform shape remain frozen while the track is paused.
+  }
+  resetPlaybackVisuals();
   let directAudioTrackId = '';
   const getDirectAudioUrl = track => {
     if (!track || track.sourceType !== 'audio' || track.videoId) return '';
@@ -284,6 +383,8 @@
     // the vinyl spins, the selected track is named, and the waveform animates on playback.
     const track = activeTrack();
     updateDynamicTrackDisplay(track);
+    if (isPlaying && !directAudio?.paused) startPlaybackVisuals();
+    else stopPlaybackVisuals();
     window.dispatchEvent(new CustomEvent('executor:music-playback-state', {
       detail: {
         trackId: String(currentTrack || ''),
@@ -534,8 +635,27 @@
     if (Number.isFinite(position) && position >= 0) savedPosition = position;
   }
   directAudio?.addEventListener('timeupdate', () => { if (isDirectAudioTrack(activeTrack())) { savedPosition = Number(directAudio.currentTime) || 0; if (Date.now() % 2000 < 1000) persistMusicState(); } });
-  directAudio?.addEventListener('playing', () => { if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) { isPlaying = true; syncPlaybackVisuals(); render(); } });
-  directAudio?.addEventListener('pause', () => { if (isDirectAudioTrack(activeTrack()) && !shouldResumePlayback) { isPlaying = false; syncPlaybackVisuals(); persistMusicState(); render(); } });
+  directAudio?.addEventListener('playing', () => {
+    if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) {
+      isPlaying = true;
+      syncPlaybackVisuals();
+      render();
+    }
+  });
+  directAudio?.addEventListener('pause', () => {
+    if (!directAudio.paused) return;
+    stopPlaybackVisuals();
+    if (!pageIsLeaving && isDirectAudioTrack(activeTrack())) {
+      savedPosition = Number(directAudio.currentTime) || savedPosition;
+      isPlaying = false;
+      // A real pause freezes the vinyl at its current angle and keeps the selected
+      // track visible. A pending track switch will set shouldResumePlayback again.
+      shouldResumePlayback = Boolean(directAudio.ended);
+      syncPlaybackVisuals();
+      persistMusicState();
+      render();
+    }
+  });
   function playRandomNextTrack() {
     const available = tracks.filter(track => isDirectAudioTrack(track));
     if (!available.length) { stopTrack(); return; }
@@ -570,6 +690,7 @@
     shouldResumePlayback = false;
     currentTrack = '';
     savedPosition = 0;
+    stopPlaybackVisuals();
     try {
       directAudio?.pause();
       if (directAudio) { directAudio.removeAttribute('src'); directAudio.load(); }
@@ -629,6 +750,8 @@
     const isNewTrack = currentTrack !== track.id || directAudioTrackId !== track.id || directAudio.src !== audioUrl;
     if (isNewTrack) {
       try { directAudio.pause(); } catch {}
+      stopPlaybackVisuals();
+      resetPlaybackVisuals();
       savedPosition = 0;
       directAudio.src = audioUrl;
       directAudioTrackId = track.id;
@@ -646,6 +769,8 @@
     shouldResumePlayback = true;
     hasPlaybackAttempt = true;
     persistMusicState();
+    ensureAudioAnalyser();
+    if (audioContext?.state === 'suspended') audioContext.resume().catch(() => {});
     syncPlaybackVisuals();
     directAudio.play().catch(() => {
       isPlaying = false;
