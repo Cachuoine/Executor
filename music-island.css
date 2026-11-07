@@ -1784,7 +1784,7 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 }
 @media(prefers-reduced-motion:reduce){.music-dock.music-centered.has-track .music-island-wave i{will-change:auto!important;}}
 
-/* v15.2.63 — balanced coloured glass + a natural 500ms search-lens glide.
+/* v15.2.64 — balanced coloured glass + a natural 500ms search-lens glide.
    Keep the Dynamic visibly tinted; translucency should soften the fill, not erase it. */
 :root{
   --nr-search-duration:500ms;

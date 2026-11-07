@@ -27,6 +27,7 @@
   const islandRecordArt = $('#musicIslandRecordArt');
   islandRecordArt?.addEventListener('error', () => { islandRecordArt.hidden = true; islandRecordArt.closest('.music-island-record')?.classList.remove('has-artwork'); });
   const panel = $('#musicPanel');
+  const musicProfile = window.NightReaperMusicProfile || null;
   const musicEngine = document.querySelector('.music-engine');
   let directAudio = document.getElementById('musicDirectAudio');
   if (!directAudio) {
@@ -43,36 +44,21 @@
   directAudio.volume = 0.8;
   directAudio.muted = false;
 
-  let recordAngle = 0;
-  let visualFrameId = 0;
-  let lastVisualFrameTime = 0;
   function resetPlaybackVisuals() {
-    recordAngle = 0;
-    islandRecord?.style.setProperty('--nr-record-angle', '0deg');
-  }
-  function drawPlaybackVisuals(timestamp) {
-    if (!isPlaying || directAudio?.paused) {
-      visualFrameId = 0;
-      lastVisualFrameTime = 0;
-      return;
-    }
-    const delta = lastVisualFrameTime ? Math.min(48, Math.max(0, timestamp - lastVisualFrameTime)) : 0;
-    lastVisualFrameTime = timestamp;
-    recordAngle = (recordAngle + (delta * 360 / 5800)) % 360;
-    islandRecord?.style.setProperty('--nr-record-angle', `${recordAngle.toFixed(2)}deg`);
-    visualFrameId = window.requestAnimationFrame(drawPlaybackVisuals);
+    if (!islandRecord) return;
+    // Reset the compositor animation only when the selected track changes.
+    islandRecord.style.setProperty('animation', 'none', 'important');
+    islandRecord.style.setProperty('rotate', '0deg', 'important');
+    void islandRecord.offsetWidth;
+    islandRecord.style.removeProperty('animation');
+    islandRecord.style.removeProperty('rotate');
   }
   function startPlaybackVisuals() {
-    if (visualFrameId || !isPlaying) return;
-    lastVisualFrameTime = 0;
-    visualFrameId = window.requestAnimationFrame(drawPlaybackVisuals);
+    // CSS runs the vinyl on the compositor while .music-dock.is-playing is present.
+    // This avoids a permanent requestAnimationFrame loop and per-frame style writes.
   }
   function stopPlaybackVisuals() {
-    if (visualFrameId) window.cancelAnimationFrame(visualFrameId);
-    visualFrameId = 0;
-    lastVisualFrameTime = 0;
-    // Deliberately keep the vinyl angle untouched. syncWaveformPlayback() pauses
-    // each WAAPI bar without changing currentTime, so the wave freezes in place.
+    // The compositor animation pauses in place when .music-dock.is-playing is removed.
   }
   resetPlaybackVisuals();
   let directAudioTrackId = '';
@@ -97,6 +83,36 @@
   function getTrackArtworkUrl(track) {
     const value = String(track?.artworkUrl || '').trim();
     return LOCAL_ARTWORK_PATTERN.test(value) ? value : '';
+  }
+  function syncMusicProfile() {
+    if (!musicProfile) return;
+    const track = activeTrack();
+    const favoriteIds = getMusicFavoriteIds();
+    const audioMatchesTrack = Boolean(track && directAudioTrackId === String(track.id));
+    const duration = audioMatchesTrack && Number.isFinite(directAudio?.duration) ? directAudio.duration : 0;
+    const currentTime = audioMatchesTrack && Number.isFinite(directAudio?.currentTime)
+      ? directAudio.currentTime : savedPosition;
+    musicProfile.render({
+      track,
+      artworkUrl: getTrackArtworkUrl(track),
+      favorite: Boolean(track && favoriteIds.has(String(track.id))),
+      isPlaying: Boolean(track && isPlaying && directAudio && !directAudio.paused),
+      currentTime,
+      duration,
+      hasTracks: tracks.length > 0
+    });
+  }
+  function updateMusicProfileProgress() {
+    if (!musicProfile || musicProfile.getView() !== 'profile') return;
+    const track = activeTrack();
+    if (!track || directAudioTrackId !== String(track.id)) {
+      musicProfile.updateProgress(0, 0);
+      return;
+    }
+    musicProfile.updateProgress(
+      Number.isFinite(directAudio?.currentTime) ? directAudio.currentTime : savedPosition,
+      Number.isFinite(directAudio?.duration) ? directAudio.duration : 0
+    );
   }
   const FALLBACK = []; // Public music is sourced exclusively from Admin-uploaded local MP3 files.
   // The library is managed by Admin; deleted tracks are never silently restored.
@@ -124,7 +140,7 @@
     const favoriteTracks = tracks.filter(track => ids.has(String(track.id))).map(track => ({
       id: String(track.id), title: String(track.title || 'Bài hát chưa đặt tên'),
       artist: String(track.artist || 'Chưa rõ nghệ sĩ'), genre: String(track.genre || ''),
-      url: String(track.url || '')
+      url: String(track.url || ''), artworkUrl: getTrackArtworkUrl(track)
     }));
     window.dispatchEvent(new CustomEvent('executor:music-favorites-updated', { detail: { tracks: favoriteTracks, ids: [...ids] } }));
   }
@@ -583,6 +599,7 @@
     const track = activeTrack();
     syncPlaybackModeControl();
     updateDynamicTrackDisplay(track);
+    syncMusicProfile();
     if (pendingTrackRevealId) requestAnimationFrame(revealCurrentTrackInLibrary);
   }
   function persistMusicState() {
@@ -594,7 +611,14 @@
     const position = Number(directAudio.currentTime);
     if (Number.isFinite(position) && position >= 0) savedPosition = position;
   }
-  directAudio?.addEventListener('timeupdate', () => { if (isDirectAudioTrack(activeTrack())) { savedPosition = Number(directAudio.currentTime) || 0; if (Date.now() % 2000 < 1000) persistMusicState(); } });
+  directAudio?.addEventListener('timeupdate', () => {
+    if (!isDirectAudioTrack(activeTrack())) return;
+    savedPosition = Number(directAudio.currentTime) || 0;
+    updateMusicProfileProgress();
+  });
+  directAudio?.addEventListener('loadedmetadata', updateMusicProfileProgress);
+  directAudio?.addEventListener('durationchange', updateMusicProfileProgress);
+  directAudio?.addEventListener('seeked', updateMusicProfileProgress);
   directAudio?.addEventListener('playing', () => {
     if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) {
       isPlaying = true;
@@ -740,6 +764,37 @@
     setPlaybackStatus(tr('Đang phát bài MP3 đã chọn.', 'Đang phát bài MP3 đã chọn.'));
     render();
   }
+  function playAdjacentTrack(direction) {
+    const available = tracks
+      .filter(track => isDirectAudioTrack(track))
+      .slice()
+      .sort((a, b) => String(a.title || '').localeCompare(String(b.title || ''), undefined, { sensitivity: 'base', numeric: true }));
+    if (!available.length) return;
+    const currentIndex = available.findIndex(track => String(track.id) === String(currentTrack));
+    const nextIndex = currentIndex < 0
+      ? (direction >= 0 ? 0 : available.length - 1)
+      : (currentIndex + direction + available.length) % available.length;
+    const nextTrack = available[nextIndex];
+    if (!nextTrack) return;
+    // With a one-song library, previous/next restarts the same song instead
+    // of calling playTrack() on the already-playing item and accidentally pausing it.
+    if (String(nextTrack.id) === String(currentTrack) && directAudio && !directAudio.paused) {
+      seekCurrentTrack(0);
+      return;
+    }
+    playTrack(String(nextTrack.id));
+  }
+  function seekCurrentTrack(seconds) {
+    const track = activeTrack();
+    const duration = Number(directAudio?.duration);
+    if (!track || !isDirectAudioTrack(track) || !Number.isFinite(duration) || duration <= 0) return;
+    const nextTime = Math.max(0, Math.min(duration, Number(seconds) || 0));
+    try {
+      directAudio.currentTime = nextTime;
+      savedPosition = nextTime;
+      updateMusicProfileProgress();
+    } catch {}
+  }
   function stopTrack() {
     const track = activeTrack();
     if (directAudio && !directAudio.paused && isDirectAudioTrack(track)) {
@@ -813,6 +868,31 @@
   island?.addEventListener('click', handleIslandToggle);
   $('#closeMusicPanel')?.addEventListener('click', () => { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); });
   playbackModeToggle?.addEventListener('click', togglePlaybackMode);
+  musicProfile?.init({
+    onShowProfile: () => {
+      closeMusicSearch({ clear:true, rerender:false });
+      musicProfile.setView('profile');
+      syncMusicProfile();
+    },
+    onShowLibrary: () => {
+      musicProfile.setView('library');
+      libraryMode = 'all';
+      query = '';
+      if (search) search.value = '';
+      closeMusicSearch({ clear:true, rerender:false });
+      render();
+    },
+    onClose: () => { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); },
+    onPlayPause: () => {
+      if (!currentTrack) return;
+      if (isPlaying && directAudio && !directAudio.paused) stopTrack();
+      else playTrack(String(currentTrack));
+    },
+    onPrevious: () => playAdjacentTrack(-1),
+    onNext: () => playAdjacentTrack(1),
+    onFavorite: () => { if (currentTrack) toggleMusicFavorite(currentTrack); },
+    onSeek: seekCurrentTrack
+  });
   searchMorph?.addEventListener('click', event => {
     // Keep clicks on the icon, input, caret and the morph surface inside this control.
     // Only a deliberate click/pointer outside the bubble is allowed to collapse it.
