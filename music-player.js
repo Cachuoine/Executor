@@ -37,48 +37,11 @@
     musicEngine?.appendChild(directAudio);
   }
   const islandRecord = $('.music-island-record');
-  const volumeControl = $('#musicVolumeControl');
-  const volumeToggle = $('#musicVolumeToggle');
-  const volumeSlider = $('#musicVolumeSlider');
-  const volumeValue = $('#musicVolumeValue');
-  const MUSIC_VOLUME_KEY = 'nightreaper-music-volume-v1';
-  let musicVolume = 0.8;
-  try {
-    const storedVolume = localStorage.getItem(MUSIC_VOLUME_KEY);
-    if (storedVolume !== null && Number.isFinite(Number(storedVolume))) {
-      musicVolume = Math.min(1, Math.max(0, Number(storedVolume)));
-    }
-  } catch {}
-  directAudio.volume = musicVolume;
-  directAudio.muted = musicVolume <= 0;
-
-  function setVolumePanelOpen(open) {
-    if (!volumeControl || !volumeToggle) return;
-    const expanded = Boolean(open);
-    volumeControl.classList.toggle('is-open', expanded);
-    volumeToggle.setAttribute('aria-expanded', String(expanded));
-    volumeToggle.setAttribute('aria-label', expanded ? 'Ẩn điều khiển âm lượng' : 'Mở điều khiển âm lượng');
-    volumeToggle.title = expanded ? 'Ẩn thanh âm lượng' : 'Điều chỉnh âm lượng';
-  }
-  function applyMusicVolume(value, { persist = true } = {}) {
-    const numeric = Number(value);
-    musicVolume = Math.min(1, Math.max(0, Number.isFinite(numeric) ? numeric / 100 : 0.8));
-    directAudio.volume = musicVolume;
-    directAudio.muted = musicVolume <= 0;
-    const percent = Math.round(musicVolume * 100);
-    if (volumeSlider) volumeSlider.value = String(percent);
-    if (volumeValue) volumeValue.textContent = `${percent}%`;
-    if (volumeControl) volumeControl.style.setProperty('--nr-volume-level', `${percent}%`);
-    if (volumeToggle) {
-      volumeToggle.dataset.volumeState = musicVolume <= 0 ? 'mute' : musicVolume < 0.36 ? 'low' : 'high';
-      volumeToggle.setAttribute('aria-valuetext', `${percent}%`);
-    }
-    if (persist) {
-      try { localStorage.setItem(MUSIC_VOLUME_KEY, String(musicVolume)); } catch {}
-    }
-  }
-  applyMusicVolume(musicVolume * 100, { persist: false });
-  setVolumePanelOpen(false);
+  // The Dynamic no longer exposes a volume widget. Keep a comfortable default
+  // level and clear stale mute/volume preferences left by older builds.
+  try { localStorage.removeItem('nightreaper-music-volume-v1'); } catch {}
+  directAudio.volume = 0.8;
+  directAudio.muted = false;
 
   let recordAngle = 0;
   let visualFrameId = 0;
@@ -108,8 +71,8 @@
     if (visualFrameId) window.cancelAnimationFrame(visualFrameId);
     visualFrameId = 0;
     lastVisualFrameTime = 0;
-    // Deliberately keep the vinyl angle untouched. The independent CSS waveform
-    // freezes itself through animation-play-state while playback is paused.
+    // Deliberately keep the vinyl angle untouched. syncWaveformPlayback() pauses
+    // each WAAPI bar without changing currentTime, so the wave freezes in place.
   }
   resetPlaybackVisuals();
   let directAudioTrackId = '';
@@ -182,6 +145,43 @@
   let libraryMode = 'all';
   let hasPlaybackAttempt = false;
   let isPlaying = false;
+  // Animate each decorative bar independently. WAAPI pause/resume preserves each
+  // animation's exact currentTime, avoiding CSS play-state snapping on audio pause.
+  const waveformConfigs = [
+    { min: 43, max: 18, duration: 860, phase: 180 },
+    { min: 30, max: 5, duration: 1080, phase: 540 },
+    { min: 38, max: 12, duration: 940, phase: 330 },
+    { min: 20, max: 0, duration: 1160, phase: 680 },
+    { min: 32, max: 8, duration: 890, phase: 410 },
+    { min: 26, max: 4, duration: 1040, phase: 130 },
+    { min: 42, max: 16, duration: 910, phase: 590 }
+  ];
+  const waveformAnimations = Array.from(dock.querySelectorAll('.music-island-wave i')).map((bar, index) => {
+    if (typeof bar.animate !== 'function') return null;
+    const config = waveformConfigs[index] || waveformConfigs[0];
+    const inset = value => `inset(${value}% 0 ${value}% 0 round 4px)`;
+    try {
+      const animation = bar.animate([
+        { clipPath: inset(config.min), filter: 'brightness(.88)' },
+        { clipPath: inset(config.max), filter: 'brightness(1.22)' }
+      ], {
+        duration: config.duration, delay: -config.phase, iterations: Infinity,
+        direction: 'alternate', easing: 'ease-in-out', fill: 'both'
+      });
+      animation.pause();
+      return animation;
+    } catch { return null; }
+  });
+  function syncWaveformPlayback() {
+    const shouldAnimate = Boolean(currentTrack && isPlaying && directAudio && !directAudio.paused);
+    for (const animation of waveformAnimations) {
+      if (!animation) continue;
+      try {
+        if (shouldAnimate && animation.playState !== 'running') animation.play();
+        else if (!shouldAnimate && animation.playState !== 'paused') animation.pause();
+      } catch {}
+    }
+  }
   // Dynamic defaults to random next-track playback; the footer control toggles repeat-one.
   let playbackMode = 'shuffle';
   let islandTransitionLocked = false;
@@ -271,7 +271,6 @@
   }
   function beginIslandClose() {
     if (islandTransitionLocked || !panel || panel.classList.contains('hidden')) return;
-    setVolumePanelOpen(false);
     lockIslandTransition('closing');
     closeMusicCenter();
     // Keep focus out of the now-hidden library while the island is collapsing.
@@ -352,9 +351,11 @@
   function syncPlaybackVisuals() {
     // Dynamic is a pure open/close trigger while collapsed; expanded state becomes a mini player:
     // the compact capsule stays blank. When expanded, it becomes a mini player:
-    // the vinyl spins, the selected track is named, and the decorative waveform drifts independently.
+    // the vinyl spins, the selected track is named, and the decorative waveform
+    // runs independently from MP3 levels and freezes at its exact frame on pause.
     const track = activeTrack();
     updateDynamicTrackDisplay(track);
+    syncWaveformPlayback();
     if (isPlaying && !directAudio?.paused) startPlaybackVisuals();
     else stopPlaybackVisuals();
     window.dispatchEvent(new CustomEvent('executor:music-playback-state', {
@@ -811,12 +812,6 @@
   }, true);
   island?.addEventListener('click', handleIslandToggle);
   $('#closeMusicPanel')?.addEventListener('click', () => { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); });
-  volumeToggle?.addEventListener('click', event => {
-    event.preventDefault();
-    event.stopPropagation();
-    setVolumePanelOpen(!volumeControl?.classList.contains('is-open'));
-  });
-  volumeSlider?.addEventListener('input', event => applyMusicVolume(event.currentTarget.value));
   playbackModeToggle?.addEventListener('click', togglePlaybackMode);
   searchMorph?.addEventListener('click', event => {
     // Keep clicks on the icon, input, caret and the morph surface inside this control.

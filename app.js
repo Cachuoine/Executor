@@ -22,7 +22,6 @@
       // Keep the visible song row's glow in sync when a track pauses/resumes.
       renderMusic(state.tracks);
     }
-    updatePublicNowPlaying(detail);
     if (changedTrack && nextId) revealPublicMusicTrack(nextId);
   });
   let toastTimer;
@@ -96,22 +95,6 @@
     const node = $('#toast'); if (!node) return;
     node.textContent = message; node.classList.add('show');
     clearTimeout(toastTimer); toastTimer = setTimeout(() => node.classList.remove('show'), 2700);
-  }
-  function updatePublicNowPlaying(detail = {}) {
-    const banner = $('#publicNowPlaying');
-    if (!banner) return;
-    const hasTrack = Boolean(detail.trackId);
-    banner.hidden = !hasTrack;
-    if (!hasTrack) return;
-    const stateLabel = $('#publicNowPlayingState');
-    const title = $('#publicNowPlayingTitle');
-    const artist = $('#publicNowPlayingArtist');
-    const mode = $('#publicNowPlayingMode');
-    if (stateLabel) stateLabel.textContent = detail.isPlaying ? 'DYNAMIC · ĐANG PHÁT' : 'DYNAMIC · ĐANG TẠM DỪNG';
-    if (title) title.textContent = detail.title || 'Bài hát chưa đặt tên';
-    if (artist) artist.textContent = detail.artist || 'Chưa rõ nghệ sĩ';
-    if (mode) mode.textContent = detail.mode === 'repeat' ? 'REPEAT ONE' : 'RANDOM NEXT';
-    banner.classList.toggle('is-playing', Boolean(detail.isPlaying));
   }
   function revealPublicMusicTrack(trackId) {
     const id = String(trackId || '');
