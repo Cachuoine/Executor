@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.53",
-  "updatedAt": "2026-11-07T03:16:23.525Z",
+  "updatedAt": "2026-11-07T03:33:02.110Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -398,14 +398,14 @@
       "name": "VORTEX",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "online",
+      "status": "unknown",
       "version": "1.4.8.31",
       "compatibilityVersion": "f0ea5da9412f4e35",
       "updatedAt": "2026-11-06T08:16:00.000Z",
       "websiteUrl": "https://www.getvortex.online/",
       "communityUrl": "https://discord.gg/vortex-993830408208785418",
       "icon": "<:vortex:1552398238437609502>",
-      "summary": "```ansi\n       \u001b[4;32m✦NIGHTREAPER · VORTEX\u001b[0m\n\u001b[36m▸ TRẠNG THÁI  \u001b[1;37mCHƯA XÁC MINH\u001b[0m\n\u001b[36m▸ NỀN TẢNG   \u001b[37mPC · WINDOWS\u001b[0m\n\u001b[36m▸ PHIÊN BẢN  \u001b[33m1.4.8.30\u001b[0m\n\u001b[36m▸ TƯƠNG THÍCH \u001b[37m5a21b87bbc2641cf\u001b[0m\n\u001b[36m▸ sUNC / UNC \u001b[37m100 / 100\u001b[0m\n\u001b[90m──────────────────────────────────\u001b[0m\n       \u001b[4;33m✦VORTEX · CHANGELOG\n\u001b[1;36m[^] Updated for the latest Roblox version\n       \u001b[0;37;46mConfig by Nightreaper\n```",
+      "summary": "```ansi\n       \u001b[4;32m✦NIGHTREAPER · VORTEX\u001b[0m\n\u001b[36m▸ TRẠNG THÁI  \u001b[1;37mCHƯA XÁC MINH\u001b[0m\n\u001b[36m▸ NỀN TẢNG   \u001b[37mPC · WINDOWS\u001b[0m\n\u001b[36m▸ PHIÊN BẢN  \u001b[33m1.4.8.31\u001b[0m\n\u001b[36m▸ TƯƠNG THÍCH \u001b[37mf0ea5da9412f4e35\u001b[0m\n\u001b[36m▸ sUNC / UNC \u001b[37m100 / 100\u001b[0m\n\u001b[90m──────────────────────────────────\u001b[0m\n       \u001b[4;33m✦VORTEX · CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated for the latest Roblox version\n       \u001b[0;37;46mConfig by Nightreaper\n```",
       "sourceUrl": "",
       "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566451608450113646/01049240-5ea2-4bb4-96bb-8a87f40573ea.png?ex=6ae8973e&is=6ae745be&hm=27ac0d88636b8372a6fcb3df1dc3f6b3eb300bd17e5fbddcfe6389419cccf162&",
       "websiteMainImageUrl": "",
@@ -415,7 +415,7 @@
       "unc": "100",
       "id": "entry-pc-vortex",
       "createdAt": "2026-11-01T14:00:34.940Z",
-      "modifiedAt": "2026-11-06T13:36:11.464Z"
+      "modifiedAt": "2026-11-07T03:33:00.596Z"
     },
     {
       "name": "WAVE",
@@ -443,10 +443,10 @@
   ],
   "stats": {
     "total": 19,
-    "online": 12,
+    "online": 11,
     "offline": 1,
     "maintenance": 6,
-    "unknown": 0,
+    "unknown": 1,
     "platforms": {
       "PC": 15,
       "Android": 2,
