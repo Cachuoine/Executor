@@ -2,19 +2,19 @@
 <html class="executor-no-dblclick-edit" lang="vi">
 <head>
   <meta charset="utf-8">
-  <meta name="si-build" content="15.2.53">
+  <meta name="si-build" content="15.2.54">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0a0c13">
   <meta name="description" content="NightReaper — trung tâm quản lý executor, phiên bản Roblox và âm nhạc.">
   <base href="./">
   <title>NightReaper — Trung tâm điều hành</title>
-  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.53"/>
+  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.54"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=15.2.53-r2">
-  <script src="discord-description.js?v=15.2.53" defer></script><script src="app.js?v=15.2.53-r4" defer></script>
-  <link rel="stylesheet" href="music-island.css?v=15.2.53-r1">
+  <link rel="stylesheet" href="site.css?v=15.2.54-r2">
+  <script src="discord-description.js?v=15.2.54" defer></script><script src="app.js?v=15.2.54-r4" defer></script>
+  <link rel="stylesheet" href="music-island.css?v=15.2.54-r1">
 </head>
 <body>
   <div class="ambient ambient-a" aria-hidden="true"></div>
@@ -39,9 +39,9 @@
         <div class="music-search-row" id="musicSearchForm"><input id="musicSearch" type="search" placeholder="Tìm tên bài hát hoặc nghệ sĩ…" autocomplete="off" aria-label="Tìm tên bài hát hoặc nghệ sĩ"></div>
         <div class="music-library-meta"><span id="musicLibraryCount">Đang tải thư viện…</span></div>
         <div class="music-track-list" id="musicTrackList"><div class="music-library-loading">Đang tải thư viện nhạc…</div></div>
-        <div class="music-panel-footer"><span class="music-live-led"></span><span id="musicPlaybackStatus">Sẵn sàng phát nhạc.</span><button type="button" id="musicPlaybackToggle" class="music-playback-toggle" aria-pressed="false">Chọn bài trước ▶</button><a id="musicOpenSource" href="https://music.youtube.com/" target="_blank" rel="noopener noreferrer">Mở nguồn ↗</a></div>
+        <div class="music-panel-footer"><span class="music-live-led"></span><span id="musicPlaybackStatus">Sẵn sàng phát nhạc.</span><button type="button" id="musicPlaybackToggle" class="music-playback-toggle" aria-pressed="false">Chọn bài trước ▶</button><span id="musicOpenSource" class="music-source-label">MP3 LOCAL</span></div>
       </section>
-      <div class="music-engine" aria-hidden="true"><iframe id="musicPlayer" src="about:blank" title="Trình phát nhạc YouTube" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+      <div class="music-engine" aria-hidden="true"><audio id="musicDirectAudio" preload="none"></audio></div>
     </div>
       <div class="nav-side nav-side-right"><a class="nav-link" href="#versions" data-main-nav="versions">Phiên bản</a><a class="nav-link" href="#music" data-main-nav="music">Nhạc</a></div>
     </nav>
@@ -164,7 +164,7 @@
     </section>
 
     <section class="versions-section section-shell" id="versions"><div class="section-heading reveal"><div><span class="section-tag">THÔNG TIN PHIÊN BẢN</span><h2>Phiên bản <em>Roblox.</em></h2><p>Thông tin phiên bản được cập nhật từ bảng điều khiển localhost khi nguồn dữ liệu khả dụng. Liên kết tải dẫn đến trang chính thức hoặc nhà cung cấp được ghi rõ.</p></div><div class="section-aside"><span class="aside-number">03</span><span>BẢN CHỤP PHIÊN BẢN</span></div></div>
-      <div class="version-layout reveal"><div class="version-primary"><div class="version-topline"><span class="version-logo">R</span><span><small>ỨNG DỤNG ROBLOX</small><b>Thông tin bản dựng hiện tại</b></span><span id="versionSourceBadge" class="version-badge">Bản chụp</span></div><div class="version-main" id="versionMain"><span class="loader-ring"></span><span>Đang kiểm tra phiên bản…</span></div><div class="version-foot"><span id="versionLastUpdated">Nguồn chưa cung cấp thời gian cập nhật</span><a href="https://whatexpsare.online/" target="_blank" rel="noopener noreferrer">Nguồn phiên bản ↗</a></div></div>
+      <div class="version-layout reveal"><div class="version-primary"><div class="version-topline"><span class="version-logo"><img src="./assets/nightreaper-logo.png" alt="NightReaper" loading="lazy"></span><span><small>ỨNG DỤNG ROBLOX</small><b>Thông tin bản dựng hiện tại</b></span><span id="versionSourceBadge" class="version-badge">Bản chụp</span></div><div class="version-main" id="versionMain"><span class="loader-ring"></span><span>Đang kiểm tra phiên bản…</span></div><div class="version-foot"><span id="versionLastUpdated">Nguồn chưa cung cấp thời gian cập nhật</span><a href="https://whatexpsare.online/" target="_blank" rel="noopener noreferrer">Nguồn phiên bản ↗</a></div></div>
         <div class="download-panel"><span class="section-tag">LIÊN KẾT NHANH</span><h3>Chọn thiết bị của bạn.</h3><p>Mở trang tải xuống hoặc cửa hàng ứng dụng tương ứng với từng nền tảng.</p><div id="downloadLinks" class="download-links"><span class="loading-text">Đang chuẩn bị liên kết…</span></div><div class="download-disclaimer">Hãy kiểm tra đích đến và yêu cầu hệ thống trước khi tải xuống hoặc cài đặt phần mềm.</div></div></div>
     </section>
 
@@ -178,7 +178,7 @@
 
   <dialog id="detailDialog" class="detail-dialog" aria-labelledby="detailTitle"><form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Đóng chi tiết">×</button></form><div id="detailContent"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="music-player.js?v=15.2.53-r1" defer></script>
-  <script src="ambient-motion.js?v=15.2.53-r1" defer></script>
+  <script src="music-player.js?v=15.2.54-r1" defer></script>
+  <script src="ambient-motion.js?v=15.2.54-r1" defer></script>
 </body>
 </html>

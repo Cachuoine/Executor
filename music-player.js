@@ -57,20 +57,14 @@
     } catch { return ''; }
   };
   const isDirectAudioTrack = track => Boolean(getDirectAudioUrl(track));
-  const isSoundCloudTrack = track => Boolean(track && (track.sourceType === 'soundcloud' || (!track.videoId && /soundcloud\.com/i.test(String(track.url || '')))));
-  const isTikTokTrack = track => {
-    if (!track) return false;
-    if (track.sourceType === 'tiktok') return true;
-    try { return /(?:^|\.)tiktok\.com$/i.test(new URL(String(track.url || '')).hostname); } catch { return false; }
-  };
+  const isSoundCloudTrack = () => false;
+  const isTikTokTrack = () => false;
   const search = $('#musicSearch');
   const list = $('#musicTrackList');
   const playbackStatus = $('#musicPlaybackStatus');
   const playbackToggle = $('#musicPlaybackToggle');
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
-  const FALLBACK = [
-    { id: 'mra', title: 'Tell Me Why', artist: 'Mr.A · Remake by MGM Studio', genre: 'Remix', videoId: 'EMUKd20IbuM', url: 'https://youtu.be/EMUKd20IbuM', pinned: true }
-  ];
+  const FALLBACK = [];
   // Curated starters are merged with server-managed tracks so existing installations
   // also receive a useful library without overwriting their saved/admin-added songs.
   // The library is managed by Admin; do not silently re-add removed recommendations.
@@ -231,8 +225,8 @@
     const set = (selector, value) => { const node = $(selector); if (node) node.textContent = value; };
     const searchInput = $('#musicSearch'); if (searchInput) searchInput.placeholder = vi ? 'Tìm bài hát hoặc nghệ sĩ…' : 'Tìm bài hát hoặc nghệ sĩ…';
     const heading = $('#musicPanel .music-panel-heading strong'); if (heading) heading.textContent = vi ? 'Thư viện nhạc' : 'Thư viện nhạc';
-    const source = $('#musicOpenSource'); if (source) source.textContent = vi ? 'Mở nguồn ↗' : 'Mở nguồn ↗';
-    const status = $('#musicPlaybackStatus'); if (status && !isPlaying && !hasPlaybackAttempt) status.textContent = vi ? 'Chọn bài để phát. YouTube có thể hiển thị quảng cáo trước bài hát.' : 'Chọn bài để phát. YouTube có thể hiển thị quảng cáo trước bài hát.';
+    const source = $('#musicOpenSource'); if (source) source.textContent = 'MP3 LOCAL';
+    const status = $('#musicPlaybackStatus'); if (status && !isPlaying && !hasPlaybackAttempt) status.textContent = 'Chọn một tệp MP3 đã tải lên để phát.';
     const toggle = $('#musicPlaybackToggle'); if (toggle) { toggle.textContent = isPlaying ? (vi ? 'Tạm dừng tại đây ■' : 'Tạm dừng tại đây ■') : (currentTrack ? (vi ? 'Phát bài đã chọn ▶' : 'Phát bài đã chọn ▶') : (vi ? 'Chọn bài trước ▶' : 'Chọn bài trước ▶')); toggle.disabled = !currentTrack; }
   }
   function tr(vi, en) { return vi; }
@@ -556,7 +550,7 @@
     if (title) title.textContent = track ? track.title : tr('Chọn bài hát', 'Chọn bài hát');
     if (artist) artist.textContent = track ? track.artist : tr('Chưa có nhạc đang phát', 'Chưa có nhạc đang phát');
     if (state) state.textContent = isPlaying ? tr('ĐANG PHÁT', 'ĐANG PHÁT') : tr('TRÌNH PHÁT NHẠC', 'TRÌNH PHÁT NHẠC');
-    if (source) source.href = track?.url || 'https://music.youtube.com/';
+    if (source) source.textContent = 'MP3 LOCAL';
     if (playbackToggle) {
       playbackToggle.textContent = isPlaying ? tr('Tạm dừng tại đây ■', 'Tạm dừng tại đây ■') : (track ? tr('Phát bài đã chọn ▶', 'Phát bài đã chọn ▶') : tr('Chọn bài trước ▶', 'Chọn bài trước ▶'));
       playbackToggle.setAttribute('aria-pressed', String(isPlaying));
@@ -663,6 +657,7 @@
   function playTrack(trackId) {
     const track = tracks.find(row => row.id === trackId) || activeTrack();
     if (!track) return;
+    if (!isDirectAudioTrack(track)) { setPlaybackStatus('Chỉ phát tệp MP3 đã tải lên trong thư viện NightReaper.'); return; }
     // Clicking the currently playing row toggles pause at the exact current position.
     // Clicking it again resumes from that point; selecting another row starts that song.
     if (track.id === currentTrack && isPlaying) { stopTrack(); return; }
@@ -760,19 +755,10 @@
         const data = await response.json();
         if (!Array.isArray(data?.tracks)) continue;
         if (candidate.managed) {
-          const managed = data.tracks.filter(track =>
-            track.id !== 'supermode' &&
-            track.videoId !== 'tWK8kLIYxF0' &&
-            track.id !== 'rec-weeknd-blinding-lights' &&
-            track.videoId !== '4NRXx6U8ABQ' &&
-            !/supermode/i.test(String(track.artist || ''))
-          );
+          const managed = data.tracks.filter(track => track?.sourceType === 'audio' && !track.videoId && /^\.\/music\/[A-Za-z0-9][A-Za-z0-9._-]*\.mp3$/i.test(String(track.url || '')));
           tracks = managed;
         } else {
-          tracks = data.tracks.filter(track =>
-            track.id !== 'rec-weeknd-blinding-lights' &&
-            track.videoId !== '4NRXx6U8ABQ'
-          );
+          tracks = data.tracks.filter(track => track?.sourceType === 'audio' && !track.videoId && /^\.\/music\/[A-Za-z0-9][A-Za-z0-9._-]*\.mp3$/i.test(String(track.url || '')));
         }
         break;
       } catch { /* Try the next source, especially the static JSON on GitHub Pages. */ }
