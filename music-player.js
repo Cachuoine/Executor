@@ -255,8 +255,8 @@
     const hasTrack = Boolean(track);
     dock.classList.toggle('has-track', hasTrack);
     dock.classList.toggle('is-empty', !hasTrack);
-    // The initial/idle Dynamic Island is intentionally a tiny icon-only capsule.
-    // No placeholder title, artist, LED or playback status is shown until a track exists.
+    // Dynamic stays deliberately content-free in every playback state. The capsule
+    // is only a neutral opener with a pulsing LED; track details live in the library.
     if (!hasTrack) dock.classList.remove('is-playing');
     // Share live playback state with the Favorite Galaxy so its music cards animate
     // only while the player is truly running, and gracefully power down on pause.
@@ -675,8 +675,8 @@
     if (search) { search.tabIndex = 0; requestAnimationFrame(() => search.focus({ preventScroll:true })); }
   }
   function playTrack(trackId) {
-    // Selecting a result collapses the search bubble back to its icon with the same
-    // reverse animation; the selected song then remains visible in the Dynamic pill.
+    // Selecting a result collapses the search bubble with the reverse morph. The
+    // Dynamic capsule remains blank; track details are kept inside the library only.
     closeMusicSearch({ clear:true, rerender:false });
     const track = tracks.find(row => row.id === trackId) || activeTrack();
     const audioUrl = getDirectAudioUrl(track);
