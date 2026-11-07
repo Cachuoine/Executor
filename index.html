@@ -8,13 +8,13 @@
   <meta name="description" content="NightReaper — trung tâm quản lý executor, phiên bản Roblox và âm nhạc.">
   <base href="./">
   <title>NightReaper — Trung tâm điều hành</title>
-  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.53-r8"/>
+  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.53-r9"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=15.2.53-r8">
-  <script src="discord-description.js?v=15.2.53-r8" defer></script><script src="app.js?v=15.2.53-r8" defer></script>
-  <link rel="stylesheet" href="music-island.css?v=15.2.53-r8">
+  <link rel="stylesheet" href="site.css?v=15.2.53-r9">
+  <script src="discord-description.js?v=15.2.53-r9" defer></script><script src="app.js?v=15.2.53-r9" defer></script>
+  <link rel="stylesheet" href="music-island.css?v=15.2.53-r9">
 </head>
 <body>
   <div class="ambient ambient-a" aria-hidden="true"></div>
@@ -34,13 +34,12 @@
         <span class="music-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="music-state-led" aria-hidden="true"><i class="music-live-led"></i></span><span class="dynamic-status-view" id="dynamicStatusView" aria-hidden="true"><span class="dynamic-status-copy"><small id="dynamicStatusLabel">NIGHTREAPER · SYSTEM</small><b id="dynamicStatusValue">Đang khởi tạo</b></span><span class="dynamic-status-progress-wrap"><span class="dynamic-status-progress"><i id="dynamicStatusFill"></i></span><small id="dynamicStatusPercent">0%</small></span><span class="dynamic-status-state" id="dynamicStatusState" aria-hidden="true"><i class="dynamic-status-spinner"></i><i class="dynamic-status-check">✓</i></span></span>
       </button>
       <section class="music-panel hidden" id="musicPanel" aria-label="Trình phát và thư viện nhạc">
-        <div class="music-panel-heading"><div><small>NIGHTREAPER · THƯ VIỆN NHẠC</small><strong>Thư viện nhạc</strong></div><span class="music-panel-signal"><i></i> SẴN SÀNG</span><button type="button" class="music-close" id="closeMusicPanel" aria-label="Đóng thư viện nhạc">×</button></div>
-        <div class="music-library-filters" role="group" aria-label="Lọc thư viện nhạc"><button type="button" class="music-library-filter is-active" data-music-filter="all" aria-pressed="true">Tất cả</button><button type="button" class="music-library-filter" data-music-filter="favorites" aria-pressed="false"><span aria-hidden="true">♡</span> Yêu thích <b id="musicFavoriteCount">0</b></button></div>
-        <div class="music-search-row" id="musicSearchForm"><input id="musicSearch" type="search" placeholder="Tìm tên bài hát hoặc nghệ sĩ…" autocomplete="off" aria-label="Tìm tên bài hát hoặc nghệ sĩ"></div>
+        <div class="music-panel-heading"><div><small>NIGHTREAPER · THƯ VIỆN NHẠC</small><strong>Thư viện nhạc</strong></div><button type="button" class="music-panel-signal music-panel-state-toggle" id="musicPanelStateToggle" aria-label="Tắt Dynamic" title="Tắt Dynamic"><i></i><span>SẴN SÀNG</span><b>TẮT</b></button><div class="music-heading-actions"><div class="music-search-morph" id="musicSearchForm"><input id="musicSearch" type="search" placeholder="Tìm bài hát hoặc nghệ sĩ…" autocomplete="off" aria-label="Tìm tên bài hát hoặc nghệ sĩ" tabindex="-1"><button type="button" class="music-search-toggle" id="musicSearchToggle" aria-label="Mở tìm kiếm" aria-expanded="false" title="Tìm kiếm"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.6"></circle><path d="m16 16 4.4 4.4"></path></svg></button></div><button type="button" class="music-close" id="closeMusicPanel" aria-label="Đóng thư viện nhạc" title="Đóng">×</button></div></div>
+        <div class="music-library-filters" role="group" aria-label="Lọc thư viện nhạc"><button type="button" class="music-library-filter is-active" data-music-filter="all" aria-pressed="true">Tất cả</button><button type="button" id="musicPlaybackModeToggle" class="music-playback-toggle music-playback-mode-toggle" aria-label="Chế độ chuyển tiếp ngẫu nhiên" aria-pressed="false" title="Chuyển bài ngẫu nhiên khi bài hiện tại kết thúc">⤨ Chuyển tiếp ngẫu nhiên</button><button type="button" class="music-library-filter" data-music-filter="favorites" aria-pressed="false"><span aria-hidden="true">♡</span> Yêu thích <b id="musicFavoriteCount">0</b></button></div>
         <div class="music-library-meta"><span id="musicLibraryCount">Đang tải thư viện…</span></div>
-        <div class="music-current-track-banner" id="musicCurrentTrackBanner" hidden aria-live="polite"><span class="music-current-track-signal"><i></i></span><span class="music-current-track-copy"><small id="musicCurrentTrackState">ĐANG PHÁT · VỊ TRÍ TỰ ĐỘNG</small><b id="musicCurrentTrackTitle">Chưa chọn bài hát</b><span id="musicCurrentTrackArtist">Mở thư viện để chọn MP3</span></span><span class="music-current-track-mode" id="musicCurrentTrackMode">SHUFFLE</span></div>
+        <div class="music-current-track-banner" id="musicCurrentTrackBanner" hidden aria-live="polite"><span class="music-current-track-signal"><i></i></span><span class="music-current-track-copy"><small id="musicCurrentTrackState">ĐANG PHÁT · VỊ TRÍ TỰ ĐỘNG</small><b id="musicCurrentTrackTitle">Chưa chọn bài hát</b><span id="musicCurrentTrackArtist">Mở thư viện để chọn bài hát</span></span><span class="music-current-track-mode" id="musicCurrentTrackMode">SHUFFLE</span></div>
         <div class="music-track-list" id="musicTrackList"><div class="music-library-loading">Đang tải thư viện nhạc…</div></div>
-        <div class="music-panel-footer"><span class="music-live-led"></span><span id="musicPlaybackStatus">Sẵn sàng phát nhạc.</span><button type="button" id="musicPlaybackModeToggle" class="music-playback-toggle music-playback-mode-toggle" aria-label="Chế độ chuyển tiếp ngẫu nhiên" aria-pressed="false" title="Chuyển bài ngẫu nhiên khi bài hiện tại kết thúc">⤨ Chuyển tiếp ngẫu nhiên</button><span id="musicOpenSource" class="music-local-only">MP3 NỘI BỘ</span></div>
+        <div class="music-panel-footer"><span class="music-live-led"></span><span id="musicPlaybackStatus">Sẵn sàng phát nhạc.</span></div>
       </section>
       <div class="music-engine" aria-hidden="true"><audio id="musicDirectAudio" preload="metadata" hidden></audio></div>
     </div>
@@ -179,7 +178,7 @@
 
   <dialog id="detailDialog" class="detail-dialog" aria-labelledby="detailTitle"><form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Đóng chi tiết">×</button></form><div id="detailContent"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="music-player.js?v=15.2.53-r8" defer></script>
-  <script src="ambient-motion.js?v=15.2.53-r8" defer></script>
+  <script src="music-player.js?v=15.2.53-r9" defer></script>
+  <script src="ambient-motion.js?v=15.2.53-r9" defer></script>
 </body>
 </html>

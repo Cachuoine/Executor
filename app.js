@@ -115,21 +115,18 @@
   function revealPublicMusicTrack(trackId) {
     const id = String(trackId || '');
     if (!id) return;
-    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    const behavior = reducedMotion ? 'auto' : 'smooth';
-    // renderMusic inserts the active track even if it is outside the first ten alphabetic rows.
+    // Dynamic selection must never navigate/scroll the main page to #music.
+    // The Dynamic player already scrolls its own inner library to the active row.
     requestAnimationFrame(() => {
-      const section = $('#music');
       const list = $('#musicSectionTrackList');
       const row = list ? [...list.querySelectorAll('[data-track-id]')].find(node => node.dataset.trackId === id) : null;
-      if (!section || !row) return;
-      section.scrollIntoView({ behavior, block: 'start' });
-      requestAnimationFrame(() => {
-        if (row.isConnected) row.scrollIntoView({ behavior, block: 'center', inline: 'nearest' });
-        row.classList.add('is-current-reveal');
-      });
+      if (!row) return;
+      row.classList.remove('is-current-reveal');
+      void row.offsetWidth;
+      row.classList.add('is-current-reveal');
     });
   }
+
   function formatDate(value) {
     if (!value) return 'Chưa có thời gian cập nhật';
     const date = new Date(value);

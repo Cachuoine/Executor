@@ -52,6 +52,9 @@
   let pendingTrackRevealId = '';
   const playbackStatus = $('#musicPlaybackStatus');
   const playbackModeToggle = $('#musicPlaybackModeToggle');
+  const panelStateToggle = $('#musicPanelStateToggle');
+  const searchMorph = $('#musicSearchForm');
+  const searchToggle = $('#musicSearchToggle');
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
   const FALLBACK = []; // Public music is sourced exclusively from Admin-uploaded local MP3 files.
   // The library is managed by Admin; deleted tracks are never silently restored.
@@ -213,8 +216,7 @@
     const set = (selector, value) => { const node = $(selector); if (node) node.textContent = value; };
     const searchInput = $('#musicSearch'); if (searchInput) searchInput.placeholder = vi ? 'Tìm bài hát hoặc nghệ sĩ…' : 'Tìm bài hát hoặc nghệ sĩ…';
     const heading = $('#musicPanel .music-panel-heading strong'); if (heading) heading.textContent = vi ? 'Thư viện nhạc' : 'Thư viện nhạc';
-    const source = $('#musicOpenSource'); if (source) source.textContent = 'MP3 NỘI BỘ';
-    const status = $('#musicPlaybackStatus'); if (status && !isPlaying && !hasPlaybackAttempt) status.textContent = 'Chọn một tệp MP3 nội bộ để phát.';
+    const status = $('#musicPlaybackStatus'); if (status && !isPlaying && !hasPlaybackAttempt) status.textContent = 'Chọn một bài hát để phát.';
     syncPlaybackModeControl();
   }
   function tr(vi, en) { return vi; }
@@ -559,11 +561,10 @@
     });
     syncMusicLanguage();
     const track = activeTrack();
-    const title = $('#musicTrackTitle'), artist = $('#musicTrackArtist'), state = $('#musicNowLabel'), source = $('#musicOpenSource');
+    const title = $('#musicTrackTitle'), artist = $('#musicTrackArtist'), state = $('#musicNowLabel');
     if (title) title.textContent = track ? track.title : tr('Chọn bài hát', 'Chọn bài hát');
     if (artist) artist.textContent = track ? track.artist : tr('Chưa có nhạc đang phát', 'Chưa có nhạc đang phát');
     if (state) state.textContent = isPlaying ? tr('ĐANG PHÁT', 'ĐANG PHÁT') : tr('TRÌNH PHÁT NHẠC', 'TRÌNH PHÁT NHẠC');
-    if (source) source.textContent = 'MP3 NỘI BỘ';
     syncPlaybackModeControl();
     updateCurrentTrackBanner(track);
     if (pendingTrackRevealId) requestAnimationFrame(revealCurrentTrackInLibrary);
@@ -746,7 +747,25 @@
   }, true);
   island?.addEventListener('click', handleIslandToggle);
   $('#closeMusicPanel')?.addEventListener('click', beginIslandClose);
+  panelStateToggle?.addEventListener('click', beginIslandClose);
   playbackModeToggle?.addEventListener('click', togglePlaybackMode);
+  searchToggle?.addEventListener('click', () => {
+    if (!searchMorph) return;
+    const opening = !searchMorph.classList.contains('is-open');
+    searchMorph.classList.toggle('is-open', opening);
+    searchToggle.setAttribute('aria-expanded', String(opening));
+    searchToggle.setAttribute('aria-label', opening ? 'Đóng tìm kiếm' : 'Mở tìm kiếm');
+    if (search) {
+      search.tabIndex = opening ? 0 : -1;
+      if (opening) search.focus({ preventScroll: true });
+      else { search.value = ''; query = ''; render(); }
+    }
+  });
+  search?.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && searchMorph?.classList.contains('is-open')) {
+      event.preventDefault(); searchToggle?.click();
+    }
+  });
   list?.addEventListener('click', event => { const button = event.target.closest('[data-music-track]'); if (button) playTrack(button.dataset.musicTrack); });
   search?.addEventListener('input', () => { query = String(search.value || '').trim().toLowerCase(); render(); });
   document.addEventListener('click', event => {

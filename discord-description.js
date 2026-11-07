@@ -101,45 +101,6 @@
     append(escapedCode.slice(lastIndex));
     return output;
   }
-  // Refresh only the generated Potassium profile header. Keep every existing
-  // Changelog line (including real ESC/ANSI sequences) intact when Admin opens
-  // an item or changes its managed metadata fields.
-  function refreshManagedTemplate(value, freshTemplate) {
-    const source = String(value ?? '');
-    const replacement = String(freshTemplate ?? '');
-    if (!source.trim() || !replacement.trim()) return source;
-    const ansiBlock = /(^```ansi[ \t]*\r?\n)([\s\S]*?)(\r?\n```)/gim;
-    let replaced = false;
-    const result = source.replace(ansiBlock, (whole, opening, body, closing) => {
-      if (replaced) return whole;
-      const oldLines = body.replace(/\r\n?/g, '\n').split('\n');
-      const headingIndex = oldLines.findIndex(line => /CHANGELOG/i.test(line));
-      const signatureIndex = oldLines.findLastIndex(line => /Config by Nightreaper/i.test(line));
-      if (headingIndex < 0 || signatureIndex <= headingIndex) return whole;
-      const oldHeader = oldLines.slice(0, headingIndex + 1).join('\n');
-      if (!/NIGHTREAPER/i.test(oldHeader) || !/TRẠNG THÁI/i.test(oldHeader)
-        || !/PHIÊN BẢN/i.test(oldHeader) || !/TƯƠNG THÍCH/i.test(oldHeader)) return whole;
-
-      const freshMatch = replacement.match(/^```ansi[ \t]*\r?\n([\s\S]*?)\r?\n```/i);
-      if (!freshMatch) return whole;
-      const freshLines = freshMatch[1].replace(/\r\n?/g, '\n').split('\n');
-      const freshHeadingIndex = freshLines.findIndex(line => /CHANGELOG/i.test(line));
-      const freshSignatureIndex = freshLines.findLastIndex(line => /Config by Nightreaper/i.test(line));
-      if (freshHeadingIndex < 0 || freshSignatureIndex <= freshHeadingIndex) return whole;
-
-      const changelogLines = oldLines.slice(headingIndex + 1, signatureIndex);
-      const trailingLines = oldLines.slice(signatureIndex + 1);
-      const merged = [
-        ...freshLines.slice(0, freshHeadingIndex + 1),
-        ...changelogLines,
-        freshLines[freshSignatureIndex],
-        ...trailingLines
-      ];
-      replaced = true;
-      return `${opening}${merged.join('\n')}${closing}`;
-    });
-    return replaced ? result : source;
-  }
 
   function render(value) {
     const normalized = normalizeAnsiEscapes(String(value ?? '')).replace(/\r\n?/g, '\n');
@@ -179,5 +140,5 @@
     }
     return out || '<p class="discord-description-empty">Chưa có mô tả.</p>';
   }
-  window.DiscordDescription = { render, escapeHtml, refreshManagedTemplate };
+  window.DiscordDescription = { render, escapeHtml };
 })();
