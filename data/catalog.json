@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.54",
-  "updatedAt": "2026-11-07T02:43:23.752Z",
+  "updatedAt": "2026-11-07T02:44:12.464Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -76,7 +76,7 @@
       "name": "DELTA",
       "platform": "Android",
       "pcCategory": "",
-      "status": "maintenance",
+      "status": "online",
       "version": "10.107",
       "compatibilityVersion": "2.744.1081",
       "updatedAt": "2026-11-02T21:42:00.000Z",
@@ -93,7 +93,7 @@
       "unc": "99",
       "id": "entry-android-delta",
       "createdAt": "2026-11-01T14:20:44.080Z",
-      "modifiedAt": "2026-11-07T02:43:22.889Z"
+      "modifiedAt": "2026-11-07T02:43:28.498Z"
     },
     {
       "name": "DELTA",
@@ -375,14 +375,14 @@
       "name": "VOLT",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "maintenance",
+      "status": "online",
       "version": "1.3.21.2",
-      "compatibilityVersion": "5a21b87bbc2641cf",
+      "compatibilityVersion": "f0ea5da9412f4e35",
       "updatedAt": "2026-11-06T05:28:00.000Z",
       "websiteUrl": "https://voltbz.net/",
       "communityUrl": "https://discord.com/invite/voltbz",
       "icon": "<:volt:1551962506984038502>",
-      "summary": "```ansi\n       \u001b[4;32m✦NIGHTREAPER · VOLT\u001b[0m\n\u001b[36m▸ TRẠNG THÁI  \u001b[1;33mĐANG CẬP NHẬT\u001b[0m\n\u001b[36m▸ NỀN TẢNG   \u001b[37mPC · WINDOWS\u001b[0m\n\u001b[36m▸ PHIÊN BẢN  \u001b[33m1.3.20.1\u001b[0m\n\u001b[36m▸ TƯƠNG THÍCH \u001b[37m5a21b87bbc2641cf\u001b[0m\n\u001b[36m▸ sUNC / UNC \u001b[37m100 / 99\u001b[0m\n\u001b[90m──────────────────────────────────\u001b[0m\n       \u001b[4;33m✦VOLT · CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated for version-f0ea5da9412f4e35\n\u001b[1;32m[!] Fixed a VoltSignal crash\n       \u001b[0;37;46mConfig by Nightreaper\n```",
+      "summary": "```ansi\n       \u001b[4;32m✦NIGHTREAPER · VOLT\u001b[0m\n\u001b[36m▸ TRẠNG THÁI  \u001b[1;33mĐANG CẬP NHẬT\u001b[0m\n\u001b[36m▸ NỀN TẢNG   \u001b[37mPC · WINDOWS\u001b[0m\n\u001b[36m▸ PHIÊN BẢN  \u001b[33m1.3.21.2\u001b[0m\n\u001b[36m▸ TƯƠNG THÍCH \u001b[37mf0ea5da9412f4e35\u001b[0m\n\u001b[36m▸ sUNC / UNC \u001b[37m100 / 99\u001b[0m\n\u001b[36m▸ CẬP NHẬT   \u001b[37m12:28:00 6/11/2026\u001b[0m\n\u001b[36m▸ LIÊN KẾT    \u001b[37mhttps://voltbz.net/ · https://discord.com/invite/voltbz\u001b[0m\n\u001b[90m──────────────────────────────────\u001b[0m\n       \u001b[4;33m✦VOLT · CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated for version-f0ea5da9412f4e35\n\u001b[1;32m[!] Fixed a VoltSignal crash\n       \u001b[0;37;46mConfig by Nightreaper\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "https://bennnyr.com/status/logos/volt.png",
       "websiteMainImageUrl": "",
@@ -392,7 +392,7 @@
       "unc": "99",
       "id": "entry-pc-volt",
       "createdAt": "2026-11-01T08:10:17.898Z",
-      "modifiedAt": "2026-11-07T02:34:45.252Z"
+      "modifiedAt": "2026-11-07T02:44:11.402Z"
     },
     {
       "name": "VORTEX",
@@ -443,9 +443,9 @@
   ],
   "stats": {
     "total": 19,
-    "online": 11,
+    "online": 13,
     "offline": 1,
-    "maintenance": 7,
+    "maintenance": 5,
     "unknown": 0,
     "platforms": {
       "PC": 15,
