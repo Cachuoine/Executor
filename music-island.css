@@ -1068,3 +1068,251 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 }
 .site-header>.main-nav-dynamic .music-dock.is-playing .music-island::before,
 .admin-page .admin-site-header .music-dock.is-playing .music-island::before{opacity:0!important;}
+
+
+/* v15.2.53-r15 — liquid Dynamic motion and a right-travelling search droplet. */
+:root{
+  --si-library-morph-duration:1.46s;
+  --si-library-reveal-duration:1.22s;
+  --si-island-ease:cubic-bezier(.22,.88,.24,1);
+  --si-water-ease:cubic-bezier(.2,1.18,.32,1);
+}
+
+/* The Dynamic shell, navigation wings and library share one calm water-like clock. */
+.site-header>.main-nav-dynamic,
+.admin-page .admin-site-header .admin-dynamic-nav{
+  transition:grid-template-columns var(--si-library-morph-duration) var(--si-island-ease),
+    gap var(--si-library-morph-duration) var(--si-island-ease) !important;
+}
+.site-header>.main-nav-dynamic .nav-side,
+.admin-page .admin-site-header .admin-dynamic-nav .nav-side{
+  transition:opacity var(--si-library-reveal-duration) ease,
+    transform var(--si-library-morph-duration) var(--si-island-ease),
+    max-width var(--si-library-morph-duration) var(--si-island-ease),
+    gap var(--si-library-morph-duration) var(--si-island-ease) !important;
+  will-change:opacity,transform,max-width;
+}
+.site-header>.main-nav-dynamic .nav-link,
+.admin-page .admin-site-header .admin-dynamic-nav .admin-section-tab{
+  transition:opacity var(--si-library-reveal-duration) ease,
+    transform var(--si-library-morph-duration) var(--si-island-ease),
+    color .26s ease,background .26s ease,box-shadow .3s ease !important;
+}
+.site-header>.main-nav-dynamic .music-dock,
+.site-header>.main-nav-dynamic .music-dock.is-collapsed,
+.site-header>.main-nav-dynamic .music-dock.has-track,
+.site-header>.main-nav-dynamic .music-dock.is-playing,
+.site-header>.main-nav-dynamic .music-dock.music-centered,
+.site-header>.main-nav-dynamic .music-dock.is-closing,
+.admin-page .admin-site-header .music-dock,
+.admin-page .admin-site-header .music-dock.is-collapsed,
+.admin-page .admin-site-header .music-dock.has-track,
+.admin-page .admin-site-header .music-dock.is-playing,
+.admin-page .admin-site-header .music-dock.music-centered,
+.admin-page .admin-site-header .music-dock.is-closing{
+  will-change:width,flex-basis,height,filter;
+  transition:flex-basis var(--si-library-morph-duration) var(--si-water-ease),
+    width var(--si-library-morph-duration) var(--si-water-ease),
+    height var(--si-library-morph-duration) var(--si-water-ease),
+    max-width var(--si-library-morph-duration) var(--si-water-ease),
+    filter .48s ease !important;
+}
+.site-header>.main-nav-dynamic .music-dock .music-island,
+.admin-page .admin-site-header .music-dock .music-island{
+  will-change:border-radius,background-position,box-shadow;
+  background-image:
+    radial-gradient(ellipse at 16% 0%,rgba(127,230,224,.10),transparent 44%),
+    linear-gradient(112deg,rgba(15,24,39,.98),rgba(25,22,48,.97) 54%,rgba(9,31,38,.98));
+  background-size:170% 170%,180% 100%;
+  background-position:0% 0%,0% 50%;
+  transition:height var(--si-library-morph-duration) var(--si-water-ease),
+    padding var(--si-library-morph-duration) var(--si-water-ease),
+    border-radius var(--si-library-morph-duration) var(--si-water-ease),
+    background-position var(--si-library-morph-duration) var(--si-island-ease),
+    box-shadow .55s ease,border-color .55s ease !important;
+}
+.site-header>.main-nav-dynamic .music-dock.music-centered .music-island,
+.admin-page .admin-site-header .music-dock.music-centered .music-island{
+  background-position:100% 50%,100% 50%;
+  box-shadow:0 13px 32px rgba(0,0,0,.28),0 0 24px rgba(127,230,224,.10),inset 0 1px rgba(255,255,255,.09) !important;
+  border-color:rgba(127,230,224,.42) !important;
+}
+
+/* A soft travelling reflection makes the capsule feel like liquid glass, not a hard scale. */
+.site-header>.main-nav-dynamic .music-dock .music-island::after,
+.admin-page .admin-site-header .music-dock .music-island::after{
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  inset:-95% -48% !important;
+  width:auto !important;height:auto !important;
+  border:0 !important;border-radius:50% !important;
+  background:linear-gradient(108deg,transparent 35%,rgba(127,230,224,.015) 43%,rgba(195,255,248,.20) 49%,rgba(167,139,250,.12) 54%,transparent 64%) !important;
+  box-shadow:none !important;
+  opacity:0 !important;
+  transform:translate3d(-115%,0,0) rotate(8deg) scaleY(.68) !important;
+  pointer-events:none !important;
+  z-index:0 !important;
+}
+.site-header>.main-nav-dynamic .music-dock.music-centered .music-island::after,
+.admin-page .admin-site-header .music-dock.music-centered .music-island::after{
+  animation:nrDynamicWaterSweep 1.42s var(--si-water-ease) both !important;
+}
+.site-header>.main-nav-dynamic .music-dock.is-closing .music-island::after,
+.admin-page .admin-site-header .music-dock.is-closing .music-island::after{
+  animation:nrDynamicWaterReturn .78s cubic-bezier(.48,0,.78,.22) both !important;
+}
+.site-header>.main-nav-dynamic .music-dock .music-island::before,
+.admin-page .admin-site-header .music-dock .music-island::before{
+  z-index:2 !important;
+  transition:opacity .4s ease,background-position var(--si-library-morph-duration) var(--si-island-ease) !important;
+}
+.site-header>.main-nav-dynamic .music-dock .music-island>* ,
+.admin-page .admin-site-header .music-dock .music-island>*{
+  position:relative;z-index:1;
+}
+@keyframes nrDynamicWaterSweep{
+  0%{opacity:0;transform:translate3d(-115%,0,0) rotate(8deg) scaleY(.62)}
+  18%{opacity:.72}
+  56%{opacity:.42;transform:translate3d(8%,0,0) rotate(8deg) scaleY(1.08)}
+  82%{opacity:.18;transform:translate3d(72%,0,0) rotate(8deg) scaleY(.94)}
+  100%{opacity:0;transform:translate3d(125%,0,0) rotate(8deg) scaleY(.72)}
+}
+@keyframes nrDynamicWaterReturn{
+  0%{opacity:.22;transform:translate3d(105%,0,0) rotate(-8deg) scaleY(.84)}
+  62%{opacity:.10;transform:translate3d(-15%,0,0) rotate(-8deg) scaleY(1.04)}
+  100%{opacity:0;transform:translate3d(-115%,0,0) rotate(-8deg) scaleY(.68)}
+}
+
+/* Let the library unfold from a small water-drop shape and settle without a hard pop. */
+.site-header>.main-nav-dynamic .music-panel,
+.admin-page .admin-site-header .music-panel{
+  transform-origin:top center !important;
+  clip-path:inset(0 46% 91% 46% round 999px) !important;
+  opacity:0 !important;
+  filter:blur(5px) saturate(.86);
+  transition:clip-path var(--si-library-reveal-duration) var(--si-water-ease),
+    transform var(--si-library-reveal-duration) var(--si-water-ease),
+    opacity calc(var(--si-library-reveal-duration) * .78) ease,
+    filter var(--si-library-reveal-duration) ease,
+    border-color .55s ease,box-shadow .55s ease !important;
+}
+.site-header>.main-nav-dynamic .music-panel:not(.hidden):not(.is-opening):not(.is-closing),
+.admin-page .admin-site-header .music-panel:not(.hidden):not(.is-opening):not(.is-closing){
+  clip-path:inset(0 0 0 0 round 22px) !important;
+  opacity:1 !important;
+  filter:blur(0) saturate(1);
+  transform:translateX(-50%) translateY(0) scale(1) !important;
+}
+.site-header>.main-nav-dynamic .music-panel.is-opening,
+.admin-page .admin-site-header .music-panel.is-opening{
+  clip-path:inset(0 46% 91% 46% round 999px) !important;
+  opacity:0 !important;
+  filter:blur(5px) saturate(.86);
+  transform:translateX(-50%) translateY(-8px) scale(.88) !important;
+  max-height:min(56vh,460px) !important;
+  pointer-events:none !important;
+}
+.site-header>.main-nav-dynamic .music-panel.is-closing,
+.admin-page .admin-site-header .music-panel.is-closing{
+  clip-path:inset(0 46% 91% 46% round 999px) !important;
+  opacity:0 !important;
+  filter:blur(5px) saturate(.86);
+  transform:translateX(-50%) translateY(-8px) scale(.88) !important;
+  max-height:min(56vh,460px) !important;
+  padding:12px !important;
+  overflow:hidden !important;
+  pointer-events:none !important;
+  transition-delay:0s !important;
+}
+.site-header>.main-nav-dynamic .music-panel:not(.hidden):not(.is-opening):not(.is-closing)>*,
+.admin-page .admin-site-header .music-panel:not(.hidden):not(.is-opening):not(.is-closing)>*{
+  animation:nrWaterContentIn .48s var(--si-island-ease) both !important;
+  animation-delay:calc(var(--si-library-reveal-duration) * .44) !important;
+}
+.site-header>.main-nav-dynamic .music-panel.is-closing>*,
+.admin-page .admin-site-header .music-panel.is-closing>*{
+  animation:nrWaterContentOut .18s ease both !important;
+  animation-delay:0s !important;
+}
+@keyframes nrWaterContentIn{from{opacity:0;transform:translateY(9px) scale(.985);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes nrWaterContentOut{from{opacity:1;transform:translateY(0);filter:blur(0)}to{opacity:0;transform:translateY(-4px);filter:blur(1px)}}
+
+/* Search droplet: start as a left-side round lens, travel to the right edge, then spread its water surface. */
+.music-search-morph{
+  --search-open-width:min(208px,calc(100vw - 220px));
+  position:relative !important;display:flex !important;align-items:center !important;justify-content:flex-start !important;
+  flex:0 0 34px !important;width:34px !important;min-width:34px !important;height:34px !important;min-height:34px !important;
+  flex-shrink:0 !important;overflow:hidden !important;isolation:isolate !important;
+  transition:flex-basis .68s var(--si-water-ease),width .68s var(--si-water-ease),filter .36s ease !important;
+  will-change:flex-basis,width;
+}
+.music-library-filters>#musicSearchForm{flex:0 0 34px !important;width:34px !important;min-width:34px !important;}
+.music-library-filters>#musicSearchForm.is-open{
+  flex:0 0 var(--search-open-width) !important;width:var(--search-open-width) !important;
+  min-width:138px !important;max-width:var(--search-open-width) !important;
+  filter:drop-shadow(0 5px 14px rgba(127,230,224,.13));
+}
+.music-search-morph::before{
+  content:"" !important;position:absolute !important;inset:0 !important;z-index:0 !important;
+  border:1px solid rgba(127,230,224,.28) !important;border-radius:999px !important;
+  background:linear-gradient(112deg,rgba(10,20,35,.95),rgba(23,24,48,.96) 58%,rgba(8,34,39,.96)) !important;
+  box-shadow:inset 0 1px rgba(255,255,255,.045) !important;
+  transform:scaleX(1) scaleY(1) !important;transform-origin:left center !important;
+  transition:border-radius .62s var(--si-water-ease),border-color .28s ease,box-shadow .35s ease !important;
+}
+.music-search-morph.is-open::before{
+  border-radius:18px !important;border-color:rgba(127,230,224,.66) !important;
+  box-shadow:0 0 0 3px rgba(127,230,224,.075),0 0 23px rgba(127,230,224,.14),inset 0 1px rgba(255,255,255,.08) !important;
+  animation:nrSearchWaterExpand .72s var(--si-water-ease) both !important;
+}
+@keyframes nrSearchWaterExpand{
+  0%{clip-path:inset(4px calc(100% - 34px) 4px 0 round 999px);transform:scaleX(.48) scaleY(.78);filter:blur(1.6px)}
+  42%{clip-path:inset(1px 0 1px 0 round 999px);transform:scaleX(1.035) scaleY(1.13);filter:blur(.25px)}
+  70%{clip-path:inset(0 0 0 0 round 20px);transform:scaleX(.99) scaleY(.98);filter:blur(0)}
+  100%{clip-path:inset(0 0 0 0 round 18px);transform:scaleX(1) scaleY(1);filter:blur(0)}
+}
+.music-search-toggle{
+  position:absolute !important;left:1px !important;right:auto !important;top:1px !important;z-index:3 !important;
+  display:grid !important;place-items:center !important;flex:0 0 32px !important;width:32px !important;height:32px !important;
+  border-radius:50% !important;transform:translateX(0) scale(1) !important;
+  transition:left .62s var(--si-water-ease),transform .62s var(--si-water-ease),color .24s ease,filter .3s ease !important;
+}
+.music-search-morph.is-open .music-search-toggle{
+  left:calc(var(--search-open-width) - 33px) !important;right:auto !important;
+  transform:translateX(0) scale(.96) !important;color:#d8fff8 !important;
+  filter:drop-shadow(0 0 8px rgba(127,230,224,.52));
+}
+.music-search-toggle svg{transform:scaleX(-1) rotate(-8deg);transition:transform .62s var(--si-water-ease) !important;}
+.music-search-morph.is-open .music-search-toggle svg{transform:scaleX(-1) rotate(7deg) scale(.94) !important;}
+.music-search-morph input{
+  position:absolute !important;left:10px !important;right:42px !important;top:0 !important;bottom:0 !important;
+  display:block !important;width:auto !important;min-width:0 !important;height:100% !important;
+  padding:0 !important;border:0 !important;outline:0 !important;background:transparent !important;
+  color:var(--text,#f5f6fb) !important;font-size:10px !important;line-height:1 !important;
+  opacity:0 !important;visibility:hidden !important;transform:translateX(7px) scale(.985) !important;
+  pointer-events:none !important;z-index:1 !important;
+  transition:opacity .22s ease .16s,visibility 0s linear .38s,transform .42s var(--si-island-ease) .12s !important;
+}
+.music-search-morph.is-open input{
+  display:block !important;visibility:visible !important;opacity:1 !important;
+  transform:translateX(0) scale(1) !important;pointer-events:auto !important;
+  transition:opacity .32s ease .22s,visibility 0s,transform .48s var(--si-island-ease) .16s !important;
+}
+.music-search-morph input:focus{outline:0 !important;box-shadow:none !important;}
+.music-search-morph input::placeholder{color:rgba(182,189,208,.65) !important;}
+@media(max-width:760px){
+  .music-search-morph{--search-open-width:min(164px,calc(100vw - 206px));}
+  .music-library-filters>#musicSearchForm.is-open{min-width:126px !important;}
+}
+@media(max-width:420px){
+  .music-search-morph{--search-open-width:min(146px,calc(100vw - 182px));}
+  .music-library-filters>#musicSearchForm.is-open{min-width:112px !important;}
+}
+@media(prefers-reduced-motion:reduce){
+  :root{--si-library-morph-duration:.01ms;--si-library-reveal-duration:.01ms;}
+  .music-search-morph,.music-search-morph::before,.music-search-toggle,.music-search-toggle svg,.music-search-morph input,
+  .music-dock,.music-dock .music-island,.music-dock .music-island::after,.music-panel,.music-panel>*{
+    animation-duration:.01ms !important;transition-duration:.01ms !important;transition-delay:0s !important;
+  }
+}
