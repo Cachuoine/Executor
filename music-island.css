@@ -1785,65 +1785,63 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 @media(prefers-reduced-motion:reduce){.music-dock.music-centered.has-track .music-island-wave i{will-change:auto!important;}}
 
 
-/* v15.2.61 — translucent tinted glass, slower search motion, and a shared icon anchor. */
-.music-island{
-  background:linear-gradient(116deg,rgba(21,39,61,.80),rgba(58,42,82,.77) 52%,rgba(10,57,62,.79))!important;
-  -webkit-backdrop-filter:blur(19px) saturate(158%)!important;
-  backdrop-filter:blur(19px) saturate(158%)!important;
-  border-color:rgba(151,218,224,.34)!important;
-}
+/* v15.2.61 — Dynamic visual refinement: translucent colour, 500ms search morph,
+   and a shared icon box so shuffle/repeat glyphs occupy the same centre. */
 .music-panel{
-  background:linear-gradient(142deg,rgba(17,34,55,.84),rgba(48,36,73,.82) 57%,rgba(9,48,55,.84))!important;
-  -webkit-backdrop-filter:blur(27px) saturate(165%)!important;
-  backdrop-filter:blur(27px) saturate(165%)!important;
-  border-color:rgba(143,208,220,.30)!important;
-  box-shadow:0 26px 70px rgba(0,0,0,.42),0 0 32px rgba(127,230,224,.11),inset 0 1px rgba(255,255,255,.045)!important;
+  background:linear-gradient(112deg,
+    rgba(48,42,76,.64),
+    rgba(29,49,72,.62) 54%,
+    rgba(20,58,59,.62))!important;
+  border-color:rgba(169,190,226,.30)!important;
+  box-shadow:0 20px 52px rgba(0,0,0,.27),
+    inset 0 1px rgba(255,255,255,.075),
+    0 0 25px rgba(127,230,224,.065)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(145%)!important;
+  backdrop-filter:blur(20px) saturate(145%)!important;
 }
-.music-panel::before{background:rgba(28,43,66,.86)!important;}
-.music-search-morph{
-  transition:flex-basis 1.05s cubic-bezier(.19,.82,.22,1),width 1.05s cubic-bezier(.19,.82,.22,1),filter .42s ease!important;
-}
-.music-search-morph.is-open::before{
-  background:linear-gradient(112deg,rgba(18,37,57,.83),rgba(57,43,82,.82) 58%,rgba(12,58,62,.82))!important;
-  animation:nrSearchWaterExpand61 1.12s cubic-bezier(.19,.82,.22,1) both!important;
-}
-@keyframes nrSearchWaterExpand61{
-  0%{clip-path:inset(3px calc(100% - 34px) 3px 0 round 999px);transform:scaleX(.56) scaleY(.90);filter:blur(1px);opacity:.82}
-  44%{clip-path:inset(1px 0 1px 0 round 999px);transform:scaleX(1.025) scaleY(1.055);filter:blur(.2px);opacity:1}
-  76%{clip-path:inset(0 round 19px);transform:scaleX(.996) scaleY(.995);filter:blur(0)}
-  100%{clip-path:inset(0 round 18px);transform:scale(1);filter:blur(0);opacity:1}
+.music-panel::before{
+  background:rgba(39,43,70,.88)!important;
 }
 .music-search-toggle{
-  transition:left 1.05s cubic-bezier(.19,.82,.22,1),transform 1.05s cubic-bezier(.19,.82,.22,1),color .28s ease,filter .38s ease!important;
+  transition:left .5s cubic-bezier(.22,.78,.24,1),
+    transform .5s cubic-bezier(.22,.78,.24,1),
+    color .24s ease,filter .3s ease!important;
 }
 .music-search-toggle svg{
-  transition:transform 1.0s cubic-bezier(.19,.82,.22,1)!important;
+  display:block!important;
+  width:17px!important;height:17px!important;
+  flex:0 0 17px!important;
+  transform:scaleX(-1) rotate(-8deg)!important;
+  transform-origin:50% 50%!important;
+  transition:transform .5s cubic-bezier(.22,.78,.24,1)!important;
+}
+.music-search-morph.is-open .music-search-toggle svg{
+  transform:scaleX(-1) rotate(7deg) scale(.94)!important;
 }
 .music-search-morph input{
-  transition:opacity .58s ease .24s,visibility 0s linear .64s,transform .76s cubic-bezier(.19,.82,.22,1) .16s!important;
+  transition:opacity .22s ease .12s,visibility 0s linear .38s,
+    transform .5s cubic-bezier(.22,.78,.24,1) .08s!important;
 }
 .music-search-morph.is-open input{
-  transition:opacity .62s ease .27s,visibility 0s,transform .78s cubic-bezier(.19,.82,.22,1) .16s!important;
+  transition:opacity .32s ease .12s,visibility 0s,
+    transform .5s cubic-bezier(.22,.78,.24,1) .08s!important;
 }
 .music-heading-actions>.music-playback-mode-compact{
-  position:relative!important;
-  padding:0 9px 0 28px!important;
-  gap:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
 }
 .music-heading-actions>.music-playback-mode-compact .music-mode-icon{
   position:absolute!important;
-  inset:auto!important;
-  left:8px!important;
-  right:auto!important;
-  top:50%!important;
+  inset:50% auto auto 9px!important;
   display:block!important;
-  flex:none!important;
-  width:13px!important;
-  height:13px!important;
-  margin:0!important;
+  width:14px!important;height:14px!important;
+  min-width:14px!important;min-height:14px!important;
+  flex:0 0 14px!important;
+  margin:0!important;padding:0!important;
   transform:translateY(-50%) rotate(-55deg) scale(.72)!important;
   transform-origin:50% 50%!important;
-  transition:opacity .32s ease,transform .48s cubic-bezier(.2,.85,.25,1)!important;
+  overflow:visible!important;
 }
 .music-heading-actions>.music-playback-mode-compact[data-playback-mode="shuffle"] .music-mode-shuffle,
 .music-heading-actions>.music-playback-mode-compact[data-playback-mode="repeat"] .music-mode-repeat{
@@ -1851,18 +1849,21 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
   transform:translateY(-50%) rotate(0) scale(1)!important;
 }
 .music-heading-actions>.music-playback-mode-compact .music-mode-label{
-  position:static!important;
-  flex:0 0 auto!important;
-  margin:0!important;
+  display:inline-block!important;
+  margin-left:17px!important;
+  text-align:center!important;
 }
-.music-heading-actions>.music-playback-mode-compact.is-switching .music-mode-icon{animation:none!important;}
-@media(max-width:420px){
-  .music-heading-actions>.music-playback-mode-compact{padding-left:26px!important;padding-right:7px!important;}
-  .music-heading-actions>.music-playback-mode-compact .music-mode-icon{left:7px!important;width:13px!important;height:13px!important;}
+@media(max-width:760px){
+  .music-heading-actions>.music-playback-mode-compact .music-mode-icon{
+    inset-inline-start:7px!important;
+  }
+  .music-heading-actions>.music-playback-mode-compact .music-mode-label{
+    margin-left:16px!important;
+  }
 }
 @media(prefers-reduced-motion:reduce){
-  .music-search-morph,.music-search-morph::before,.music-search-toggle,.music-search-toggle svg,.music-search-morph input{
-    animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important;
+  .music-search-toggle,.music-search-toggle svg,.music-search-morph input{
+    transition-duration:.01ms!important;
+    transition-delay:0s!important;
   }
-  .music-heading-actions>.music-playback-mode-compact .music-mode-icon{transition-duration:.01ms!important;}
 }
