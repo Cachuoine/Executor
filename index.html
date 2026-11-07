@@ -2,19 +2,19 @@
 <html class="executor-no-dblclick-edit" lang="vi">
 <head>
   <meta charset="utf-8">
-  <meta name="si-build" content="15.2.58">
+  <meta name="si-build" content="15.2.59">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0a0c13">
   <meta name="description" content="NightReaper — trung tâm quản lý executor, phiên bản Roblox và âm nhạc.">
   <base href="./">
   <title>NightReaper — Trung tâm điều hành</title>
-  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.58"/>
+  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.59"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=15.2.58">
-  <script src="discord-description.js?v=15.2.58" defer></script><script src="app.js?v=15.2.58" defer></script>
-  <link rel="stylesheet" href="music-island.css?v=15.2.58">
+  <link rel="stylesheet" href="site.css?v=15.2.59">
+  <script src="discord-description.js?v=15.2.59" defer></script><script src="app.js?v=15.2.59" defer></script>
+  <link rel="stylesheet" href="music-island.css?v=15.2.59">
 </head>
 <body>
   <div class="ambient ambient-a" aria-hidden="true"></div>
@@ -30,7 +30,7 @@
       <div class="music-dock home-music-dock hidden" id="musicDock">
       <button class="music-island" id="musicIslandToggle" type="button" aria-expanded="false" aria-controls="musicPanel" aria-label="Mở thư viện nhạc"><span class="music-island-empty-space" aria-hidden="true"></span><span class="music-island-record" aria-hidden="true"><i></i><img id="musicIslandRecordArt" class="music-island-record-art" alt="" hidden></span><span class="music-island-track-copy" aria-live="polite"><b id="musicIslandTrackTitle"></b><small id="musicIslandTrackArtist"></small></span><span class="music-island-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="music-state-led" aria-hidden="true"><i class="music-live-led"></i></span></button>
       <section class="music-panel hidden" id="musicPanel" aria-label="Trình phát và thư viện nhạc">
-        <div class="music-panel-heading"><div><small>NIGHTREAPER · THƯ VIỆN NHẠC</small><strong>Thư viện nhạc</strong></div><div class="music-heading-actions"><button type="button" id="musicPlaybackModeToggle" class="music-playback-toggle music-playback-mode-toggle music-playback-mode-compact" data-playback-mode="shuffle" aria-label="Chế độ chuyển bài ngẫu nhiên" aria-pressed="false" title="Chuyển ngẫu nhiên sang một bài khác khi bài hiện tại kết thúc"><svg class="music-mode-icon music-mode-shuffle" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 7h2.5c4 0 6 10 10 10H21M16 16l5 1v4M16 8l5-5M4 17h2.5c1.5 0 2.6-1.1 3.6-2.6"/></svg><svg class="music-mode-icon music-mode-repeat" viewBox="0 0 24 24" aria-hidden="true"><path d="m17 2 4 4-4 4M3 11V8a2 2 0 0 1 2-2h16M7 22l-4-4 4-4M21 13v3a2 2 0 0 1-2 2H3"/><path d="M12 9v6m-1.5-4L12 9l1.5 2"/></svg><span class="music-mode-label" id="musicPlaybackModeLabel">RANDOM NEXT</span></button><div class="music-volume-control" id="musicVolumeControl">
+        <div class="music-panel-heading"><div><small>NIGHTREAPER · THƯ VIỆN NHẠC</small><strong>Thư viện nhạc</strong></div><div class="music-heading-actions"><button type="button" id="musicPlaybackModeToggle" class="music-playback-toggle music-playback-mode-toggle music-playback-mode-compact" data-playback-mode="shuffle" aria-label="Chế độ chuyển bài ngẫu nhiên" aria-pressed="false" title="Chuyển ngẫu nhiên sang một bài khác khi bài hiện tại kết thúc"><svg class="music-mode-icon music-mode-shuffle" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16 3h5v5M4 7h2.5c4 0 6 10 10 10H21M16 16l5 1v4M16 8l5-5M4 17h2.5c1.5 0 2.6-1.1 3.6-2.6"/></svg><svg class="music-mode-icon music-mode-repeat" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m17 2 4 4-4 4M3 11V8a2 2 0 0 1 2-2h16M7 22l-4-4 4-4M21 13v3a2 2 0 0 1-2 2H3"/><path d="M12 9v6m-1.5-4L12 9l1.5 2"/></svg><span class="music-mode-label" id="musicPlaybackModeLabel">RANDOM NEXT</span></button><div class="music-volume-control" id="musicVolumeControl">
   <div class="music-volume-slider-wrap" id="musicVolumeSliderWrap"><input id="musicVolumeSlider" type="range" min="0" max="100" step="1" value="80" aria-label="Âm lượng nhạc" aria-valuemin="0" aria-valuemax="100" dir="ltr"><output id="musicVolumeValue" for="musicVolumeSlider">80%</output></div>
   <button type="button" class="music-volume-toggle" id="musicVolumeToggle" aria-label="Mở điều khiển âm lượng" aria-controls="musicVolumeSliderWrap" aria-expanded="false" title="Điều chỉnh âm lượng" data-volume-state="high"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="music-volume-speaker" d="M4 10v4h4l5 4V6l-5 4H4Z"></path><path class="music-volume-wave-icon" d="M16 9a5 5 0 0 1 0 6M18.5 6.5a8.5 8.5 0 0 1 0 11"></path><path class="music-volume-muted-icon" d="m16 9 5 6m0-6-5 6"></path></svg></button>
 </div><button type="button" class="music-close" id="closeMusicPanel" aria-label="Đóng thư viện nhạc" title="Đóng">×</button></div></div>
@@ -175,7 +175,7 @@
 
   <dialog id="detailDialog" class="detail-dialog" aria-labelledby="detailTitle"><form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Đóng chi tiết">×</button></form><div id="detailContent"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="music-player.js?v=15.2.58" defer></script>
-  <script src="ambient-motion.js?v=15.2.58" defer></script>
+  <script src="music-player.js?v=15.2.59" defer></script>
+  <script src="ambient-motion.js?v=15.2.59" defer></script>
 </body>
 </html>

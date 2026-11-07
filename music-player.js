@@ -37,7 +37,6 @@
     musicEngine?.appendChild(directAudio);
   }
   const islandRecord = $('.music-island-record');
-  const islandWaveBars = [...document.querySelectorAll('.music-island-wave i')];
   const volumeControl = $('#musicVolumeControl');
   const volumeToggle = $('#musicVolumeToggle');
   const volumeSlider = $('#musicVolumeSlider');
@@ -84,102 +83,10 @@
   let recordAngle = 0;
   let visualFrameId = 0;
   let lastVisualFrameTime = 0;
-  let audioContext = null;
-  let audioAnalyser = null;
-  let audioSourceNode = null;
-  let audioFrequencyData = null;
-  const waveformHeights = islandWaveBars.map(() => 5);
-  const initialWaveformHeights = [4, 6, 9, 12, 9, 6, 4];
-
-  function setWaveformHeight(index, height) {
-    const bar = islandWaveBars[index];
-    if (bar) bar.style.setProperty('--nr-wave-height', `${Math.max(3, height).toFixed(1)}px`);
-  }
   function resetPlaybackVisuals() {
     recordAngle = 0;
     islandRecord?.style.setProperty('--nr-record-angle', '0deg');
-    waveformHeights.forEach((_, index) => {
-      const height = initialWaveformHeights[index % initialWaveformHeights.length];
-      waveformHeights[index] = height;
-      setWaveformHeight(index, height);
-    });
   }
-  function ensureAudioAnalyser() {
-    if (audioAnalyser) return true;
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass || !directAudio) return false;
-    try {
-      audioContext = new AudioContextClass();
-      audioAnalyser = audioContext.createAnalyser();
-      audioAnalyser.fftSize = 2048;
-      audioAnalyser.smoothingTimeConstant = 0.48;
-      audioAnalyser.minDecibels = -100;
-      audioAnalyser.maxDecibels = -20;
-      audioFrequencyData = new Uint8Array(audioAnalyser.frequencyBinCount);
-      audioSourceNode = audioContext.createMediaElementSource(directAudio);
-      audioSourceNode.connect(audioAnalyser);
-      audioAnalyser.connect(audioContext.destination);
-      return true;
-    } catch {
-      // Keep playback audible on browsers that do not allow a media-element analyser.
-      try { audioSourceNode?.connect(audioContext?.destination); } catch {}
-      audioAnalyser = null;
-      audioFrequencyData = null;
-      return false;
-    }
-  }
-  function updateWaveformFromAudio() {
-    if (!audioAnalyser || !audioFrequencyData || !islandWaveBars.length) return;
-    audioAnalyser.getByteFrequencyData(audioFrequencyData);
-    const count = islandWaveBars.length;
-    const maxBin = Math.max(24, Math.min(audioFrequencyData.length - 1, 210));
-    const rmsForRange = (from, to) => {
-      let squares = 0;
-      let samples = 0;
-      const first = Math.max(2, from);
-      const last = Math.max(first, Math.min(maxBin, to));
-      for (let bin = first; bin <= last; bin += 1) {
-        const value = audioFrequencyData[bin] || 0;
-        squares += value * value;
-        samples += 1;
-      }
-      return samples ? Math.sqrt(squares / samples) : 0;
-    };
-    // Use a deliberately wide input range and a capped logarithmic response.
-    // Loud masters can no longer pin every bar at its maximum height.
-    const toActivity = (rms, floor, range, cap) => {
-      const normalized = Math.max(0, (rms - floor) / range);
-      return Math.min(cap, Math.pow(normalized, 0.82));
-    };
-    const overallRms = rmsForRange(2, maxBin);
-    const overallActivity = toActivity(overallRms, 44, 205, 0.78);
-    // A mirrored frequency layout: bass at the outer edges, progressively higher
-    // frequencies toward the centre. Each left/right pair shares the same envelope.
-    const frequencyBands = [
-      [2, 8],
-      [9, 24],
-      [25, 62],
-      [63, 176]
-    ];
-    const midpoint = (count - 1) / 2;
-    for (let index = 0; index < count; index += 1) {
-      const distance = Math.min(index, count - 1 - index);
-      const bandIndex = Math.max(0, Math.min(frequencyBands.length - 1, frequencyBands.length - 1 - distance));
-      const [from, to] = frequencyBands[bandIndex];
-      const bandRms = rmsForRange(from, to);
-      const bandActivity = toActivity(bandRms, 38, 185, 0.86);
-      const sharedPulse = overallActivity * 0.38;
-      const musicalDetail = bandActivity * 0.62;
-      // Keep a visible low baseline, a controlled peak ceiling, and real variation
-      // between frequency bands instead of letting all bars fill the entire slot.
-      const target = Math.max(3.2, Math.min(18.5, 3.2 + sharedPulse * 8.4 + musicalDetail * 6.1));
-      const previous = waveformHeights[index] || 3.2;
-      const response = target > previous ? 0.48 : 0.24;
-      waveformHeights[index] = previous + (target - previous) * response;
-      setWaveformHeight(index, waveformHeights[index]);
-    }
-  }
-
   function drawPlaybackVisuals(timestamp) {
     if (!isPlaying || directAudio?.paused) {
       visualFrameId = 0;
@@ -190,7 +97,6 @@
     lastVisualFrameTime = timestamp;
     recordAngle = (recordAngle + (delta * 360 / 5800)) % 360;
     islandRecord?.style.setProperty('--nr-record-angle', `${recordAngle.toFixed(2)}deg`);
-    updateWaveformFromAudio();
     visualFrameId = window.requestAnimationFrame(drawPlaybackVisuals);
   }
   function startPlaybackVisuals() {
@@ -202,8 +108,8 @@
     if (visualFrameId) window.cancelAnimationFrame(visualFrameId);
     visualFrameId = 0;
     lastVisualFrameTime = 0;
-    // Deliberately leave the CSS variables untouched: both the vinyl angle and
-    // the last measured waveform shape remain frozen while the track is paused.
+    // Deliberately keep the vinyl angle untouched. The independent CSS waveform
+    // freezes itself through animation-play-state while playback is paused.
   }
   resetPlaybackVisuals();
   let directAudioTrackId = '';
@@ -446,7 +352,7 @@
   function syncPlaybackVisuals() {
     // Dynamic is a pure open/close trigger while collapsed; expanded state becomes a mini player:
     // the compact capsule stays blank. When expanded, it becomes a mini player:
-    // the vinyl spins, the selected track is named, and the waveform animates on playback.
+    // the vinyl spins, the selected track is named, and the decorative waveform drifts independently.
     const track = activeTrack();
     updateDynamicTrackDisplay(track);
     if (isPlaying && !directAudio?.paused) startPlaybackVisuals();
@@ -822,8 +728,6 @@
     shouldResumePlayback = true;
     hasPlaybackAttempt = true;
     persistMusicState();
-    ensureAudioAnalyser();
-    if (audioContext?.state === 'suspended') audioContext.resume().catch(() => {});
     syncPlaybackVisuals();
     directAudio.play().catch(() => {
       isPlaying = false;

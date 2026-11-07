@@ -1795,3 +1795,86 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 @media(prefers-reduced-motion:reduce){
   .music-heading-actions>.music-playback-mode-compact,.music-heading-actions>.music-playback-mode-compact .music-mode-icon{transition:none!important;animation:none!important;}
 }
+
+
+/* v15.2.59 — restore the original free-running music waveform (not audio-reactive). */
+.music-dock.music-centered.has-track .music-island-wave{display:flex!important;opacity:.78!important;visibility:visible!important;}
+.music-dock.music-centered.has-track .music-island-wave i{
+  height:25px!important;min-height:25px!important;
+  clip-path:inset(var(--nr-wave-min,38%) 0 var(--nr-wave-min,38%) 0 round 4px);
+  animation-name:nrDynamicFreeWave!important;animation-duration:.92s!important;animation-timing-function:ease-in-out!important;
+  animation-iteration-count:infinite!important;animation-direction:alternate!important;animation-play-state:paused!important;
+  transition:none!important;will-change:clip-path!important;
+  box-shadow:0 0 6px rgba(127,230,224,.27),0 0 12px rgba(167,139,250,.17)!important;
+}
+@keyframes nrDynamicFreeWave{
+  from{clip-path:inset(var(--nr-wave-min,38%) 0 var(--nr-wave-min,38%) 0 round 4px);filter:brightness(.88)}
+  to{clip-path:inset(var(--nr-wave-max,6%) 0 var(--nr-wave-max,6%) 0 round 4px);filter:brightness(1.22)}
+}
+.music-dock.music-centered.is-playing .music-island-wave{opacity:1!important;filter:drop-shadow(0 0 6px rgba(127,230,224,.24));}
+.music-dock.music-centered.is-playing .music-island-wave i{animation-play-state:running!important;}
+.music-dock.music-centered:not(.is-playing) .music-island-wave i{animation-play-state:paused!important;}
+.music-island-wave i:nth-child(1){--nr-wave-min:43%;--nr-wave-max:18%;animation-duration:.86s!important;animation-delay:-.18s!important;}
+.music-island-wave i:nth-child(2){--nr-wave-min:30%;--nr-wave-max:5%;animation-duration:1.08s!important;animation-delay:-.54s!important;}
+.music-island-wave i:nth-child(3){--nr-wave-min:38%;--nr-wave-max:12%;animation-duration:.94s!important;animation-delay:-.33s!important;}
+.music-island-wave i:nth-child(4){--nr-wave-min:20%;--nr-wave-max:0%;animation-duration:1.16s!important;animation-delay:-.68s!important;}
+.music-island-wave i:nth-child(5){--nr-wave-min:32%;--nr-wave-max:8%;animation-duration:.89s!important;animation-delay:-.41s!important;}
+.music-island-wave i:nth-child(6){--nr-wave-min:26%;--nr-wave-max:4%;animation-duration:1.04s!important;animation-delay:-.13s!important;}
+.music-island-wave i:nth-child(7){--nr-wave-min:42%;--nr-wave-max:16%;animation-duration:.91s!important;animation-delay:-.59s!important;}
+.music-dock.music-centered.is-closing .music-island-wave{opacity:0!important;visibility:hidden!important;transition:opacity 1.65s ease,transform 1.9s cubic-bezier(.42,.02,.72,.34),visibility 0s linear 1.65s!important;}
+@media(prefers-reduced-motion:reduce){.music-dock.music-centered.has-track .music-island-wave i{animation:none!important;clip-path:inset(22% 0 round 4px)!important;}}
+
+/* Give the magnifier morph a little more breathing room without enlarging Dynamic. */
+.music-search-morph{
+  transition:flex-basis .76s var(--si-water-ease),width .76s var(--si-water-ease),filter .42s ease!important;
+}
+.music-search-morph.is-open::before{animation:nrSearchWaterExpandV159 .84s var(--si-water-ease) both!important;}
+@keyframes nrSearchWaterExpandV159{
+  0%{clip-path:inset(4px calc(100% - 34px) 4px 0 round 999px);transform:scaleX(.48) scaleY(.78);filter:blur(1.6px)}
+  40%{clip-path:inset(1px 0 1px 0 round 999px);transform:scaleX(1.035) scaleY(1.12);filter:blur(.25px)}
+  72%{clip-path:inset(0 0 0 0 round 20px);transform:scaleX(.99) scaleY(.98);filter:blur(0)}
+  100%{clip-path:inset(0 0 0 0 round 18px);transform:scaleX(1) scaleY(1);filter:blur(0)}
+}
+.music-search-toggle{
+  transition:left .76s var(--si-water-ease),transform .76s var(--si-water-ease),color .28s ease,filter .38s ease!important;
+}
+.music-search-toggle svg{transition:transform .76s var(--si-water-ease)!important;}
+.music-search-morph input{
+  transition:opacity .26s ease .18s,visibility 0s linear .44s,transform .5s var(--si-island-ease) .14s!important;
+}
+.music-search-morph.is-open input{
+  transition:opacity .36s ease .24s,visibility 0s,transform .56s var(--si-island-ease) .17s!important;
+}
+
+/* Shuffle and Repeat One share one optical box; only the selected icon animates. */
+.music-heading-actions>.music-playback-mode-compact .music-mode-icon{
+  position:relative!important;inset:auto!important;display:block!important;
+  box-sizing:border-box!important;flex:0 0 14px!important;width:14px!important;height:14px!important;
+  min-width:14px!important;min-height:14px!important;margin:0!important;padding:0!important;
+  fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;
+  stroke-linecap:round!important;stroke-linejoin:round!important;
+  transform-origin:50% 50%!important;
+  transition:opacity .28s ease,transform .48s cubic-bezier(.2,.85,.25,1),filter .28s ease!important;
+}
+.music-heading-actions>.music-playback-mode-compact[data-playback-mode="shuffle"] .music-mode-shuffle,
+.music-heading-actions>.music-playback-mode-compact[data-playback-mode="repeat"] .music-mode-repeat{
+  visibility:visible!important;opacity:1!important;transform:rotate(0) scale(1)!important;
+}
+.music-heading-actions>.music-playback-mode-compact[data-playback-mode="shuffle"] .music-mode-repeat,
+.music-heading-actions>.music-playback-mode-compact[data-playback-mode="repeat"] .music-mode-shuffle{
+  visibility:hidden!important;opacity:0!important;transform:rotate(-35deg) scale(.62)!important;
+  animation:none!important;
+}
+.music-heading-actions>.music-playback-mode-compact.is-switching[data-playback-mode="shuffle"] .music-mode-shuffle,
+.music-heading-actions>.music-playback-mode-compact.is-switching[data-playback-mode="repeat"] .music-mode-repeat{
+  filter:drop-shadow(0 0 5px rgba(127,230,224,.62))!important;
+  transform:rotate(0) scale(1.12)!important;
+}
+.music-heading-actions>.music-playback-mode-compact.is-switching[data-playback-mode="shuffle"] .music-mode-repeat,
+.music-heading-actions>.music-playback-mode-compact.is-switching[data-playback-mode="repeat"] .music-mode-shuffle{
+  opacity:0!important;visibility:hidden!important;animation:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .music-search-morph,.music-search-morph::before,.music-search-toggle,.music-search-toggle svg,.music-search-morph input,
+  .music-heading-actions>.music-playback-mode-compact .music-mode-icon{transition:none!important;animation:none!important;}
+}
