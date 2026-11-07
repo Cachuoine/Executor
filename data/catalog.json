@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.53",
-  "updatedAt": "2026-11-07T01:11:52.511Z",
+  "updatedAt": "2026-11-07T01:12:43.922Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -382,7 +382,7 @@
       "websiteUrl": "https://voltbz.net/",
       "communityUrl": "https://discord.com/invite/voltbz",
       "icon": "<:volt:1551962506984038502>",
-      "summary": "```ansi\n       \u001b[4;32m✦NIGHTREAPER · VOLT\u001b[0m\n\u001b[36m▸ TRẠNG THÁI  \u001b[1;33mĐANG CẬP NHẬT\u001b[0m\n\u001b[36m▸ NỀN TẢNG   \u001b[37mPC · WINDOWS\u001b[0m\n\u001b[36m▸ PHIÊN BẢN  \u001b[33m1.3.20.1\u001b[0m\n\u001b[36m▸ TƯƠNG THÍCH \u001b[37m5a21b87bbc2641cf\u001b[0m\n\u001b[36m▸ sUNC / UNC \u001b[37m100 / 99\u001b[0m\n\u001b[90m──────────────────────────────────\u001b[0m\n       \u001b[4;33m✦VOLT · CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated for version-f0ea5da9412f4e35\n\u001b[1;32m[!] Fixed a VoltSignal crash\n       \u001b[0;37;46mConfig by Nightreaper\n```",
+      "summary": "```ansi\n       \u001b[4;32m✦NIGHTREAPER · VOLT\u001b[0m\n\u001b[36m▸ TRẠNG THÁI  \u001b[1;33mĐANG CẬP NHẬT\u001b[0m\n\u001b[36m▸ NỀN TẢNG   \u001b[37mPC · WINDOWS\u001b[0m\n\u001b[36m▸ PHIÊN BẢN  \u001b[33m1.3.21.2\u001b[0m\n\u001b[36m▸ TƯƠNG THÍCH \u001b[37m5a21b87bbc2641cf\u001b[0m\n\u001b[36m▸ sUNC / UNC \u001b[37m100 / 99\u001b[0m\n\u001b[90m──────────────────────────────────\u001b[0m\n       \u001b[4;33m✦VOLT · CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated for version-f0ea5da9412f4e35\n\u001b[1;32m[!] Fixed a VoltSignal crash\n       \u001b[0;37;46mConfig by Nightreaper\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "https://bennnyr.com/status/logos/volt.png",
       "websiteMainImageUrl": "",
@@ -392,7 +392,7 @@
       "unc": "99",
       "id": "entry-pc-volt",
       "createdAt": "2026-11-01T08:10:17.898Z",
-      "modifiedAt": "2026-11-07T01:11:54.388Z"
+      "modifiedAt": "2026-11-07T01:12:43.073Z"
     },
     {
       "name": "VORTEX",
