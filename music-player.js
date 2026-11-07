@@ -45,7 +45,7 @@
   const search = $('#musicSearch');
   const list = $('#musicTrackList');
   const playbackStatus = $('#musicPlaybackStatus');
-  const playbackToggle = $('#musicPlaybackToggle');
+  const playbackModeToggle = $('#musicPlaybackModeToggle');
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
   const FALLBACK = []; // Public music is sourced exclusively from Admin-uploaded local MP3 files.
   // The library is managed by Admin; deleted tracks are never silently restored.
@@ -94,6 +94,8 @@
   let libraryMode = 'all';
   let hasPlaybackAttempt = false;
   let isPlaying = false;
+  // Dynamic defaults to random next-track playback; the footer control toggles repeat-one.
+  let playbackMode = 'shuffle';
   let islandTransitionLocked = false;
   let islandTransitionMode = null;
   let islandTransitionTimer = null;
@@ -207,9 +209,25 @@
     const heading = $('#musicPanel .music-panel-heading strong'); if (heading) heading.textContent = vi ? 'Thư viện nhạc' : 'Thư viện nhạc';
     const source = $('#musicOpenSource'); if (source) source.textContent = 'MP3 NỘI BỘ';
     const status = $('#musicPlaybackStatus'); if (status && !isPlaying && !hasPlaybackAttempt) status.textContent = 'Chọn một tệp MP3 nội bộ để phát.';
-    const toggle = $('#musicPlaybackToggle'); if (toggle) { toggle.textContent = isPlaying ? (vi ? 'Tạm dừng tại đây ■' : 'Tạm dừng tại đây ■') : (currentTrack ? (vi ? 'Phát bài đã chọn ▶' : 'Phát bài đã chọn ▶') : (vi ? 'Chọn bài trước ▶' : 'Chọn bài trước ▶')); toggle.disabled = !currentTrack; }
+    syncPlaybackModeControl();
   }
   function tr(vi, en) { return vi; }
+  function syncPlaybackModeControl() {
+    const button = playbackModeToggle || $('#musicPlaybackModeToggle');
+    if (!button) return;
+    const repeatOne = playbackMode === 'repeat';
+    button.textContent = repeatOne ? '↻ Lặp lại bài này' : '⤨ Chuyển tiếp ngẫu nhiên';
+    button.setAttribute('aria-pressed', String(repeatOne));
+    button.setAttribute('aria-label', repeatOne ? 'Đang bật chế độ lặp lại một bài' : 'Đang bật chế độ chuyển bài ngẫu nhiên');
+    button.title = repeatOne ? 'Lặp lại liên tục bài đang chọn' : 'Chuyển ngẫu nhiên sang một bài khác khi bài hiện tại kết thúc';
+    button.dataset.playbackMode = playbackMode;
+  }
+  function togglePlaybackMode() {
+    playbackMode = playbackMode === 'shuffle' ? 'repeat' : 'shuffle';
+    if (directAudio) directAudio.loop = playbackMode === 'repeat';
+    syncPlaybackModeControl();
+    setPlaybackStatus(playbackMode === 'repeat' ? 'Đã bật lặp lại bài đang chọn.' : 'Đã bật chuyển tiếp ngẫu nhiên khi hết bài.');
+  }
   function setPlaybackStatus(message) { if (playbackStatus) playbackStatus.textContent = message; }
   function syncPlaybackVisuals() {
     // Wave animation is a playback indicator, not ambient decoration.
@@ -491,11 +509,7 @@
     if (artist) artist.textContent = track ? track.artist : tr('Chưa có nhạc đang phát', 'Chưa có nhạc đang phát');
     if (state) state.textContent = isPlaying ? tr('ĐANG PHÁT', 'ĐANG PHÁT') : tr('TRÌNH PHÁT NHẠC', 'TRÌNH PHÁT NHẠC');
     if (source) source.textContent = 'MP3 NỘI BỘ';
-    if (playbackToggle) {
-      playbackToggle.textContent = isPlaying ? tr('Tạm dừng tại đây ■', 'Tạm dừng tại đây ■') : (track ? tr('Phát bài đã chọn ▶', 'Phát bài đã chọn ▶') : tr('Chọn bài trước ▶', 'Chọn bài trước ▶'));
-      playbackToggle.setAttribute('aria-pressed', String(isPlaying));
-      playbackToggle.disabled = !track;
-    }
+    syncPlaybackModeControl();
   }
   function persistMusicState() {
     // Backward-compatible event-hook target only. Playback state is memory-only;
@@ -509,12 +523,25 @@
   directAudio?.addEventListener('timeupdate', () => { if (isDirectAudioTrack(activeTrack())) { savedPosition = Number(directAudio.currentTime) || 0; if (Date.now() % 2000 < 1000) persistMusicState(); } });
   directAudio?.addEventListener('play', () => { if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) { isPlaying = true; syncPlaybackVisuals(); } });
   directAudio?.addEventListener('pause', () => { if (isDirectAudioTrack(activeTrack()) && !shouldResumePlayback) { isPlaying = false; syncPlaybackVisuals(); persistMusicState(); render(); } });
+  function playRandomNextTrack() {
+    const available = tracks.filter(track => isDirectAudioTrack(track));
+    if (!available.length) { stopTrack(); return; }
+    const alternatives = available.filter(track => String(track.id) !== String(currentTrack));
+    const pool = alternatives.length ? alternatives : available;
+    const next = pool[Math.floor(Math.random() * pool.length)];
+    if (!next) { stopTrack(); return; }
+    if (String(next.id) === String(currentTrack)) {
+      restartCurrentTrack(currentTrack);
+      return;
+    }
+    setPlaybackStatus(`Đã hết bài · chuyển ngẫu nhiên sang ${next.title}.`);
+    playTrack(String(next.id));
+  }
   directAudio?.addEventListener('ended', () => {
     if (!isDirectAudioTrack(activeTrack())) return;
-    // loop=true normally handles this natively; this fallback covers browsers or
-    // media servers that still emit ended at the end of a looping MP3.
-    if (shouldResumePlayback) restartCurrentTrack(currentTrack);
-    else { isPlaying = false; syncPlaybackVisuals(); render(); }
+    if (!shouldResumePlayback) { isPlaying = false; syncPlaybackVisuals(); render(); return; }
+    if (playbackMode === 'repeat') restartCurrentTrack(currentTrack);
+    else playRandomNextTrack();
   });
   directAudio?.addEventListener('error', () => {
     const track = activeTrack();
@@ -569,7 +596,7 @@
     }
 
     currentTrack = track.id;
-    directAudio.loop = true;
+    directAudio.loop = playbackMode === 'repeat';
     if (isNewTrack) {
       try { directAudio.currentTime = 0; } catch {}
     } else if (Number.isFinite(savedPosition) && savedPosition > 0) {
@@ -662,7 +689,7 @@
   }, true);
   island?.addEventListener('click', handleIslandToggle);
   $('#closeMusicPanel')?.addEventListener('click', beginIslandClose);
-  playbackToggle?.addEventListener('click', () => { if (isPlaying) stopTrack(); else if (currentTrack) playTrack(currentTrack); else if (panel?.classList.contains('hidden')) handleIslandToggle(); });
+  playbackModeToggle?.addEventListener('click', togglePlaybackMode);
   list?.addEventListener('click', event => { const button = event.target.closest('[data-music-track]'); if (button) playTrack(button.dataset.musicTrack); });
   search?.addEventListener('input', () => { query = String(search.value || '').trim().toLowerCase(); render(); });
   document.addEventListener('click', event => {
@@ -684,5 +711,6 @@
   window.addEventListener('fishcat:music-library-updated', loadLibrary);
   window.addEventListener('executor:music-play', async event => { const id = String(event.detail?.id || ''); let track = tracks.find(item => String(item.id) === id); if (!track) { await loadLibrary(); track = tracks.find(item => String(item.id) === id); } if (track) playTrack(String(track.id)); else setPlaybackStatus('Không tìm thấy bài hát trong thư viện nhạc.'); });
   window.addEventListener('executor:music-stop', stopTrack);
+  syncPlaybackModeControl();
   initializePublicPlayer();
 })();

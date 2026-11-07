@@ -582,3 +582,33 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 
 /* v15.2.24 — keep Dynamic music library tinted but not opaque. */
 .music-panel{background:linear-gradient(110deg,rgba(27,30,52,.76),rgba(22,31,49,.74) 52%,rgba(13,35,41,.74))!important;border-color:rgba(169,164,224,.24)!important;box-shadow:0 20px 52px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.045)!important;-webkit-backdrop-filter:blur(23px) saturate(125%);backdrop-filter:blur(23px) saturate(125%)}
+
+/* v15.2.53-r7 — mode selector replaces the Dynamic footer play/pause action. */
+.music-panel-footer .music-playback-mode-toggle {
+  flex:0 0 auto;
+  min-height:34px;
+  max-width:100%;
+  padding:0 11px;
+  border-color:rgba(167,139,250,.32);
+  background:linear-gradient(110deg,rgba(167,139,250,.12),rgba(127,230,224,.075));
+  color:#d8ceff;
+  white-space:nowrap;
+  line-height:1.2;
+  transition:border-color .18s ease,background .18s ease,box-shadow .18s ease;
+}
+.music-panel-footer .music-playback-mode-toggle:hover {
+  border-color:rgba(167,139,250,.65);
+  background:linear-gradient(110deg,rgba(167,139,250,.2),rgba(127,230,224,.12));
+  box-shadow:0 0 16px rgba(167,139,250,.1);
+}
+.music-panel-footer .music-playback-mode-toggle[data-playback-mode="repeat"] {
+  border-color:rgba(127,230,224,.48);
+  background:rgba(127,230,224,.12);
+  color:#aaf4e9;
+}
+@media(max-width:560px) {
+  .music-panel-footer { flex-wrap:wrap; }
+  .music-panel-footer>span:nth-child(2) { flex:1 1 calc(100% - 24px); }
+  .music-panel-footer .music-playback-mode-toggle { margin-left:auto; }
+  .music-panel-footer .music-local-only { flex:0 0 auto; }
+}

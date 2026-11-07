@@ -1004,3 +1004,82 @@ body:not(.admin-page) .executor-score-badge.is-available.unc { border-color:rgba
 .version-mini-heading small{flex:1;min-width:0}.version-mini-heading i{font:500 8px "DM Mono",monospace;color:rgba(170,160,230,.65);font-style:normal}
 .music-local-only{display:inline-flex;align-items:center;gap:5px;color:#91ded5;font:700 8px "DM Mono",monospace;letter-spacing:.08em;white-space:nowrap}
 @media(max-width:640px){.universe-music-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:190px}.universe-music-track{flex-basis:auto;min-height:40px}.universe-music-copy b{font-size:8px}.universe-music-copy small{font-size:7px}}
+
+
+/* v15.2.53-r7 — detail artwork follows the uploaded image's real dimensions. */
+body:not(.admin-page) .detail-cover {
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:100%;
+  max-height:none;
+  object-fit:contain;
+  object-position:center;
+  margin:0 auto 19px;
+  border-radius:13px;
+  background:transparent;
+}
+
+/* v15.2.53-r7 — a more recognizable, high-energy NightReaper hero animation. */
+body:not(.admin-page) .hero-art { isolation:isolate; }
+body:not(.admin-page) .hero-art::before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:min(96%,520px);
+  aspect-ratio:1;
+  border-radius:50%;
+  border:1px solid rgba(167,139,250,.16);
+  background:conic-gradient(from 0deg,transparent 0 8%,rgba(127,230,224,.0) 12%,rgba(127,230,224,.72) 14%,transparent 17% 42%,rgba(167,139,250,.0) 46%,rgba(167,139,250,.78) 49%,transparent 52% 78%,rgba(136,182,255,.7) 82%,transparent 85%);
+  -webkit-mask:radial-gradient(circle,transparent 62%,#000 63%,#000 64%,transparent 65%);
+  mask:radial-gradient(circle,transparent 62%,#000 63%,#000 64%,transparent 65%);
+  filter:drop-shadow(0 0 13px rgba(167,139,250,.26));
+  animation:nrHeroHaloSpin 17s linear infinite;
+  pointer-events:none;
+}
+body:not(.admin-page) .hero-art::after {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:7% 5%;
+  border:1px dashed rgba(127,230,224,.18);
+  border-radius:50%;
+  box-shadow:0 0 35px rgba(127,230,224,.08),inset 0 0 35px rgba(167,139,250,.07);
+  transform:rotate(-18deg) scale(.94);
+  animation:nrHeroHaloPulse 5.4s ease-in-out infinite;
+  pointer-events:none;
+}
+body:not(.admin-page) .hero-card-front {
+  box-shadow:0 22px 65px rgba(0,0,0,.3),0 0 0 1px rgba(167,139,250,.12),0 0 45px rgba(124,100,245,.14);
+  animation:compactHeroCardDrift 6.2s ease-in-out infinite alternate,nrHeroCardGlow 4.8s ease-in-out infinite;
+}
+body:not(.admin-page) .hero-card-front .mock-icon {
+  animation:nrHeroIconPulse 2.8s ease-in-out infinite;
+  box-shadow:0 0 0 0 rgba(127,230,224,.2);
+}
+body:not(.admin-page) .hero h1 span {
+  background:linear-gradient(105deg,#c7b9ff 0%,#8fe8e0 36%,#e0f69f 65%,#bca7ff 100%);
+  background-size:220% 100%;
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:nrHeroTitleFlow 6.5s ease-in-out infinite alternate;
+}
+body:not(.admin-page) .hero .eyebrow-line {
+  box-shadow:0 0 12px rgba(127,230,224,.75);
+  animation:nrHeroEyebrowPulse 1.8s ease-in-out infinite;
+}
+@keyframes nrHeroHaloSpin { to { transform:rotate(360deg); } }
+@keyframes nrHeroHaloPulse { 0%,100% { opacity:.38; transform:rotate(-18deg) scale(.91); } 50% { opacity:.9; transform:rotate(-8deg) scale(1.03); } }
+@keyframes nrHeroCardGlow { 0%,100% { filter:brightness(1); } 50% { filter:brightness(1.075); } }
+@keyframes nrHeroIconPulse { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(127,230,224,.0); } 50% { transform:scale(1.09); box-shadow:0 0 0 9px rgba(127,230,224,.055),0 0 22px rgba(167,139,250,.18); } }
+@keyframes nrHeroTitleFlow { from { background-position:0% 50%; } to { background-position:100% 50%; } }
+@keyframes nrHeroEyebrowPulse { 0%,100% { opacity:.65; transform:scaleX(.86); } 50% { opacity:1; transform:scaleX(1.12); } }
+@media(prefers-reduced-motion:reduce) {
+  body:not(.admin-page) .hero-art::before,
+  body:not(.admin-page) .hero-art::after,
+  body:not(.admin-page) .hero-card-front,
+  body:not(.admin-page) .hero-card-front .mock-icon,
+  body:not(.admin-page) .hero h1 span,
+  body:not(.admin-page) .hero .eyebrow-line { animation:none!important; }
+}

@@ -8,13 +8,13 @@
   <meta name="description" content="NightReaper — trung tâm quản lý executor, phiên bản Roblox và âm nhạc.">
   <base href="./">
   <title>NightReaper — Trung tâm điều hành</title>
-  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.53-r6"/>
+  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.53-r7"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=15.2.53-r6">
-  <script src="discord-description.js?v=15.2.53-r6" defer></script><script src="app.js?v=15.2.53-r6" defer></script>
-  <link rel="stylesheet" href="music-island.css?v=15.2.53-r6">
+  <link rel="stylesheet" href="site.css?v=15.2.53-r7">
+  <script src="discord-description.js?v=15.2.53-r7" defer></script><script src="app.js?v=15.2.53-r7" defer></script>
+  <link rel="stylesheet" href="music-island.css?v=15.2.53-r7">
 </head>
 <body>
   <div class="ambient ambient-a" aria-hidden="true"></div>
@@ -39,7 +39,7 @@
         <div class="music-search-row" id="musicSearchForm"><input id="musicSearch" type="search" placeholder="Tìm tên bài hát hoặc nghệ sĩ…" autocomplete="off" aria-label="Tìm tên bài hát hoặc nghệ sĩ"></div>
         <div class="music-library-meta"><span id="musicLibraryCount">Đang tải thư viện…</span></div>
         <div class="music-track-list" id="musicTrackList"><div class="music-library-loading">Đang tải thư viện nhạc…</div></div>
-        <div class="music-panel-footer"><span class="music-live-led"></span><span id="musicPlaybackStatus">Sẵn sàng phát nhạc.</span><button type="button" id="musicPlaybackToggle" class="music-playback-toggle" aria-pressed="false">Chọn bài trước ▶</button><span id="musicOpenSource" class="music-local-only">MP3 NỘI BỘ</span></div>
+        <div class="music-panel-footer"><span class="music-live-led"></span><span id="musicPlaybackStatus">Sẵn sàng phát nhạc.</span><button type="button" id="musicPlaybackModeToggle" class="music-playback-toggle music-playback-mode-toggle" aria-label="Chế độ chuyển tiếp ngẫu nhiên" aria-pressed="false" title="Chuyển bài ngẫu nhiên khi bài hiện tại kết thúc">⤨ Chuyển tiếp ngẫu nhiên</button><span id="musicOpenSource" class="music-local-only">MP3 NỘI BỘ</span></div>
       </section>
       <div class="music-engine" aria-hidden="true"><audio id="musicDirectAudio" preload="metadata" hidden></audio></div>
     </div>
@@ -178,7 +178,7 @@
 
   <dialog id="detailDialog" class="detail-dialog" aria-labelledby="detailTitle"><form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Đóng chi tiết">×</button></form><div id="detailContent"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="music-player.js?v=15.2.53-r6" defer></script>
-  <script src="ambient-motion.js?v=15.2.53-r6" defer></script>
+  <script src="music-player.js?v=15.2.53-r7" defer></script>
+  <script src="ambient-motion.js?v=15.2.53-r7" defer></script>
 </body>
 </html>
