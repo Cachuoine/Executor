@@ -285,8 +285,8 @@
     // Freeze the exact visible size as numeric values before adding .is-closing.
     // This avoids trying to transition from intrinsic/auto sizing directly to 88x36,
     // which can look like the pill suddenly collapses in some browser/layout states.
-    dock.style.setProperty('width', `${rect.width}px`);
-    dock.style.setProperty('height', `${rect.height}px`);
+    dock.style.setProperty('width', `${rect.width}px`, 'important');
+    dock.style.setProperty('height', `${rect.height}px`, 'important');
     void dock.offsetWidth;
   }
   function restoreDockSizeAfterClose() {
@@ -380,6 +380,11 @@
       clearTimeout(panelCloseTimer);
       panelCloseTimer = null;
     }
+    // Capture the currently rendered dock dimensions before the close class changes
+    // layout constraints. Freeze them with inline !important so stylesheet width rules
+    // cannot snap the capsule to its collapsed size on the first closing frame.
+    freezeDockSizeForClose();
+    void dock.offsetWidth;
     // Close in parallel: the library shrinks back to its center, the pill contracts,
     // and both navigation wings return in this same frame (the inverse of opening).
     panel.classList.remove('is-opening');
@@ -387,6 +392,10 @@
     dock.classList.add('is-closing');
     dynamicNav?.classList.add('music-nav-restoring');
     dynamicNav?.classList.remove('music-nav-morphing');
+    // Let the browser measure the frozen open geometry, then release the inline
+    // override so the closing CSS target can animate from that exact first frame.
+    void dock.offsetWidth;
+    restoreDockSizeAfterClose();
     if (island) {
       island.setAttribute('aria-expanded', 'false');
       island.setAttribute('aria-label', tr('Mở thư viện nhạc', 'Mở thư viện nhạc'));
