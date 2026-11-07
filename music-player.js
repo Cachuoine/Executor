@@ -38,6 +38,49 @@
   }
   const islandRecord = $('.music-island-record');
   const islandWaveBars = [...document.querySelectorAll('.music-island-wave i')];
+  const volumeControl = $('#musicVolumeControl');
+  const volumeToggle = $('#musicVolumeToggle');
+  const volumeSlider = $('#musicVolumeSlider');
+  const volumeValue = $('#musicVolumeValue');
+  const MUSIC_VOLUME_KEY = 'nightreaper-music-volume-v1';
+  let musicVolume = 0.8;
+  try {
+    const storedVolume = localStorage.getItem(MUSIC_VOLUME_KEY);
+    if (storedVolume !== null && Number.isFinite(Number(storedVolume))) {
+      musicVolume = Math.min(1, Math.max(0, Number(storedVolume)));
+    }
+  } catch {}
+  directAudio.volume = musicVolume;
+  directAudio.muted = musicVolume <= 0;
+
+  function setVolumePanelOpen(open) {
+    if (!volumeControl || !volumeToggle) return;
+    const expanded = Boolean(open);
+    volumeControl.classList.toggle('is-open', expanded);
+    volumeToggle.setAttribute('aria-expanded', String(expanded));
+    volumeToggle.setAttribute('aria-label', expanded ? 'Ẩn điều khiển âm lượng' : 'Mở điều khiển âm lượng');
+    volumeToggle.title = expanded ? 'Ẩn thanh âm lượng' : 'Điều chỉnh âm lượng';
+  }
+  function applyMusicVolume(value, { persist = true } = {}) {
+    const numeric = Number(value);
+    musicVolume = Math.min(1, Math.max(0, Number.isFinite(numeric) ? numeric / 100 : 0.8));
+    directAudio.volume = musicVolume;
+    directAudio.muted = musicVolume <= 0;
+    const percent = Math.round(musicVolume * 100);
+    if (volumeSlider) volumeSlider.value = String(percent);
+    if (volumeValue) volumeValue.textContent = `${percent}%`;
+    if (volumeControl) volumeControl.style.setProperty('--nr-volume-level', `${percent}%`);
+    if (volumeToggle) {
+      volumeToggle.dataset.volumeState = musicVolume <= 0 ? 'mute' : musicVolume < 0.36 ? 'low' : 'high';
+      volumeToggle.setAttribute('aria-valuetext', `${percent}%`);
+    }
+    if (persist) {
+      try { localStorage.setItem(MUSIC_VOLUME_KEY, String(musicVolume)); } catch {}
+    }
+  }
+  applyMusicVolume(musicVolume * 100, { persist: false });
+  setVolumePanelOpen(false);
+
   let recordAngle = 0;
   let visualFrameId = 0;
   let lastVisualFrameTime = 0;
@@ -69,7 +112,7 @@
       audioContext = new AudioContextClass();
       audioAnalyser = audioContext.createAnalyser();
       audioAnalyser.fftSize = 1024;
-      audioAnalyser.smoothingTimeConstant = 0.82;
+      audioAnalyser.smoothingTimeConstant = 0.68;
       audioAnalyser.minDecibels = -88;
       audioAnalyser.maxDecibels = -18;
       audioFrequencyData = new Uint8Array(audioAnalyser.frequencyBinCount);
@@ -89,23 +132,47 @@
     if (!audioAnalyser || !audioFrequencyData || !islandWaveBars.length) return;
     audioAnalyser.getByteFrequencyData(audioFrequencyData);
     const count = islandWaveBars.length;
-    const maxBin = Math.max(8, Math.min(audioFrequencyData.length - 1, 190));
+    const maxBin = Math.max(16, Math.min(audioFrequencyData.length - 1, 190));
+
+    // A shared energy envelope makes every column bounce together. Each mirrored
+    // pair then adds only a little frequency character, so a bass-heavy left edge
+    // can never tower over the rest of the waveform.
+    let totalSquares = 0;
+    let totalSamples = 0;
+    for (let bin = 2; bin <= maxBin; bin += 1) {
+      const value = audioFrequencyData[bin] || 0;
+      totalSquares += value * value;
+      totalSamples += 1;
+    }
+    const overallRms = totalSamples ? Math.sqrt(totalSquares / totalSamples) : 0;
+    const overallActivity = Math.min(1, Math.pow(overallRms / 112, 0.78));
+
+    const bandEdges = [
+      2,
+      Math.max(4, Math.floor(maxBin * 0.10)),
+      Math.max(6, Math.floor(maxBin * 0.24)),
+      Math.max(9, Math.floor(maxBin * 0.48)),
+      maxBin
+    ];
+    const midpoint = (count - 1) / 2;
     for (let index = 0; index < count; index += 1) {
-      const start = Math.max(1, Math.floor(Math.pow(index / count, 1.75) * maxBin));
-      const end = Math.max(start + 1, Math.min(maxBin, Math.floor(Math.pow((index + 1) / count, 1.75) * maxBin)));
-      let sum = 0;
-      let peak = 0;
-      let samples = 0;
+      const mirroredDistance = Math.abs(index - midpoint);
+      const normalizedDistance = midpoint > 0 ? mirroredDistance / midpoint : 0;
+      const bandIndex = Math.min(3, Math.round(normalizedDistance * 3));
+      const start = Math.max(2, bandEdges[bandIndex]);
+      const end = Math.max(start, bandEdges[bandIndex + 1]);
+      let bandSquares = 0;
+      let bandSamples = 0;
       for (let bin = start; bin <= end; bin += 1) {
         const value = audioFrequencyData[bin] || 0;
-        sum += value;
-        peak = Math.max(peak, value);
-        samples += 1;
+        bandSquares += value * value;
+        bandSamples += 1;
       }
-      const average = samples ? sum / samples : 0;
-      const level = Math.min(1, (average * 0.7 + peak * 0.3) / 185);
-      const target = 3.5 + level * 21;
-      waveformHeights[index] += (target - waveformHeights[index]) * 0.42;
+      const bandRms = bandSamples ? Math.sqrt(bandSquares / bandSamples) : overallRms;
+      const bandActivity = Math.min(1, Math.pow(bandRms / 150, 0.72));
+      const balancedLevel = overallActivity * 0.78 + bandActivity * 0.22;
+      const target = Math.max(3.5, Math.min(23, 4 + balancedLevel * 16 + (bandActivity - overallActivity) * 2));
+      waveformHeights[index] += (target - waveformHeights[index]) * 0.52;
       setWaveformHeight(index, waveformHeights[index]);
     }
   }
@@ -299,6 +366,7 @@
   }
   function beginIslandClose() {
     if (islandTransitionLocked || !panel || panel.classList.contains('hidden')) return;
+    setVolumePanelOpen(false);
     lockIslandTransition('closing');
     closeMusicCenter();
     // Keep focus out of the now-hidden library while the island is collapsing.
@@ -854,6 +922,12 @@
   }, true);
   island?.addEventListener('click', handleIslandToggle);
   $('#closeMusicPanel')?.addEventListener('click', () => { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); });
+  volumeToggle?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+    setVolumePanelOpen(!volumeControl?.classList.contains('is-open'));
+  });
+  volumeSlider?.addEventListener('input', event => applyMusicVolume(event.currentTarget.value));
   playbackModeToggle?.addEventListener('click', togglePlaybackMode);
   searchMorph?.addEventListener('click', event => {
     // Keep clicks on the icon, input, caret and the morph surface inside this control.
