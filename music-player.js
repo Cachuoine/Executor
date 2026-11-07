@@ -22,6 +22,8 @@
   dock.classList.remove('hidden', 'music-public-pending');
   dock.classList.add('music-public-ready');
   const island = $('#musicIslandToggle');
+  const islandTrackTitle = $('#musicIslandTrackTitle');
+  const islandTrackArtist = $('#musicIslandTrackArtist');
   const panel = $('#musicPanel');
   const musicEngine = document.querySelector('.music-engine');
   let directAudio = document.getElementById('musicDirectAudio');
@@ -246,11 +248,22 @@
     render();
   }
   function setPlaybackStatus(message) { if (playbackStatus) playbackStatus.textContent = message; }
+  function updateDynamicTrackDisplay(track = activeTrack()) {
+    const hasTrack = Boolean(track);
+    dock.classList.toggle('has-track', hasTrack);
+    dock.classList.toggle('is-playing', Boolean(hasTrack && isPlaying));
+    if (islandTrackTitle) islandTrackTitle.textContent = hasTrack ? String(track.title || 'Bài hát chưa đặt tên') : '';
+    if (islandTrackArtist) islandTrackArtist.textContent = hasTrack ? String(track.artist || 'Chưa rõ nghệ sĩ') : '';
+    if (island) island.setAttribute('aria-label', panel && !panel.classList.contains('hidden')
+      ? (hasTrack ? `Đang mở thư viện: ${track.title || 'Bài hát'}, ${track.artist || 'Chưa rõ nghệ sĩ'}` : 'Đang mở thư viện nhạc')
+      : 'Mở thư viện nhạc');
+  }
   function syncPlaybackVisuals() {
-    // Dynamic is a pure open/close trigger. Playback state is kept inside the
-    // library and the Favorite Galaxy event; it never changes the capsule.
-    dock.classList.remove('is-playing', 'has-track', 'is-empty');
+    // Dynamic is a pure open/close trigger while collapsed; expanded state becomes a mini player:
+    // the compact capsule stays blank. When expanded, it becomes a mini player:
+    // the vinyl spins, the selected track is named, and the waveform animates on playback.
     const track = activeTrack();
+    updateDynamicTrackDisplay(track);
     window.dispatchEvent(new CustomEvent('executor:music-playback-state', {
       detail: {
         trackId: String(currentTrack || ''),
@@ -315,6 +328,7 @@
   }
   window.ExecutorDynamicStatus = Object.freeze({ runSystemLoading });
   function openMusicCenter() {
+    updateDynamicTrackDisplay(activeTrack());
     if (currentTrack) { prepareCurrentTrackReveal(); render(); }
     restoreDockSizeAfterClose();
     if (panelCloseTimer) {
@@ -474,6 +488,7 @@
     const track = activeTrack();
     syncPlaybackModeControl();
     updateCurrentTrackBanner(track);
+    updateDynamicTrackDisplay(track);
     if (pendingTrackRevealId) requestAnimationFrame(revealCurrentTrackInLibrary);
   }
   function persistMusicState() {

@@ -1316,3 +1316,175 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
     animation-duration:.01ms !important;transition-duration:.01ms !important;transition-delay:0s !important;
   }
 }
+
+
+/* v15.2.53-r16 — slower liquid close and expanded Dynamic mini-player. */
+:root{
+  --si-library-morph-duration:2.05s;
+  --si-library-reveal-duration:1.78s;
+  --si-water-ease:cubic-bezier(.22,.78,.24,1);
+  --si-island-ease:cubic-bezier(.22,.78,.24,1);
+}
+
+/* Slow both directions together; the panel remains visible until the full return finishes. */
+.site-header>.main-nav-dynamic .music-dock,
+.admin-page .admin-site-header .music-dock{
+  transition:flex-basis var(--si-library-morph-duration) var(--si-water-ease),
+    width var(--si-library-morph-duration) var(--si-water-ease),
+    height var(--si-library-morph-duration) var(--si-water-ease),
+    max-width var(--si-library-morph-duration) var(--si-water-ease),
+    filter .55s ease !important;
+}
+.site-header>.main-nav-dynamic .music-dock .music-island,
+.admin-page .admin-site-header .music-dock .music-island{
+  transition:height var(--si-library-morph-duration) var(--si-water-ease),
+    padding var(--si-library-morph-duration) var(--si-water-ease),
+    border-radius var(--si-library-morph-duration) var(--si-water-ease),
+    background-position var(--si-library-morph-duration) var(--si-water-ease),
+    box-shadow .7s ease,border-color .7s ease !important;
+}
+.site-header>.main-nav-dynamic .music-dock.music-centered .music-island::after,
+.admin-page .admin-site-header .music-dock.music-centered .music-island::after{
+  animation:nrDynamicWaterSweep 1.92s cubic-bezier(.22,.78,.24,1) both !important;
+}
+.site-header>.main-nav-dynamic .music-dock.is-closing .music-island::after,
+.admin-page .admin-site-header .music-dock.is-closing .music-island::after{
+  animation:nrDynamicWaterReturn 1.62s cubic-bezier(.42,.04,.7,.28) both !important;
+}
+@keyframes nrDynamicWaterReturn{
+  0%{opacity:.35;transform:translate3d(112%,0,0) rotate(-7deg) scaleY(.7)}
+  28%{opacity:.3;transform:translate3d(42%,0,0) rotate(-7deg) scaleY(1.02)}
+  68%{opacity:.16;transform:translate3d(-48%,0,0) rotate(-7deg) scaleY(.92)}
+  100%{opacity:0;transform:translate3d(-118%,0,0) rotate(-7deg) scaleY(.68)}
+}
+.site-header>.main-nav-dynamic .music-panel,
+.admin-page .admin-site-header .music-panel{
+  transition:clip-path var(--si-library-reveal-duration) cubic-bezier(.22,.78,.24,1),
+    transform var(--si-library-reveal-duration) cubic-bezier(.22,.78,.24,1),
+    opacity 1.48s ease,filter var(--si-library-reveal-duration) ease,
+    border-color .7s ease,box-shadow .7s ease !important;
+}
+.site-header>.main-nav-dynamic .music-panel.is-closing,
+.admin-page .admin-site-header .music-panel.is-closing{
+  transition:clip-path var(--si-library-reveal-duration) cubic-bezier(.42,.04,.7,.28),
+    transform var(--si-library-reveal-duration) cubic-bezier(.42,.04,.7,.28),
+    opacity 1.36s ease,filter var(--si-library-reveal-duration) ease,
+    max-height var(--si-library-reveal-duration) ease,padding .95s ease !important;
+}
+.site-header>.main-nav-dynamic .music-panel.is-closing>*,
+.admin-page .admin-site-header .music-panel.is-closing>*{
+  animation:nrWaterContentOut .92s cubic-bezier(.42,.04,.7,.28) both !important;
+  animation-delay:0s !important;
+}
+@keyframes nrWaterContentOut{
+  0%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+  62%{opacity:.55;transform:translateY(3px) scale(.99);filter:blur(.6px)}
+  100%{opacity:0;transform:translateY(9px) scale(.97);filter:blur(1.6px)}
+}
+
+/* Collapsed Dynamic remains its familiar blank pill with one breathing point. */
+.site-header>.main-nav-dynamic .music-dock.is-collapsed .music-island-empty-space,
+.admin-page .admin-site-header .music-dock.is-collapsed .music-island-empty-space{
+  display:block!important;flex:1 1 auto!important;min-width:0!important;
+}
+.site-header>.main-nav-dynamic .music-dock.is-collapsed .music-island-record,
+.site-header>.main-nav-dynamic .music-dock.is-collapsed .music-island-track-copy,
+.site-header>.main-nav-dynamic .music-dock.is-collapsed .music-island-wave,
+.admin-page .admin-site-header .music-dock.is-collapsed .music-island-record,
+.admin-page .admin-site-header .music-dock.is-collapsed .music-island-track-copy,
+.admin-page .admin-site-header .music-dock.is-collapsed .music-island-wave{
+  display:none!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;
+}
+.site-header>.main-nav-dynamic .music-dock.is-collapsed .music-state-led,
+.admin-page .admin-site-header .music-dock.is-collapsed .music-state-led{
+  display:grid!important;opacity:1!important;visibility:visible!important;
+}
+
+/* Open Dynamic turns into a mini-player: spinning vinyl, selected title/artist, and live bars. */
+.music-island-record{
+  position:relative!important;display:none!important;flex:0 0 36px!important;width:36px!important;height:36px!important;
+  min-width:36px!important;min-height:36px!important;border-radius:50%!important;overflow:hidden!important;
+  border:1px solid rgba(205,225,238,.25)!important;
+  background:repeating-radial-gradient(circle at 50% 50%,#1c2638 0 2px,#111827 2.8px 4px,#253149 4.7px 5.4px),
+    radial-gradient(circle,#263a54,#0b1220)!important;
+  box-shadow:0 0 13px rgba(127,230,224,.16),inset 0 0 9px rgba(0,0,0,.72)!important;
+  opacity:0;visibility:hidden;transform:scale(.62) rotate(-28deg);
+  transition:opacity .78s ease,visibility 0s linear .78s,transform 1.05s cubic-bezier(.22,.78,.24,1)!important;
+  pointer-events:none!important;
+}
+.music-island-record::before{
+  content:"";position:absolute;inset:7px;border-radius:50%;border:1px solid rgba(193,211,237,.18);
+  background:repeating-radial-gradient(circle,#1b2740 0 1.4px,#111827 2px 2.8px);
+}
+.music-island-record::after{
+  content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;border-radius:50%;
+  transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#d9fff8 0 8%,#8bded7 26%,#8270c7 72%,#25223f 100%);
+  box-shadow:0 0 7px rgba(127,230,224,.36);
+}
+.music-island-record i{position:absolute;inset:2px;border:1px solid rgba(255,255,255,.12);border-radius:50%;}
+.music-dock.music-centered .music-island-record{
+  display:block!important;opacity:1;visibility:visible;transform:scale(1) rotate(0);
+  transition-delay:.24s,0s,.1s!important;animation:nrDynamicVinylSpin 9.2s linear infinite!important;
+}
+@keyframes nrDynamicVinylSpin{to{rotate:360deg}}
+.music-island-empty-space{transition:opacity .55s ease,flex-basis .65s ease!important;}
+.music-dock.music-centered .music-island-empty-space{display:none!important;opacity:0!important;flex:0 0 0!important;width:0!important;}
+.music-island-track-copy{
+  display:none!important;flex:1 1 auto!important;min-width:0!important;max-width:100%!important;
+  flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:3px!important;
+  margin-left:10px!important;text-align:left!important;overflow:hidden!important;opacity:0;visibility:hidden;
+  transform:translateX(-8px);transition:opacity .72s ease .18s,transform .92s cubic-bezier(.22,.78,.24,1) .12s,visibility 0s linear .9s!important;
+}
+.music-island-track-copy b,.music-island-track-copy small{
+  display:block!important;max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;
+}
+.music-island-track-copy b{color:#f6f7ff!important;font:700 11px/1.2 'Space Grotesk',sans-serif!important;letter-spacing:.01em!important;}
+.music-island-track-copy small{color:rgba(188,202,224,.78)!important;font:500 8px/1.2 'DM Mono',monospace!important;letter-spacing:.035em!important;}
+.music-dock.music-centered.has-track .music-island-track-copy{
+  display:flex!important;opacity:1;visibility:visible;transform:translateX(0);transition-delay:.32s, .2s,0s!important;
+}
+.music-dock.music-centered:not(.has-track) .music-island-record{margin-inline:auto!important;}
+.music-island-wave{
+  display:none!important;align-items:center!important;justify-content:center!important;gap:2px!important;
+  flex:0 0 39px!important;width:39px!important;height:25px!important;margin-left:auto!important;
+  opacity:.62;pointer-events:none!important;
+}
+.music-island-wave i{
+  display:block!important;width:2.5px!important;height:var(--wave-height,40%)!important;min-height:4px!important;
+  border-radius:5px!important;transform:scaleY(.5);transform-origin:center;
+  background:linear-gradient(180deg,#8ef4e8,#a78bfa)!important;
+  box-shadow:0 0 6px rgba(127,230,224,.24)!important;
+  animation:nrIslandWave .92s ease-in-out infinite alternate paused!important;
+}
+.music-island-wave i:nth-child(1){--wave-height:32%;animation-delay:-.2s!important}
+.music-island-wave i:nth-child(2){--wave-height:72%;animation-delay:-.52s!important}
+.music-island-wave i:nth-child(3){--wave-height:94%;animation-delay:-.31s!important}
+.music-island-wave i:nth-child(4){--wave-height:48%;animation-delay:-.66s!important}
+.music-island-wave i:nth-child(5){--wave-height:82%;animation-delay:-.42s!important}
+.music-island-wave i:nth-child(6){--wave-height:58%;animation-delay:-.14s!important}
+.music-island-wave i:nth-child(7){--wave-height:36%;animation-delay:-.58s!important}
+.music-dock.music-centered.has-track .music-island-wave{display:flex!important;opacity:.48;}
+.music-dock.music-centered.is-playing .music-island-wave{opacity:1;}
+.music-dock.music-centered.is-playing .music-island-wave i{animation-play-state:running!important;}
+.music-dock.music-centered:not(.is-playing) .music-island-wave i{animation-play-state:paused!important;transform:scaleY(.72);}
+.music-dock.music-centered .music-state-led{display:none!important;}
+.music-dock.music-centered.is-closing .music-island-record,
+.music-dock.music-centered.is-closing .music-island-track-copy,
+.music-dock.music-centered.is-closing .music-island-wave{
+  opacity:0!important;visibility:hidden!important;transform:translateY(5px) scale(.76)!important;
+  transition:opacity 1.05s ease,transform 1.35s cubic-bezier(.42,.04,.7,.28),visibility 0s linear 1.05s!important;
+}
+@keyframes nrIslandWave{0%{transform:scaleY(.34)}100%{transform:scaleY(1)}}
+
+@media(max-width:560px){
+  .music-island-record{width:31px!important;height:31px!important;flex-basis:31px!important;min-width:31px!important;min-height:31px!important;}
+  .music-island-track-copy{margin-left:7px!important;}
+  .music-island-track-copy b{font-size:9px!important;}
+  .music-island-track-copy small{font-size:7px!important;}
+  .music-island-wave{flex-basis:30px!important;width:30px!important;gap:1.5px!important;}
+  .music-island-wave i{width:2px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  .music-dock.music-centered .music-island-record{animation-duration:18s!important;}
+  .music-island-wave i{animation:none!important;}
+}
