@@ -6,6 +6,7 @@
   const isGithubPages = location.hostname.endsWith('github.io');
   const apiUrl = (path) => new URL(path.replace(/^\//, ''), document.baseURI).toString();
   const state = { items: [], tracks: [], versions: null, downloads: {}, activePlatform: 'ALL', query: '', catalog: null, currentTrackId: '' };
+  let manuallyCapturedSnapshotTime = null;
   let favoriteMusicTracks = [];
   let favoriteUniversePlayback = { trackId: '', isPlaying: false };
   window.addEventListener('executor:music-favorites-updated', event => { favoriteMusicTracks = Array.isArray(event.detail?.tracks) ? event.detail.tracks : []; renderFavoriteUniverse(); });
@@ -133,6 +134,13 @@
     if (Number.isNaN(date.getTime())) return String(value);
     return new Intl.DateTimeFormat('vi-VN', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }).format(date);
   }
+  function formatExactVietnamDateTime(value) {
+    const date = value instanceof Date ? value : new Date(value);
+    if (Number.isNaN(date.getTime())) return 'Không xác định';
+    return new Intl.DateTimeFormat('vi-VN', {
+      dateStyle: 'long', timeStyle: 'medium', timeZone: 'Asia/Ho_Chi_Minh'
+    }).format(date);
+  }
   function humanizeStatus(status) { return STATUS_LABELS[String(status || 'unknown').toLowerCase()] || 'Chưa xác định'; }
   function statusClass(status) {
     const s = String(status || 'unknown').toLowerCase();
@@ -220,7 +228,15 @@
     $('#statOnline').textContent = String(items.filter((x) => String(x.status).toLowerCase() === 'online').length).padStart(2, '0');
     $('#statTotalHint').textContent = items.length ? `${items.length} mục đã được đăng` : 'Đang chờ mục đầu tiên được xuất bản';
     $('#heroCardCount').innerHTML = `${items.length.toString().padStart(2, '0')} <span>mục đã xuất bản</span>`;
-    $('#lastUpdated').textContent = catalog?.updatedAt ? formatDate(catalog.updatedAt) : 'Đang chờ bản dữ liệu đầu tiên';
+    const snapshotLabel = $('#lastUpdatedLabel');
+    const snapshotValue = $('#lastUpdated');
+    if (manuallyCapturedSnapshotTime) {
+      if (snapshotLabel) snapshotLabel.textContent = 'THỜI ĐIỂM BẠN NHẤN';
+      if (snapshotValue) snapshotValue.textContent = formatExactVietnamDateTime(manuallyCapturedSnapshotTime);
+    } else {
+      if (snapshotLabel) snapshotLabel.textContent = 'BẢN CHỤP DỮ LIỆU';
+      if (snapshotValue) snapshotValue.textContent = catalog?.updatedAt ? formatDate(catalog.updatedAt) : 'Đang chờ bản dữ liệu đầu tiên';
+    }
   }
   function renderVersionData(data) {
     const value = data?.data || null;
@@ -888,6 +904,16 @@
       window.history.replaceState(null, '', currentUrl.href);
     }
     $('#copyrightYear').textContent = String(new Date().getFullYear());
+    $('#captureCurrentTime')?.addEventListener('click', () => {
+      manuallyCapturedSnapshotTime = new Date();
+      renderStats(state.catalog || {});
+      const value = formatExactVietnamDateTime(manuallyCapturedSnapshotTime);
+      const button = $('#captureCurrentTime');
+      if (button) {
+        button.title = `Đã ghi nhận: ${value}`;
+        button.setAttribute('aria-label', `Thời điểm bạn nhấn: ${value}`);
+      }
+    });
     if (localHost) { $('#adminLink').hidden = false; $('#closingAdminLink').hidden = false; $('#closingBrowseLink').hidden = true; }
     $('#connectionText').textContent = localHost ? 'Đã kết nối bảng điều khiển localhost' : 'Dữ liệu công khai · tự cập nhật';
     enableNavigation(); revealOnScroll(); initFingerprintControl();

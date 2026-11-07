@@ -1110,3 +1110,6 @@ body:not(.admin-page) .hero .eyebrow-line {
 body:not(.admin-page) .section-shell{width:min(1320px,calc(100% - 48px))}
 @media(max-width:800px){body:not(.admin-page) .section-shell{width:calc(100% - 34px)}}
 @media(max-width:520px){body:not(.admin-page) .section-shell{width:calc(100% - 26px)}}
+
+/* Instant timestamp action: intentionally static, with no rotation or positional animation. */
+.mini-ring{appearance:none;padding:0;cursor:pointer;background:rgba(167,139,250,.055);font-family:inherit;line-height:1;-webkit-tap-highlight-color:transparent}.mini-ring:hover{border-color:rgba(167,139,250,.7);background:rgba(167,139,250,.13);color:#e2d9ff}.mini-ring:active{background:rgba(127,230,224,.14);border-color:rgba(127,230,224,.65)}.mini-ring:focus-visible{outline:2px solid rgba(127,230,224,.78);outline-offset:3px}
