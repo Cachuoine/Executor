@@ -1784,56 +1784,53 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 }
 @media(prefers-reduced-motion:reduce){.music-dock.music-centered.has-track .music-island-wave i{will-change:auto!important;}}
 
-
-/* v15.2.62 — true translucent Dynamic glass + one coherent 500ms search-lens motion.
-   Applies identically to the public site, local admin header and GitHub Pages. */
+/* v15.2.63 — balanced coloured glass + a natural 500ms search-lens glide.
+   Keep the Dynamic visibly tinted; translucency should soften the fill, not erase it. */
 :root{
   --nr-search-duration:500ms;
-  --nr-search-ease:cubic-bezier(.22,.72,.22,1);
+  --nr-search-ease:cubic-bezier(.22,.68,.18,1);
 }
 
-/* The capsule itself was still almost opaque (.97/.98 alpha in earlier rules).
-   Keep only a faint colour tint so the page colours can show through the glass. */
+/* Main Dynamic capsule: a restrained glass tint with its purple/teal colour intact. */
 .music-island,
 .site-header>.main-nav-dynamic .music-dock .music-island,
 .admin-page .admin-site-header .music-dock .music-island{
   background-color:transparent!important;
   background-image:
-    radial-gradient(ellipse at 16% 0%,rgba(127,230,224,.075),transparent 46%),
+    radial-gradient(ellipse at 16% 0%,rgba(127,230,224,.09),transparent 46%),
     linear-gradient(112deg,
-      rgba(18,23,42,.22),
-      rgba(31,25,52,.26) 54%,
-      rgba(10,36,41,.21))!important;
-  border-color:rgba(171,196,225,.26)!important;
-  box-shadow:0 9px 25px rgba(0,0,0,.17),
-    0 0 18px rgba(127,230,224,.045),
-    inset 0 1px rgba(255,255,255,.065)!important;
-  -webkit-backdrop-filter:blur(11px) saturate(138%)!important;
-  backdrop-filter:blur(11px) saturate(138%)!important;
+      rgba(18,23,42,.70),
+      rgba(37,29,59,.75) 54%,
+      rgba(10,36,41,.69))!important;
+  border-color:rgba(171,196,225,.31)!important;
+  box-shadow:0 9px 25px rgba(0,0,0,.19),
+    0 0 18px rgba(127,230,224,.055),
+    inset 0 1px rgba(255,255,255,.075)!important;
+  -webkit-backdrop-filter:blur(9px) saturate(128%)!important;
+  backdrop-filter:blur(9px) saturate(128%)!important;
 }
 
-/* The expanded library panel uses the same very light glass tint. */
+/* Expanded music library: slightly denser than the capsule so text stays legible. */
 .music-panel,
 .site-header>.main-nav-dynamic .music-panel,
 .admin-page .admin-site-header .music-panel{
   background-color:transparent!important;
   background-image:linear-gradient(116deg,
-    rgba(43,39,70,.24),
-    rgba(28,48,67,.27) 53%,
-    rgba(18,54,53,.22))!important;
-  border-color:rgba(169,190,226,.25)!important;
-  box-shadow:0 18px 46px rgba(0,0,0,.20),
-    inset 0 1px rgba(255,255,255,.065),
-    0 0 21px rgba(127,230,224,.045)!important;
-  -webkit-backdrop-filter:blur(13px) saturate(140%)!important;
-  backdrop-filter:blur(13px) saturate(140%)!important;
+    rgba(43,39,70,.76),
+    rgba(28,48,67,.80) 53%,
+    rgba(18,54,53,.74))!important;
+  border-color:rgba(169,190,226,.31)!important;
+  box-shadow:0 18px 46px rgba(0,0,0,.22),
+    inset 0 1px rgba(255,255,255,.075),
+    0 0 21px rgba(127,230,224,.055)!important;
+  -webkit-backdrop-filter:blur(12px) saturate(132%)!important;
+  backdrop-filter:blur(12px) saturate(132%)!important;
 }
 .music-panel::before{
-  background:rgba(39,43,70,.25)!important;
+  background:rgba(39,43,70,.22)!important;
 }
 
-/* Search capsule: width, background, lens travel and lens rotation all share
-   the same 500ms clock. Avoid the older 620–720ms transitions/keyframe overshoot. */
+/* Search field shape and lens share one timing curve, with no overshoot or wobble. */
 .music-search-morph,
 .music-library-filters>#musicSearchForm.music-search-morph{
   transition:flex-basis var(--nr-search-duration) var(--nr-search-ease),
@@ -1841,74 +1838,101 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
     filter var(--nr-search-duration) ease!important;
   will-change:flex-basis,width;
 }
-.music-library-filters>#musicSearchForm.is-open{
-  filter:drop-shadow(0 4px 11px rgba(127,230,224,.09))!important;
-}
 .music-search-morph::before{
   background:linear-gradient(112deg,
-    rgba(21,28,45,.22),
-    rgba(33,31,58,.25) 56%,
-    rgba(13,40,43,.22))!important;
-  border-color:rgba(127,230,224,.25)!important;
+    rgba(21,28,45,.69),
+    rgba(37,31,59,.74) 56%,
+    rgba(13,40,43,.68))!important;
+  border-color:rgba(127,230,224,.31)!important;
   border-radius:999px!important;
-  box-shadow:inset 0 1px rgba(255,255,255,.055)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.07)!important;
   clip-path:none!important;
   transform:none!important;
   animation:none!important;
   transition:border-radius var(--nr-search-duration) var(--nr-search-ease),
     border-color var(--nr-search-duration) ease,
-    background-color var(--nr-search-duration) ease,
+    background var(--nr-search-duration) ease,
     box-shadow var(--nr-search-duration) ease!important;
 }
 .music-search-morph.is-open::before{
   background:linear-gradient(112deg,
-    rgba(24,34,51,.24),
-    rgba(37,36,63,.27) 56%,
-    rgba(14,46,48,.24))!important;
-  border-color:rgba(127,230,224,.48)!important;
+    rgba(24,34,51,.76),
+    rgba(39,36,63,.80) 56%,
+    rgba(14,46,48,.74))!important;
+  border-color:rgba(127,230,224,.49)!important;
   border-radius:14px!important;
-  box-shadow:0 0 0 2px rgba(127,230,224,.045),
-    0 5px 13px rgba(0,0,0,.10),
-    inset 0 1px rgba(255,255,255,.065)!important;
+  box-shadow:0 0 0 2px rgba(127,230,224,.055),
+    0 5px 13px rgba(0,0,0,.12),
+    inset 0 1px rgba(255,255,255,.075)!important;
   animation:none!important;
 }
-.music-search-toggle{
+
+.site-header>.main-nav-dynamic .music-search-toggle,
+.admin-page .admin-site-header .music-search-toggle,
+.music-search-morph>.music-search-toggle{
+  position:absolute!important;
   left:1px!important;
+  right:auto!important;
   top:1px!important;
+  width:32px!important;
+  height:32px!important;
+  transform:translateX(0) scale(1)!important;
+  transform-origin:50% 50%!important;
   will-change:left,transform;
   transition:left var(--nr-search-duration) var(--nr-search-ease),
     transform var(--nr-search-duration) var(--nr-search-ease),
     color .22s ease,filter .28s ease!important;
 }
-.music-search-morph.is-open .music-search-toggle{
+.site-header>.main-nav-dynamic .music-search-morph.is-open .music-search-toggle,
+.admin-page .admin-site-header .music-search-morph.is-open .music-search-toggle,
+.music-search-morph.is-open>.music-search-toggle{
   left:calc(var(--search-open-width) - 33px)!important;
-  transform:translateX(0) scale(.96)!important;
+  right:auto!important;
+  transform:translateX(0) scale(1)!important;
   color:#d8fff8!important;
-  filter:drop-shadow(0 0 6px rgba(127,230,224,.36))!important;
+  filter:drop-shadow(0 0 6px rgba(127,230,224,.34))!important;
 }
-.music-search-toggle svg{
+
+.site-header>.main-nav-dynamic .music-search-toggle svg,
+.admin-page .admin-site-header .music-search-toggle svg,
+.music-search-morph>.music-search-toggle svg{
   display:block!important;
-  transform:scaleX(-1) rotate(-14deg)!important;
+  transform:rotate(-6deg) scale(.97)!important;
   transform-origin:50% 50%!important;
   transition:transform var(--nr-search-duration) var(--nr-search-ease)!important;
 }
-.music-search-morph.is-open .music-search-toggle svg{
-  transform:scaleX(-1) rotate(9deg) scale(.96)!important;
-}
-.music-search-morph input{
-  will-change:opacity,transform;
-  transition:opacity .22s ease .07s,
-    visibility 0s linear .34s,
-    transform .34s var(--nr-search-ease) .05s!important;
-}
-.music-search-morph.is-open input{
-  transition:opacity .24s ease .10s,
-    visibility 0s,
-    transform .36s var(--nr-search-ease) .07s!important;
+.site-header>.main-nav-dynamic .music-search-morph.is-open .music-search-toggle svg,
+.admin-page .admin-site-header .music-search-morph.is-open .music-search-toggle svg,
+.music-search-morph.is-open>.music-search-toggle svg{
+  transform:rotate(0deg) scale(1)!important;
 }
 
-/* Retain the v15.2.61 shuffle/repeat icon alignment fix; this release only
-   refines the glass and search lens, not the playback-control layout. */
+.music-search-morph input{
+  will-change:opacity,transform;
+  transition:opacity .20s ease .08s,
+    visibility 0s linear var(--nr-search-duration),
+    transform var(--nr-search-duration) var(--nr-search-ease) .04s!important;
+}
+.music-search-morph.is-open input{
+  transition:opacity .22s ease .12s,
+    visibility 0s,
+    transform var(--nr-search-duration) var(--nr-search-ease) .06s!important;
+}
+
+@media(max-width:760px){
+  .site-header>.main-nav-dynamic .music-search-toggle,
+  .admin-page .admin-site-header .music-search-toggle,
+  .music-search-morph>.music-search-toggle{
+    left:1px!important;
+  }
+  .site-header>.main-nav-dynamic .music-search-morph.is-open .music-search-toggle,
+  .admin-page .admin-site-header .music-search-morph.is-open .music-search-toggle,
+  .music-search-morph.is-open>.music-search-toggle{
+    left:calc(var(--search-open-width) - 33px)!important;
+  }
+}
+
+/* Preserve the established shuffle/repeat control alignment from v15.2.61. */
 .music-heading-actions>.music-playback-mode-compact{
   display:inline-flex!important;
   align-items:center!important;
