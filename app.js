@@ -27,6 +27,43 @@
       return SAFE_PROTOCOLS.has(u.protocol) ? u.href : '';
     } catch { return ''; }
   }
+  // Signed Discord attachment URLs can expire. Prefer a cached/local copy when
+  // supplied, otherwise fall back to the small brand image and finally a text mark.
+  document.addEventListener('error', event => {
+    const image = event.target;
+    if (!(image instanceof HTMLImageElement) || !image.hasAttribute('data-image-fallback')) return;
+    const fallbackUrl = String(image.dataset.fallbackUrl || '').trim();
+    if (fallbackUrl && image.dataset.fallbackUsed !== '1') {
+      image.dataset.fallbackUsed = '1';
+      image.src = fallbackUrl;
+      return;
+    }
+    const mode = image.dataset.fallbackMode || 'remove';
+    if (mode === 'placeholder') {
+      const placeholder = document.createElement('span');
+      placeholder.className = image.dataset.fallbackClass || 'executor-name-brand-fallback';
+      placeholder.textContent = image.dataset.fallbackText || '◈';
+      image.replaceWith(placeholder);
+      return;
+    }
+    const media = image.closest('.executor-card-media');
+    if (mode === 'card-placeholder' && media) {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'executor-card-media executor-card-media-placeholder';
+      const mark = document.createElement('span');
+      mark.className = 'executor-card-placeholder-icon';
+      mark.textContent = image.dataset.fallbackText || '◈';
+      const name = document.createElement('span');
+      name.className = 'executor-card-placeholder-name';
+      name.textContent = image.dataset.fallbackName || 'NightReaper';
+      const caption = document.createElement('small');
+      caption.textContent = 'NIGHTREAPER EXECUTOR ARCHIVE';
+      placeholder.append(mark, name, caption);
+      media.replaceWith(placeholder);
+      return;
+    }
+    if (media) media.remove(); else image.remove();
+  }, true);
   async function getJson(localPath, staticPath) {
     const urls = localHost ? [new URL(localPath.replace(/^\//, ''), location.origin + '/').href, apiUrl(staticPath)] : [apiUrl(staticPath)];
     let lastError;
@@ -96,14 +133,14 @@
       ? `PC / ${pcCategoryLabels[item.pcCategory] || item.pcCategory}`
       : (PLATFORM_LABELS[item.platform] || item.platform || 'Chưa phân loại');
     const icon = iconUrl
-      ? `<img src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.textContent='◈'">`
+      ? `<img src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-image-fallback data-fallback-mode="placeholder" data-fallback-text="${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}" data-fallback-class="executor-name-brand-fallback">`
       : escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈');
     const nameBrand = iconUrl
-      ? `<img class="executor-name-brand-image" src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.replaceWith(document.createTextNode('◈'))">`
+      ? `<img class="executor-name-brand-image" src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-image-fallback data-fallback-mode="placeholder" data-fallback-text="${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}" data-fallback-class="executor-name-brand-fallback">`
       : `<span class="executor-name-brand-fallback">${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}</span>`;
     const status = `<span class="executor-name-status ${statusClass(item.status)}" title="${escapeHtml(humanizeStatus(item.status))}"><i aria-hidden="true"></i>${escapeHtml(humanizeStatus(item.status))}</span>`;
     const cardImage = mainImageUrl
-      ? `<div class="executor-card-media"><img class="executor-card-image" src="${escapeHtml(mainImageUrl)}" alt="${escapeHtml(item.name || 'executor')}" loading="lazy" referrerpolicy="no-referrer" onload="if(this.naturalHeight && this.naturalWidth / this.naturalHeight < 1.55) this.classList.add('is-contained')" onerror="this.closest('.executor-card-media')?.remove()"><span class="executor-card-image-shade" aria-hidden="true"></span></div>`
+      ? `<div class="executor-card-media"><img class="executor-card-image" src="${escapeHtml(mainImageUrl)}" ${iconUrl && iconUrl !== mainImageUrl ? `data-fallback-url="${escapeHtml(iconUrl)}"` : ''} data-image-fallback data-fallback-mode="card-placeholder" data-fallback-name="${escapeHtml(item.name || 'NightReaper')}" data-fallback-text="${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}" alt="${escapeHtml(item.name || 'executor')}" loading="lazy" referrerpolicy="no-referrer" onload="if(this.naturalHeight && this.naturalWidth / this.naturalHeight < 1.55) this.classList.add('is-contained')"><span class="executor-card-image-shade" aria-hidden="true"></span></div>`
       : `<div class="executor-card-media executor-card-media-placeholder"><span class="executor-card-placeholder-icon">${icon}</span><span class="executor-card-placeholder-name">${escapeHtml(item.name || 'NightReaper')}</span><small>NIGHTREAPER EXECUTOR ARCHIVE</small></div>`;
     const favoriteId = itemFavoriteKey(item); const isFavorite = getFavoriteIds().has(favoriteId);
     const scoreMarkup = scoreBadgesMarkup(item);
@@ -247,8 +284,8 @@
     const community = safeUrl(item.communityUrl);
     const source = safeUrl(item.sourceUrl);
     const iconUrl = safeUrl(item.thumbImageUrl);
-    const icon = iconUrl ? `<span class="executor-icon"><img src="${escapeHtml(iconUrl)}" alt="" referrerpolicy="no-referrer" onerror="this.parentElement.textContent='◈'"></span>` : `<span class="executor-icon">${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}</span>`;
-    const image = mainImage ? `<img class="detail-cover" src="${escapeHtml(mainImage)}" alt="${escapeHtml(item.name || 'Executor')} ảnh xem trước" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : '';
+    const icon = iconUrl ? `<span class="executor-icon"><img src="${escapeHtml(iconUrl)}" alt="" referrerpolicy="no-referrer" data-image-fallback data-fallback-mode="placeholder" data-fallback-text="${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}" data-fallback-class="executor-name-brand-fallback"></span>` : `<span class="executor-icon">${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}</span>`;
+    const image = mainImage ? `<img class="detail-cover" src="${escapeHtml(mainImage)}" ${iconUrl && iconUrl !== mainImage ? `data-fallback-url="${escapeHtml(iconUrl)}"` : ''} data-image-fallback alt="${escapeHtml(item.name || 'Executor')} ảnh xem trước" loading="lazy" referrerpolicy="no-referrer">` : '';
     const actionIcon = {
       website: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7M21 3l-9 9M19 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6"/></svg>',
       community: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg>',
@@ -440,7 +477,7 @@
     if (executorRoot) {
       executorRoot.innerHTML = executorFavorites.length ? executorFavorites.map(item => {
         const iconUrl = safeUrl(item.thumbImageUrl);
-        const icon = iconUrl ? `<img src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : `<span>${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}</span>`;
+        const icon = iconUrl ? `<img src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-image-fallback data-fallback-mode="placeholder" data-fallback-text="${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}" data-fallback-class="executor-name-brand-fallback">` : `<span>${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}</span>`;
         const key = String(item.id || itemFavoriteKey(item));
         return `<button class="fingerprint-wing-favorite" type="button" data-detail="${escapeHtml(key)}" title="Xem thông tin ${escapeHtml(item.name || 'Executor')}"><span class="fingerprint-wing-icon">${icon}</span><span class="fingerprint-wing-copy"><b>${escapeHtml(item.name || 'Executor chưa đặt tên')}</b><small>${escapeHtml(PLATFORM_LABELS[item.platform] || item.platform || 'Chưa phân loại')}</small></span></button>`;
       }).join('') : '<span class="fingerprint-wing-empty">Đánh dấu ♡ trong danh mục</span>';
@@ -466,7 +503,7 @@
       const iconUrl = safeUrl(item.thumbImageUrl);
       const iconText = item.icon || PLATFORM_SYMBOLS[item.platform] || '◈';
       const icon = iconUrl
-        ? `<img src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer">`
+        ? `<img src="${escapeHtml(iconUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer" data-image-fallback data-fallback-mode="placeholder" data-fallback-text="${escapeHtml(item.icon || PLATFORM_SYMBOLS[item.platform] || '◈')}" data-fallback-class="executor-name-brand-fallback">`
         : `<span class="universe-node-text">${escapeHtml(iconText)}</span>`;
       const key = itemFavoriteKey(item);
       const name = item.name || 'Executor chưa đặt tên';
