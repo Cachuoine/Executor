@@ -111,10 +111,10 @@
     try {
       audioContext = new AudioContextClass();
       audioAnalyser = audioContext.createAnalyser();
-      audioAnalyser.fftSize = 1024;
-      audioAnalyser.smoothingTimeConstant = 0.68;
-      audioAnalyser.minDecibels = -88;
-      audioAnalyser.maxDecibels = -18;
+      audioAnalyser.fftSize = 2048;
+      audioAnalyser.smoothingTimeConstant = 0.48;
+      audioAnalyser.minDecibels = -100;
+      audioAnalyser.maxDecibels = -20;
       audioFrequencyData = new Uint8Array(audioAnalyser.frequencyBinCount);
       audioSourceNode = audioContext.createMediaElementSource(directAudio);
       audioSourceNode.connect(audioAnalyser);
@@ -132,50 +132,54 @@
     if (!audioAnalyser || !audioFrequencyData || !islandWaveBars.length) return;
     audioAnalyser.getByteFrequencyData(audioFrequencyData);
     const count = islandWaveBars.length;
-    const maxBin = Math.max(16, Math.min(audioFrequencyData.length - 1, 190));
-
-    // A shared energy envelope makes every column bounce together. Each mirrored
-    // pair then adds only a little frequency character, so a bass-heavy left edge
-    // can never tower over the rest of the waveform.
-    let totalSquares = 0;
-    let totalSamples = 0;
-    for (let bin = 2; bin <= maxBin; bin += 1) {
-      const value = audioFrequencyData[bin] || 0;
-      totalSquares += value * value;
-      totalSamples += 1;
-    }
-    const overallRms = totalSamples ? Math.sqrt(totalSquares / totalSamples) : 0;
-    const overallActivity = Math.min(1, Math.pow(overallRms / 112, 0.78));
-
-    const bandEdges = [
-      2,
-      Math.max(4, Math.floor(maxBin * 0.10)),
-      Math.max(6, Math.floor(maxBin * 0.24)),
-      Math.max(9, Math.floor(maxBin * 0.48)),
-      maxBin
+    const maxBin = Math.max(24, Math.min(audioFrequencyData.length - 1, 210));
+    const rmsForRange = (from, to) => {
+      let squares = 0;
+      let samples = 0;
+      const first = Math.max(2, from);
+      const last = Math.max(first, Math.min(maxBin, to));
+      for (let bin = first; bin <= last; bin += 1) {
+        const value = audioFrequencyData[bin] || 0;
+        squares += value * value;
+        samples += 1;
+      }
+      return samples ? Math.sqrt(squares / samples) : 0;
+    };
+    // Use a deliberately wide input range and a capped logarithmic response.
+    // Loud masters can no longer pin every bar at its maximum height.
+    const toActivity = (rms, floor, range, cap) => {
+      const normalized = Math.max(0, (rms - floor) / range);
+      return Math.min(cap, Math.pow(normalized, 0.82));
+    };
+    const overallRms = rmsForRange(2, maxBin);
+    const overallActivity = toActivity(overallRms, 44, 205, 0.78);
+    // A mirrored frequency layout: bass at the outer edges, progressively higher
+    // frequencies toward the centre. Each left/right pair shares the same envelope.
+    const frequencyBands = [
+      [2, 8],
+      [9, 24],
+      [25, 62],
+      [63, 176]
     ];
     const midpoint = (count - 1) / 2;
     for (let index = 0; index < count; index += 1) {
-      const mirroredDistance = Math.abs(index - midpoint);
-      const normalizedDistance = midpoint > 0 ? mirroredDistance / midpoint : 0;
-      const bandIndex = Math.min(3, Math.round(normalizedDistance * 3));
-      const start = Math.max(2, bandEdges[bandIndex]);
-      const end = Math.max(start, bandEdges[bandIndex + 1]);
-      let bandSquares = 0;
-      let bandSamples = 0;
-      for (let bin = start; bin <= end; bin += 1) {
-        const value = audioFrequencyData[bin] || 0;
-        bandSquares += value * value;
-        bandSamples += 1;
-      }
-      const bandRms = bandSamples ? Math.sqrt(bandSquares / bandSamples) : overallRms;
-      const bandActivity = Math.min(1, Math.pow(bandRms / 150, 0.72));
-      const balancedLevel = overallActivity * 0.78 + bandActivity * 0.22;
-      const target = Math.max(3.5, Math.min(23, 4 + balancedLevel * 16 + (bandActivity - overallActivity) * 2));
-      waveformHeights[index] += (target - waveformHeights[index]) * 0.52;
+      const distance = Math.min(index, count - 1 - index);
+      const bandIndex = Math.max(0, Math.min(frequencyBands.length - 1, frequencyBands.length - 1 - distance));
+      const [from, to] = frequencyBands[bandIndex];
+      const bandRms = rmsForRange(from, to);
+      const bandActivity = toActivity(bandRms, 38, 185, 0.86);
+      const sharedPulse = overallActivity * 0.38;
+      const musicalDetail = bandActivity * 0.62;
+      // Keep a visible low baseline, a controlled peak ceiling, and real variation
+      // between frequency bands instead of letting all bars fill the entire slot.
+      const target = Math.max(3.2, Math.min(18.5, 3.2 + sharedPulse * 8.4 + musicalDetail * 6.1));
+      const previous = waveformHeights[index] || 3.2;
+      const response = target > previous ? 0.48 : 0.24;
+      waveformHeights[index] = previous + (target - previous) * response;
       setWaveformHeight(index, waveformHeights[index]);
     }
   }
+
   function drawPlaybackVisuals(timestamp) {
     if (!isPlaying || directAudio?.paused) {
       visualFrameId = 0;
@@ -214,11 +218,6 @@
   const isDirectAudioTrack = track => Boolean(getDirectAudioUrl(track));
   const search = $('#musicSearch');
   const list = $('#musicTrackList');
-  const currentTrackBanner = $('#musicCurrentTrackBanner');
-  const currentTrackBannerTitle = $('#musicCurrentTrackTitle');
-  const currentTrackBannerArtist = $('#musicCurrentTrackArtist');
-  const currentTrackBannerState = $('#musicCurrentTrackState');
-  const currentTrackBannerMode = $('#musicCurrentTrackMode');
   let pendingTrackRevealId = '';
   const playbackStatus = $('#musicPlaybackStatus');
   const playbackModeToggle = $('#musicPlaybackModeToggle');
@@ -401,10 +400,10 @@
     const repeatOne = playbackMode === 'repeat';
     button.dataset.playbackMode = playbackMode;
     button.setAttribute('aria-pressed', String(repeatOne));
-    button.setAttribute('aria-label', repeatOne ? 'Đang bật chế độ lặp lại một bài' : 'Đang bật chế độ chuyển bài ngẫu nhiên');
+    button.setAttribute('aria-label', repeatOne ? 'Chế độ lặp lại một bài' : 'Chế độ chuyển bài ngẫu nhiên');
     button.title = repeatOne ? 'Lặp lại liên tục bài đang chọn' : 'Chuyển ngẫu nhiên sang một bài khác khi bài hiện tại kết thúc';
     const label = $('#musicPlaybackModeLabel');
-    if (label) label.textContent = repeatOne ? 'Lặp lại bài này' : 'Chuyển tiếp ngẫu nhiên';
+    if (label) label.textContent = repeatOne ? 'REPEAT ONE' : 'RANDOM NEXT';
   }
   function togglePlaybackMode() {
     playbackMode = playbackMode === 'shuffle' ? 'repeat' : 'shuffle';
@@ -417,7 +416,6 @@
       button.classList.add('is-switching');
       window.setTimeout(() => button.classList.remove('is-switching'), 560);
     }
-    updateCurrentTrackBanner(activeTrack());
     setPlaybackStatus(playbackMode === 'repeat' ? 'Đã bật lặp lại bài đang chọn.' : 'Đã bật chuyển tiếp ngẫu nhiên khi hết bài.');
     render();
   }
@@ -645,19 +643,7 @@
     target.classList.add('is-current-reveal');
     pendingTrackRevealId = '';
   }
-  function updateCurrentTrackBanner(track) {
-    if (!currentTrackBanner) return;
-    const hasTrack = Boolean(track);
-    currentTrackBanner.hidden = !hasTrack;
-    if (!hasTrack) return;
-    if (currentTrackBannerTitle) currentTrackBannerTitle.textContent = track.title || 'Bài hát chưa đặt tên';
-    if (currentTrackBannerArtist) currentTrackBannerArtist.textContent = track.artist || 'Chưa rõ nghệ sĩ';
-    if (currentTrackBannerState) currentTrackBannerState.textContent = isPlaying ? 'ĐANG PHÁT · VỊ TRÍ TỰ ĐỘNG' : 'ĐANG CHỌN · VỊ TRÍ TỰ ĐỘNG';
-    if (currentTrackBannerMode) currentTrackBannerMode.textContent = playbackMode === 'repeat' ? 'REPEAT ONE' : 'RANDOM NEXT';
-    currentTrackBanner.classList.toggle('is-playing', isPlaying);
-    currentTrackBanner.classList.toggle('is-paused', !isPlaying);
-    currentTrackBanner.setAttribute('aria-label', `${isPlaying ? 'Đang phát' : 'Đang chọn'}: ${track.title || 'Bài hát'}, ${track.artist || 'Chưa rõ nghệ sĩ'}`);
-  }
+
   function render() {
     // Always display tracks alphabetically, independent of pinning or insertion order.
     tracks.sort((a, b) => String(a.title || '').localeCompare(String(b.title || ''), undefined, { sensitivity: 'base', numeric: true }));
@@ -689,7 +675,6 @@
     syncMusicLanguage();
     const track = activeTrack();
     syncPlaybackModeControl();
-    updateCurrentTrackBanner(track);
     updateDynamicTrackDisplay(track);
     if (pendingTrackRevealId) requestAnimationFrame(revealCurrentTrackInLibrary);
   }
