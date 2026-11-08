@@ -2243,3 +2243,92 @@ html.executor-no-dblclick-edit body input.music-now-playing-seek{
     transition-duration:.01ms!important;transition-delay:0s!important;animation-duration:.01ms!important;
   }
 }
+
+
+/* v15.2.67 — refined magnifier: slow lens bloom, soft orbital halo and a glass sweep. */
+:root{
+  --nr-search-duration:960ms;
+  --nr-search-ease:cubic-bezier(.19,1,.22,1);
+}
+.music-search-morph,
+.site-header>.main-nav-dynamic .music-search-morph,
+.admin-page .admin-site-header .music-search-morph{
+  overflow:hidden!important;
+  transition:flex-basis var(--nr-search-duration) var(--nr-search-ease),
+    width var(--nr-search-duration) var(--nr-search-ease),
+    min-width var(--nr-search-duration) var(--nr-search-ease),
+    max-width var(--nr-search-duration) var(--nr-search-ease),
+    border-radius var(--nr-search-duration) var(--nr-search-ease),
+    border-color var(--nr-search-duration) ease,
+    background-color var(--nr-search-duration) ease,
+    box-shadow var(--nr-search-duration) ease!important;
+}
+.music-search-morph::after{
+  content:"";position:absolute;inset:1px;z-index:1;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(108deg,transparent 28%,rgba(187,255,247,.18) 46%,rgba(127,230,224,.07) 53%,transparent 70%);
+  opacity:0;transform:translateX(-115%);mix-blend-mode:screen;
+}
+.music-search-morph.is-open::after{animation:nrSearchGlassSweep 960ms var(--nr-search-ease) both;}
+.music-search-morph>.music-search-toggle,
+.site-header>.main-nav-dynamic .music-search-toggle,
+.admin-page .admin-site-header .music-search-toggle{
+  overflow:visible!important;
+  transition:left var(--nr-search-duration) var(--nr-search-ease),
+    right var(--nr-search-duration) var(--nr-search-ease),
+    color .32s ease,filter .42s ease!important;
+}
+.music-search-toggle::after{
+  content:"";position:absolute;inset:3px;border:1px solid rgba(150,255,244,.72);border-radius:50%;
+  opacity:0;transform:scale(.45);pointer-events:none;
+}
+.music-search-morph.is-open .music-search-toggle::after{
+  animation:nrSearchLensHalo 880ms cubic-bezier(.16,1,.3,1) both;
+}
+.music-search-morph>.music-search-toggle svg,
+.site-header>.main-nav-dynamic .music-search-toggle svg,
+.admin-page .admin-site-header .music-search-toggle svg{
+  transform:rotate(-17deg) scale(.92)!important;
+  transform-origin:50% 50%!important;
+  transition:transform 840ms cubic-bezier(.19,1,.22,1),filter 420ms ease!important;
+  filter:drop-shadow(0 0 0 rgba(127,230,224,0));
+}
+.music-search-morph.is-open>.music-search-toggle svg,
+.site-header>.main-nav-dynamic .music-search-morph.is-open .music-search-toggle svg,
+.admin-page .admin-site-header .music-search-morph.is-open .music-search-toggle svg{
+  transform:rotate(8deg) scale(1.04)!important;
+  filter:drop-shadow(0 0 5px rgba(127,230,224,.46));
+}
+.music-search-toggle svg circle{transform-origin:10.8px 10.8px;transition:transform 840ms cubic-bezier(.19,1,.22,1);}
+.music-search-morph.is-open .music-search-toggle svg circle{transform:scale(.86);}
+.music-search-toggle svg path{transform-origin:16px 16px;transition:transform 840ms cubic-bezier(.19,1,.22,1);}
+.music-search-morph.is-open .music-search-toggle svg path{transform:translate(-.6px,-.6px) scale(.92);}
+.music-search-morph>input,
+.site-header>.main-nav-dynamic .music-search-morph>input,
+.admin-page .admin-site-header .music-search-morph>input{
+  transition:opacity 360ms ease .24s,transform 620ms cubic-bezier(.19,1,.22,1) .12s,
+    visibility 0s linear var(--nr-search-duration)!important;
+  transform:translateX(8px)!important;
+}
+.music-search-morph.is-open>input,
+.site-header>.main-nav-dynamic .music-search-morph.is-open>input,
+.admin-page .admin-site-header .music-search-morph.is-open>input{
+  opacity:1!important;visibility:visible!important;pointer-events:auto!important;
+  transform:translateX(0)!important;
+  transition:opacity 360ms ease .25s,transform 620ms cubic-bezier(.19,1,.22,1) .12s,visibility 0s!important;
+}
+@keyframes nrSearchGlassSweep{
+  0%{opacity:0;transform:translateX(-115%)}
+  28%{opacity:.8}
+  76%{opacity:.34}
+  100%{opacity:0;transform:translateX(115%)}
+}
+@keyframes nrSearchLensHalo{
+  0%{opacity:0;transform:scale(.45)}
+  28%{opacity:.78;transform:scale(1.08)}
+  100%{opacity:0;transform:scale(1.62)}
+}
+@media(prefers-reduced-motion:reduce){
+  .music-search-morph,.music-search-morph::after,.music-search-toggle,.music-search-toggle::after,
+  .music-search-toggle svg,.music-search-toggle svg circle,.music-search-toggle svg path,
+  .music-search-morph input{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important;}
+}
