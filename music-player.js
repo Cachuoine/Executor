@@ -27,7 +27,6 @@
   const islandRecordArt = $('#musicIslandRecordArt');
   islandRecordArt?.addEventListener('error', () => { islandRecordArt.hidden = true; islandRecordArt.closest('.music-island-record')?.classList.remove('has-artwork'); });
   const panel = $('#musicPanel');
-  const musicProfile = window.NightReaperMusicProfile || null;
   const musicEngine = document.querySelector('.music-engine');
   let directAudio = document.getElementById('musicDirectAudio');
   if (!directAudio) {
@@ -84,36 +83,14 @@
     const value = String(track?.artworkUrl || '').trim();
     return LOCAL_ARTWORK_PATTERN.test(value) ? value : '';
   }
-  function syncMusicProfile() {
-    if (!musicProfile) return;
-    const track = activeTrack();
-    const favoriteIds = getMusicFavoriteIds();
-    const audioMatchesTrack = Boolean(track && directAudioTrackId === String(track.id));
-    const duration = audioMatchesTrack && Number.isFinite(directAudio?.duration) ? directAudio.duration : 0;
-    const currentTime = audioMatchesTrack && Number.isFinite(directAudio?.currentTime)
-      ? directAudio.currentTime : savedPosition;
-    musicProfile.render({
-      track,
-      artworkUrl: getTrackArtworkUrl(track),
-      favorite: Boolean(track && favoriteIds.has(String(track.id))),
-      isPlaying: Boolean(track && isPlaying && directAudio && !directAudio.paused),
-      currentTime,
-      duration,
-      hasTracks: tracks.length > 0
-    });
-  }
-  function updateMusicProfileProgress() {
-    if (!musicProfile || musicProfile.getView() !== 'profile') return;
-    const track = activeTrack();
-    if (!track || directAudioTrackId !== String(track.id)) {
-      musicProfile.updateProgress(0, 0);
-      return;
-    }
-    musicProfile.updateProgress(
-      Number.isFinite(directAudio?.currentTime) ? directAudio.currentTime : savedPosition,
-      Number.isFinite(directAudio?.duration) ? directAudio.duration : 0
-    );
-  }
+  const miniPlayer = $('#musicNowPlayingMini');
+  const miniArtwork = $('#musicNowPlayingArt');
+  const miniArtworkFallback = $('#musicNowPlayingArtFallback');
+  const miniTitle = $('#musicNowPlayingTitle');
+  const miniArtist = $('#musicNowPlayingArtist');
+  const miniSeek = $('#musicNowPlayingSeek');
+  const miniElapsed = $('#musicNowPlayingElapsed');
+  const miniDuration = $('#musicNowPlayingDuration');
   const FALLBACK = []; // Public music is sourced exclusively from Admin-uploaded local MP3 files.
   // The library is managed by Admin; deleted tracks are never silently restored.
   let tracks = [];
@@ -516,6 +493,49 @@
     panelCloseTimer = setTimeout(finishMusicCenterClose, Math.max(getLibraryRevealDurationMs(), getIslandMorphDurationMs()) + 150);
   }
   function activeTrack() { return currentTrack ? (tracks.find(track => track.id === currentTrack) || null) : null; }
+  function formatMusicTime(value) {
+    const safe = Number.isFinite(Number(value)) && Number(value) > 0 ? Math.floor(Number(value)) : 0;
+    const minutes = Math.floor(safe / 60);
+    const seconds = String(safe % 60).padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  }
+  function updateMiniNowPlaying() {
+    if (!miniPlayer) return;
+    const track = activeTrack();
+    miniPlayer.hidden = !track;
+    if (!track) {
+      if (miniSeek) { miniSeek.value = '0'; miniSeek.disabled = true; miniSeek.style.setProperty('--music-mini-progress', '0%'); }
+      if (miniElapsed) miniElapsed.textContent = '0:00';
+      if (miniDuration) miniDuration.textContent = '0:00';
+      return;
+    }
+    if (miniTitle) miniTitle.textContent = String(track.title || 'Bài hát chưa đặt tên');
+    if (miniArtist) miniArtist.textContent = String(track.artist || 'Chưa rõ nghệ sĩ');
+    const artworkUrl = getTrackArtworkUrl(track);
+    if (miniArtwork) {
+      if (artworkUrl) {
+        if (miniArtwork.getAttribute('src') !== artworkUrl) miniArtwork.src = artworkUrl;
+        miniArtwork.hidden = false;
+        if (miniArtworkFallback) miniArtworkFallback.hidden = true;
+      } else {
+        miniArtwork.hidden = true;
+        miniArtwork.removeAttribute('src');
+        if (miniArtworkFallback) miniArtworkFallback.hidden = false;
+      }
+    }
+    const audioMatchesTrack = directAudioTrackId === String(track.id);
+    const duration = audioMatchesTrack && Number.isFinite(directAudio?.duration) ? directAudio.duration : 0;
+    const currentTime = audioMatchesTrack && Number.isFinite(directAudio?.currentTime)
+      ? directAudio.currentTime : savedPosition;
+    const progress = duration > 0 ? Math.max(0, Math.min(100, (currentTime / duration) * 100)) : 0;
+    if (miniSeek) {
+      miniSeek.disabled = duration <= 0;
+      miniSeek.value = String(Math.round(progress * 10));
+      miniSeek.style.setProperty('--music-mini-progress', `${progress}%`);
+    }
+    if (miniElapsed) miniElapsed.textContent = formatMusicTime(currentTime);
+    if (miniDuration) miniDuration.textContent = formatMusicTime(duration);
+  }
   function restartCurrentTrack(expectedTrackId = currentTrack) {
     const track = activeTrack();
     if (!track || track.id !== expectedTrackId || !shouldResumePlayback || pageIsLeaving || !directAudio) return false;
@@ -531,7 +551,7 @@
       setPlaybackStatus(tr('Không thể tự phát lại MP3. Hãy nhấn phát để thử lại.', 'Không thể tự phát lại MP3. Hãy nhấn phát để thử lại.'));
       syncPlaybackVisuals(); render();
     });
-    setPlaybackStatus(tr('Đang phát lặp lại bài đã chọn.', 'Đang phát lặp lại bài đã chọn.'));
+    setPlaybackStatus(tr('Đã bật lặp lại bài đã chọn.', 'Đã bật lặp lại bài đã chọn.'));
     syncPlaybackVisuals();
     render();
     return true;
@@ -599,7 +619,7 @@
     const track = activeTrack();
     syncPlaybackModeControl();
     updateDynamicTrackDisplay(track);
-    syncMusicProfile();
+    updateMiniNowPlaying();
     if (pendingTrackRevealId) requestAnimationFrame(revealCurrentTrackInLibrary);
   }
   function persistMusicState() {
@@ -614,11 +634,11 @@
   directAudio?.addEventListener('timeupdate', () => {
     if (!isDirectAudioTrack(activeTrack())) return;
     savedPosition = Number(directAudio.currentTime) || 0;
-    updateMusicProfileProgress();
+    updateMiniNowPlaying();
   });
-  directAudio?.addEventListener('loadedmetadata', updateMusicProfileProgress);
-  directAudio?.addEventListener('durationchange', updateMusicProfileProgress);
-  directAudio?.addEventListener('seeked', updateMusicProfileProgress);
+  directAudio?.addEventListener('loadedmetadata', updateMiniNowPlaying);
+  directAudio?.addEventListener('durationchange', updateMiniNowPlaying);
+  directAudio?.addEventListener('seeked', updateMiniNowPlaying);
   directAudio?.addEventListener('playing', () => {
     if (!pageIsLeaving && shouldResumePlayback && isDirectAudioTrack(activeTrack())) {
       isPlaying = true;
@@ -761,7 +781,7 @@
       setPlaybackStatus(tr('Trình duyệt chưa phát được MP3. Nhấn phát lại để thử.', 'Trình duyệt chưa phát được MP3. Nhấn phát lại để thử.'));
       render();
     });
-    setPlaybackStatus(tr('Đang phát bài MP3 đã chọn.', 'Đang phát bài MP3 đã chọn.'));
+    setPlaybackStatus(tr('Đã chọn bài MP3.', 'Đã chọn bài MP3.'));
     render();
   }
   function playAdjacentTrack(direction) {
@@ -792,7 +812,7 @@
     try {
       directAudio.currentTime = nextTime;
       savedPosition = nextTime;
-      updateMusicProfileProgress();
+      updateMiniNowPlaying();
     } catch {}
   }
   function stopTrack() {
@@ -868,30 +888,18 @@
   island?.addEventListener('click', handleIslandToggle);
   $('#closeMusicPanel')?.addEventListener('click', () => { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); });
   playbackModeToggle?.addEventListener('click', togglePlaybackMode);
-  musicProfile?.init({
-    onShowProfile: () => {
-      closeMusicSearch({ clear:true, rerender:false });
-      musicProfile.setView('profile');
-      syncMusicProfile();
-    },
-    onShowLibrary: () => {
-      musicProfile.setView('library');
-      libraryMode = 'all';
-      query = '';
-      if (search) search.value = '';
-      closeMusicSearch({ clear:true, rerender:false });
-      render();
-    },
-    onClose: () => { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); },
-    onPlayPause: () => {
-      if (!currentTrack) return;
-      if (isPlaying && directAudio && !directAudio.paused) stopTrack();
-      else playTrack(String(currentTrack));
-    },
-    onPrevious: () => playAdjacentTrack(-1),
-    onNext: () => playAdjacentTrack(1),
-    onFavorite: () => { if (currentTrack) toggleMusicFavorite(currentTrack); },
-    onSeek: seekCurrentTrack
+  miniSeek?.addEventListener('input', () => {
+    const track = activeTrack();
+    const duration = Number(directAudio?.duration);
+    if (!track || directAudioTrackId !== String(track.id) || !Number.isFinite(duration) || duration <= 0) return;
+    const previewTime = (Number(miniSeek.value) / 1000) * duration;
+    if (miniElapsed) miniElapsed.textContent = formatMusicTime(previewTime);
+    miniSeek.style.setProperty('--music-mini-progress', `${Math.max(0, Math.min(100, Number(miniSeek.value) / 10))}%`);
+  });
+  miniSeek?.addEventListener('change', () => {
+    const duration = Number(directAudio?.duration);
+    if (!Number.isFinite(duration) || duration <= 0) return;
+    seekCurrentTrack((Number(miniSeek.value) / 1000) * duration);
   });
   searchMorph?.addEventListener('click', event => {
     // Keep clicks on the icon, input, caret and the morph surface inside this control.
