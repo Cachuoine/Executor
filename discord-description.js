@@ -145,5 +145,20 @@
     }
     return out || '<p class="discord-description-empty">Chưa có mô tả.</p>';
   }
-  window.DiscordDescription = { render, escapeHtml };
+  function renderExecutorChangelog(itemOrName, summaryValue) {
+    const item = itemOrName && typeof itemOrName === 'object' ? itemOrName : { name: itemOrName };
+    const summary = String(summaryValue ?? item.summary ?? '').trim();
+    const branded = window.NightReaperChangelog?.formatBrandedChangelog(item, summary, { maxBodyLength: 3500 }) ?? summary;
+    const dated = String(branded).replace(/<t:(\d+):[tTdDfFR]>/g, (_, seconds) => {
+      const date = new Date(Number(seconds) * 1000);
+      return Number.isNaN(date.getTime()) ? '' : date.toLocaleString('vi-VN', {
+        timeZone: 'Asia/Ho_Chi_Minh', day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+      });
+    });
+    // Match the Admin Discord preview, including custom emoji rendering.
+    return render(dated).replace(/&lt;(a?):([A-Za-z0-9_]{2,32}):(\d{5,22})&gt;/g, (_, animated, name, id) =>
+      `<img class="discord-custom-emoji" src="https://cdn.discordapp.com/emojis/${id}.${animated ? 'gif' : 'png'}?size=48" alt=":${name}:" loading="lazy" onerror="this.replaceWith(document.createTextNode(':${name}:'))">`);
+  }
+  window.DiscordDescription = { render, renderExecutorChangelog, escapeHtml };
 })();
