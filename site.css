@@ -1125,12 +1125,3 @@ body:not(.admin-page) .section-shell{width:min(1320px,calc(100% - 48px))}
 .download-device[data-device="macOS"]{color:#d1c9ff}
 .download-device[data-device="Android"]{color:#9ce68c}
 .download-device[data-device="iOS"]{color:#dbe5f5}
-
-/* Category search lens: reuse Dynamic's 1-second lens sweep and ripple. */
-.catalog-search{position:relative;isolation:isolate;overflow:visible}
-.catalog-search>svg{position:relative;z-index:1;transform-origin:50% 50%;will-change:transform,filter}
-.catalog-search>input{position:relative;z-index:1}
-.catalog-search::before{content:"";position:absolute;z-index:0;left:8px;top:50%;width:18px;height:18px;border:1px solid rgba(127,230,224,.55);border-radius:50%;opacity:0;transform:translateY(-50%) scale(.6);pointer-events:none}
-.catalog-search:focus-within::before{animation:nrLensRipple var(--nr-search-duration,1000ms) cubic-bezier(.2,.6,.2,1) both}
-.catalog-search:focus-within>svg{animation:nrLensScan var(--nr-search-duration,1000ms) ease-in-out both!important;filter:drop-shadow(0 0 5px rgba(127,230,224,.48))}
-@media(prefers-reduced-motion:reduce){.catalog-search:focus-within::before,.catalog-search:focus-within>svg{animation:none!important}}

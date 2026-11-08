@@ -339,12 +339,60 @@
       $('#mobileMenuToggle').setAttribute('aria-label', open ? 'Đóng điều hướng' : 'Mở điều hướng');
     });
     $$('.main-nav a').forEach((link) => link.addEventListener('click', () => { $('.main-nav').classList.remove('open'); $('#mobileMenuToggle').setAttribute('aria-expanded', 'false'); }));
+    const catalogSearchForm = $('#catalogSearchForm');
+    const catalogSearchToggle = $('#catalogSearchToggle');
+    const catalogSearch = $('#catalogSearch');
+    const heroSearch = $('#heroSearch');
+    function setCatalogSearchOpen(open, { clear = false, focus = true } = {}) {
+      if (!catalogSearchForm || !catalogSearchToggle || !catalogSearch) return;
+      catalogSearchForm.classList.toggle('is-open', Boolean(open));
+      catalogSearchToggle.setAttribute('aria-expanded', String(Boolean(open)));
+      catalogSearchToggle.setAttribute('aria-label', open ? 'Đóng tìm kiếm danh mục' : 'Mở tìm kiếm danh mục');
+      catalogSearch.tabIndex = open ? 0 : -1;
+      if (open && focus) requestAnimationFrame(() => catalogSearch.focus({ preventScroll:true }));
+      if (!open && clear) {
+        const hadQuery = Boolean(catalogSearch.value || state.query || heroSearch?.value);
+        catalogSearch.value = '';
+        if (heroSearch) heroSearch.value = '';
+        state.query = '';
+        if (hadQuery) renderCatalog();
+      }
+    }
+    catalogSearchToggle?.addEventListener('click', event => {
+      event.preventDefault(); event.stopPropagation();
+      if (catalogSearchForm?.classList.contains('is-open')) setCatalogSearchOpen(false, { clear:true, focus:false });
+      else setCatalogSearchOpen(true);
+    });
+    catalogSearchForm?.addEventListener('click', event => event.stopPropagation());
+    catalogSearch?.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && catalogSearchForm?.classList.contains('is-open')) {
+        event.preventDefault(); event.stopPropagation(); setCatalogSearchOpen(false, { clear:true, focus:false }); catalogSearchToggle?.focus({ preventScroll:true });
+      }
+    });
+    document.addEventListener('pointerdown', event => {
+      if (!catalogSearchForm?.classList.contains('is-open')) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (target && (catalogSearchForm.contains(target) || target.closest('#catalogSearchForm') || target.closest('#executorGrid') || target.closest('#heroSearchForm'))) return;
+      setCatalogSearchOpen(false, { clear:true, focus:false });
+    }, true);
     $('#heroSearchForm')?.addEventListener('submit', (event) => {
-      event.preventDefault(); const input = $('#heroSearch'); state.query = input.value.trim(); $('#catalogSearch').value = state.query;
+      event.preventDefault();
+      state.query = String(heroSearch?.value || '').trim();
+      if (catalogSearch) catalogSearch.value = state.query;
+      if (state.query) setCatalogSearchOpen(true, { focus:false });
       state.activePlatform = 'ALL'; renderCatalog(); $('#catalog').scrollIntoView({ behavior: 'smooth' });
     });
-    $('#heroSearch')?.addEventListener('input', () => { $('#catalogSearch').value = $('#heroSearch').value; state.query = $('#heroSearch').value; renderCatalog(); });
-    $('#catalogSearch')?.addEventListener('input', () => { state.query = $('#catalogSearch').value; $('#heroSearch').value = state.query; renderCatalog(); });
+    heroSearch?.addEventListener('input', () => {
+      if (catalogSearch) catalogSearch.value = heroSearch.value;
+      state.query = heroSearch.value;
+      if (state.query) setCatalogSearchOpen(true, { focus:false });
+      renderCatalog();
+    });
+    catalogSearch?.addEventListener('input', () => {
+      state.query = catalogSearch.value;
+      if (heroSearch) heroSearch.value = state.query;
+      renderCatalog();
+    });
     $('#platformFilters')?.addEventListener('click', (event) => {
       const button = event.target.closest('[data-platform]'); if (!button) return;
       state.activePlatform = button.dataset.platform; renderCatalog();

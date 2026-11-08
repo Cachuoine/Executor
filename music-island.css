@@ -2322,70 +2322,11 @@ html.executor-no-dblclick-edit body .music-dock.is-transition-locked .music-now-
 }
 
 
-/* v15.2.66-r4 — Dynamic navigation wings slide away from the capsule instead
-   of collapsing their width. The same travel path reverses on close. */
-@media(min-width:801px){
-  .site-header>.main-nav-dynamic,
-  .admin-page .admin-site-header>.main-nav-dynamic{
-    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
-    gap:12px!important;
-  }
-  .site-header>.main-nav-dynamic .nav-side,
-  .admin-page .admin-site-header>.main-nav-dynamic .nav-side{
-    width:auto!important;min-width:0!important;max-width:none!important;flex:0 1 auto!important;
-    overflow:visible!important;padding-inline:0!important;gap:clamp(4px,.65vw,10px)!important;
-    opacity:1!important;filter:blur(0)!important;transform:translateX(0) scale(1)!important;
-    will-change:transform,opacity,filter;
-    transition:transform var(--si-library-morph-duration) var(--si-water-ease),
-      opacity calc(var(--si-library-morph-duration)*.58) ease-in-out calc(var(--si-library-morph-duration)*.18),
-      filter calc(var(--si-library-morph-duration)*.58) ease-in-out calc(var(--si-library-morph-duration)*.18)!important;
-  }
-  .site-header>.main-nav-dynamic .nav-side-left,
-  .admin-page .admin-site-header>.main-nav-dynamic .nav-side-left{justify-content:flex-end!important;transform-origin:right center!important}
-  .site-header>.main-nav-dynamic .nav-side-right,
-  .admin-page .admin-site-header>.main-nav-dynamic .nav-side-right{justify-content:flex-start!important;transform-origin:left center!important}
-  .site-header>.main-nav-dynamic.music-nav-morphing .nav-side-left,
-  .admin-page .admin-site-header>.main-nav-dynamic.music-nav-morphing .nav-side-left{
-    transform:translateX(-clamp(130px,16vw,230px)) scale(.96)!important;
-    opacity:0!important;filter:blur(3px)!important;pointer-events:none!important;
-    transition:transform var(--si-library-morph-duration) var(--si-water-ease),
-      opacity calc(var(--si-library-morph-duration)*.58) ease-in-out calc(var(--si-library-morph-duration)*.24),
-      filter calc(var(--si-library-morph-duration)*.58) ease-in-out calc(var(--si-library-morph-duration)*.24)!important;
-  }
-  .site-header>.main-nav-dynamic.music-nav-morphing .nav-side-right,
-  .admin-page .admin-site-header>.main-nav-dynamic.music-nav-morphing .nav-side-right{
-    transform:translateX(clamp(130px,16vw,230px)) scale(.96)!important;
-    opacity:0!important;filter:blur(3px)!important;pointer-events:none!important;
-    transition:transform var(--si-library-morph-duration) var(--si-water-ease),
-      opacity calc(var(--si-library-morph-duration)*.58) ease-in-out calc(var(--si-library-morph-duration)*.24),
-      filter calc(var(--si-library-morph-duration)*.58) ease-in-out calc(var(--si-library-morph-duration)*.24)!important;
-  }
-  .site-header>.main-nav-dynamic .nav-link,
-  .admin-page .admin-site-header>.main-nav-dynamic .nav-link{
-    opacity:1!important;filter:none!important;transform:none!important;visibility:visible!important;
-    transition:color .28s ease,background .28s ease,box-shadow .28s ease,visibility 0s linear 0s!important;
-  }
-  .site-header>.main-nav-dynamic.music-nav-morphing .nav-link,
-  .admin-page .admin-site-header>.main-nav-dynamic.music-nav-morphing .nav-link{
-    opacity:1!important;filter:none!important;transform:none!important;visibility:hidden!important;
-    transition:visibility 0s linear var(--si-library-morph-duration)!important;
-  }
-  .site-header>.main-nav-dynamic.music-nav-restoring .nav-side,
-  .admin-page .admin-site-header>.main-nav-dynamic.music-nav-restoring .nav-side{pointer-events:none!important}
-}
-@media(max-width:1100px) and (min-width:801px){
-  .site-header>.main-nav-dynamic.music-nav-morphing .nav-side-left,
-  .admin-page .admin-site-header>.main-nav-dynamic.music-nav-morphing .nav-side-left{transform:translateX(-clamp(105px,13vw,155px)) scale(.96)!important}
-  .site-header>.main-nav-dynamic.music-nav-morphing .nav-side-right,
-  .admin-page .admin-site-header>.main-nav-dynamic.music-nav-morphing .nav-side-right{transform:translateX(clamp(105px,13vw,155px)) scale(.96)!important}
+/* v15.2.68-r6 — Catalog lens deliberately inherits Dynamic's exact geometry,
+   one-second travel, left-to-right lens glide, scan, ripple and mirrored close. */
+.catalog-toolbar>.catalog-search-morph{
+  margin-left:auto!important;align-self:center!important;
 }
 @media(max-width:800px){
-  .site-header>.main-nav-dynamic.music-nav-morphing .nav-side-left,
-  .admin-page .admin-site-header>.main-nav-dynamic.music-nav-morphing .nav-side-left{
-    transform:translateX(-clamp(54px,11vw,92px)) scale(.96)!important;
-  }
-  .site-header>.main-nav-dynamic.music-nav-morphing .nav-side-right,
-  .admin-page .admin-site-header>.main-nav-dynamic.music-nav-morphing .nav-side-right{
-    transform:translateX(clamp(54px,11vw,92px)) scale(.96)!important;
-  }
+  .catalog-toolbar>.catalog-search-morph{align-self:center!important;margin-top:0!important;}
 }
