@@ -74,10 +74,10 @@
   resetPlaybackVisuals();
   let directAudioTrackId = '';
   const getDirectAudioUrl = track => {
-    if (!track || track.sourceType !== 'audio' || track.videoId) return '';
+    if (!track || track.videoId || !['audio', 'external', 'link'].includes(String(track.sourceType || ''))) return '';
     try {
       const url = new URL(String(track.url || ''), document.baseURI);
-      if (url.origin !== location.origin || !/\/music\/[A-Za-z0-9][A-Za-z0-9._-]*\.mp3$/i.test(url.pathname)) return '';
+      if (!['http:', 'https:'].includes(url.protocol) || !url.hostname || url.username || url.password) return '';
       return url.href;
     } catch { return ''; }
   };
@@ -103,7 +103,8 @@
   const miniSeek = $('#musicNowPlayingSeek');
   const miniElapsed = $('#musicNowPlayingElapsed');
   const miniDuration = $('#musicNowPlayingDuration');
-  const FALLBACK = []; // Public music is sourced exclusively from Admin-uploaded local MP3 files.
+  const miniSource = $('#musicNowPlayingSource');
+  const FALLBACK = []; // The Admin-managed public library can contain local MP3s or external HTTP(S) links.
   // The library is managed by Admin; deleted tracks are never silently restored.
   let tracks = [];
   const MUSIC_STATE_KEY = 'fishcat-music-playback-state-v1';
@@ -409,23 +410,7 @@
       island.setAttribute('aria-label', panelOpen ? tr('Đóng thư viện nhạc', 'Đóng thư viện nhạc') : tr('Mở thư viện nhạc', 'Mở thư viện nhạc'));
     }
   }
-  // The Music Dynamic is only an open/close control. Fingerprint opening keeps
-  // its established timing, but no system or selected-track status is rendered here.
-  const waitForMotion = ms => new Promise(resolve => setTimeout(resolve, ms));
-  async function runSystemLoading({ duration = 2000 } = {}) {
-    const loadingDuration = Math.max(100, Math.min(6000, Number(duration) || 2000));
-    if (panel && !panel.classList.contains('hidden')) {
-      closeMusicSearch({ clear: true, rerender: false });
-      panel.classList.add('hidden');
-      panel.classList.remove('is-opening', 'is-closing');
-    }
-    dock.classList.remove('is-transition-locked', 'is-closing', 'music-centered', 'music-opening', 'is-system-checking', 'is-system-closing', 'is-system-complete');
-    dynamicNav?.classList.remove('music-nav-transition-locked', 'music-nav-morphing', 'music-nav-restoring', 'music-system-checking');
-    setCollapsed(true);
-    await waitForMotion(loadingDuration);
-    return true;
-  }
-  window.ExecutorDynamicStatus = Object.freeze({ runSystemLoading });
+  // The fingerprint galaxy no longer invokes a separate Dynamic loading sequence.
   function openMusicCenter() {
     updateDynamicTrackDisplay(activeTrack());
     if (currentTrack) { prepareCurrentTrackReveal(); render(); }
@@ -519,6 +504,7 @@
       if (miniSeek) { miniSeek.value = '0'; miniSeek.disabled = true; miniSeek.style.setProperty('--music-mini-progress', '0%'); }
       if (miniElapsed) miniElapsed.textContent = '0:00';
       if (miniDuration) miniDuration.textContent = '0:00';
+      if (miniSource) { miniSource.hidden = true; miniSource.removeAttribute('href'); }
       return;
     }
     if (miniTitle) miniTitle.textContent = String(track.title || 'Bài hát chưa đặt tên');
@@ -547,6 +533,16 @@
     }
     if (miniElapsed) miniElapsed.textContent = formatMusicTime(currentTime);
     if (miniDuration) miniDuration.textContent = formatMusicTime(duration);
+    if (miniSource) {
+      let sourceHref = '';
+      try {
+        const source = new URL(String(track.sourceUrl || track.url || ''), document.baseURI);
+        if (['http:', 'https:'].includes(source.protocol) && source.hostname && !source.username && !source.password) sourceHref = source.href;
+      } catch {}
+      miniSource.hidden = !sourceHref;
+      if (sourceHref) miniSource.href = sourceHref;
+      else miniSource.removeAttribute('href');
+    }
   }
   function restartCurrentTrack(expectedTrackId = currentTrack) {
     const track = activeTrack();
@@ -560,7 +556,7 @@
     directAudio.play().catch(() => {
       isPlaying = false;
       shouldResumePlayback = false;
-      setPlaybackStatus(tr('Không thể tự phát lại MP3. Hãy nhấn phát để thử lại.', 'Không thể tự phát lại MP3. Hãy nhấn phát để thử lại.'));
+      setPlaybackStatus(tr('Không thể tự phát lại nguồn âm thanh. Hãy nhấn phát để thử lại.', 'Không thể tự phát lại nguồn âm thanh. Hãy nhấn phát để thử lại.'));
       syncPlaybackVisuals(); render();
     });
     setPlaybackStatus(tr('Đã bật lặp lại bài đã chọn.', 'Đã bật lặp lại bài đã chọn.'));
@@ -696,7 +692,7 @@
     const track = activeTrack();
     if (!isDirectAudioTrack(track)) return;
     isPlaying = false; shouldResumePlayback = false;
-    setPlaybackStatus(tr('Không tải được MP3. Kiểm tra URL tệp, quyền truy cập và tên file trên website.', 'Không tải được MP3. Kiểm tra URL tệp, quyền truy cập và tên file trên website.'));
+    setPlaybackStatus(tr('Không tải được nguồn âm thanh. Hãy kiểm tra URL hoặc mở liên kết Nguồn nhạc để nghe trên trang gốc.', 'Không tải được nguồn âm thanh. Hãy kiểm tra URL hoặc mở liên kết Nguồn nhạc để nghe trên trang gốc.'));
     syncPlaybackVisuals(); persistMusicState(); render();
   });
   // Native audio timeupdate events keep the position current without a polling timer.
@@ -758,7 +754,7 @@
     const track = tracks.find(row => row.id === trackId) || activeTrack();
     const audioUrl = getDirectAudioUrl(track);
     if (!track || !audioUrl || !directAudio) {
-      setPlaybackStatus('Chỉ hỗ trợ tệp MP3 đã tải lên thư viện NightReaper.');
+      setPlaybackStatus('URL không hợp lệ hoặc chưa được trình duyệt hỗ trợ làm nguồn âm thanh.');
       return;
     }
     if (track.id === currentTrack && isPlaying) { stopTrack(); return; }
@@ -790,10 +786,10 @@
       isPlaying = false;
       shouldResumePlayback = false;
       syncPlaybackVisuals();
-      setPlaybackStatus(tr('Trình duyệt chưa phát được MP3. Nhấn phát lại để thử.', 'Trình duyệt chưa phát được MP3. Nhấn phát lại để thử.'));
+      setPlaybackStatus(tr('Trình duyệt chưa phát được nguồn này. Link nguồn vẫn có thể mở riêng để nghe.', 'Trình duyệt chưa phát được nguồn này. Link nguồn vẫn có thể mở riêng để nghe.'));
       render();
     });
-    setPlaybackStatus(tr('Đã chọn bài MP3.', 'Đã chọn bài MP3.'));
+    setPlaybackStatus(tr('Đã chọn nguồn nhạc.', 'Đã chọn nguồn nhạc.'));
     render();
   }
   function playAdjacentTrack(direction) {
@@ -856,7 +852,7 @@
         if (!response.ok) continue;
         const data = await response.json();
         if (!Array.isArray(data?.tracks)) continue;
-        tracks = data.tracks.filter(isDirectAudioTrack);
+        tracks = data.tracks.filter(track => Boolean(getDirectAudioUrl(track)));
         break;
       } catch { /* Try the next source, especially the static JSON on GitHub Pages. */ }
     }

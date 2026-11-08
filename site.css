@@ -1125,3 +1125,6 @@ body:not(.admin-page) .section-shell{width:min(1320px,calc(100% - 48px))}
 .download-device[data-device="macOS"]{color:#d1c9ff}
 .download-device[data-device="Android"]{color:#9ce68c}
 .download-device[data-device="iOS"]{color:#dbe5f5}
+
+/* v15.2.69 — fingerprint hold is gesture-only; no 0–100% loading ring/scan. */
+.fingerprint-hold-ring,.fingerprint-scan{display:none!important;opacity:0!important;animation:none!important}

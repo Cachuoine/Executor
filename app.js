@@ -269,13 +269,15 @@
     }).join('');
     $('#downloadLinks').innerHTML = list || '<span class="loading-text">Chưa có liên kết tải an toàn.</span>';
   }
-  // Admin-uploaded MP3s are restricted to same-origin files under /music/.
-  // Resolving against document.baseURI preserves GitHub Pages project paths such as /Executor/.
+  // Local uploads and external HTTP(S) URLs are kept in the public library.
+  // A generic web page is accepted as a source, but only browser-compatible audio
+  // endpoints can actually play through the page's audio element.
   function isDirectAudioTrack(track) {
-    if (!track || track.sourceType !== 'audio' || track.videoId) return false;
+    if (!track || track.videoId || !['audio', 'external', 'link'].includes(String(track.sourceType || ''))) return false;
     try {
       const url = new URL(String(track.url || ''), document.baseURI);
-      return url.origin === location.origin && /\/music\/[A-Za-z0-9][A-Za-z0-9._-]*\.mp3$/i.test(url.pathname);
+      if (!['http:', 'https:'].includes(url.protocol) || !url.hostname || url.username || url.password) return false;
+      return true;
     } catch { return false; }
   }
   function isPlayableTrack(track) { return isDirectAudioTrack(track); }
@@ -290,7 +292,7 @@
     $('#musicSectionTrackList').innerHTML = topTracks.map((track, i) => {
       const playable = isPlayableTrack(track);
       const playing = state.currentTrackId === String(track.id);
-      const audioTag = isDirectAudioTrack(track) ? ' <em class="music-source-tag">MP3</em>' : '';
+      const audioTag = track.sourceType === 'external' ? ' <em class="music-source-tag">URL</em>' : ' <em class="music-source-tag">MP3</em>';
       return `<div class="music-track${playing ? ' is-playing is-current-track' : ''}" data-track-id="${escapeHtml(track.id || '')}"><div class="track-main"><span class="track-number">${String(i + 1).padStart(2, '0')}</span><span class="track-art">♫</span><span class="track-info"><b>${escapeHtml(track.title || 'Bài hát chưa có tên')}${audioTag}</b><small>${escapeHtml(track.artist || 'Nghệ sĩ chưa rõ')}</small></span></div><span class="track-genre">${escapeHtml(MUSIC_GENRE_LABELS[track.genre] || track.genre || 'Chưa phân loại')}</span><button class="track-play${playing ? ' is-active' : ''}" type="button" data-play-track="${escapeHtml(track.id || '')}" ${playable ? '' : 'disabled'} aria-label="Phát ${escapeHtml(track.title || 'bài hát')}">${playing ? 'Đang phát' : 'Phát'} <span>▶</span></button></div>`;
     }).join('');
   }
@@ -719,43 +721,24 @@
     if (!stage || !orb || !wings) return;
     const gemRing = $('.fingerprint-gem-ring', orb);
     let holdTimer = null;
-    let progressFrame = 0;
     let transitionTimer = null;
-    let holdStartedAt = 0;
     const HOLD_DURATION = 2000;
     const WING_OPEN_DURATION = 820;
     const WING_CLOSE_DURATION = 720;
     const isTransitioning = () => stage.classList.contains('is-transitioning');
-    const setProgress = (degrees) => {
-      const safeDegrees = Math.max(0, Math.min(360, Number(degrees) || 0));
-      orb.style.setProperty('--fingerprint-progress', `${safeDegrees}deg`);
-      // One timeline drives both the circular edge and the scan line crossing the fingerprint.
-      orb.style.setProperty('--fingerprint-scan-y', `${17 + (safeDegrees / 360) * 36}px`);
-    };
     const setGemSpinSpeed = (rate) => {
       if (!gemRing || typeof gemRing.getAnimations !== 'function') return;
       const animation = gemRing.getAnimations().find((item) => item.animationName === 'fingerprintGems');
-      // Changing playbackRate preserves the current animation time, so stones keep rotating from their live phase.
+      // Playback-rate changes preserve the current animation phase.
       if (animation && typeof animation.updatePlaybackRate === 'function' && Math.abs(animation.playbackRate - rate) > 0.01) {
         animation.updatePlaybackRate(rate);
       }
-    };
-    const stopProgressFrame = () => {
-      if (progressFrame) window.cancelAnimationFrame(progressFrame);
-      progressFrame = 0;
-    };
-    const paintProgress = (now) => {
-      if (!stage.classList.contains('is-holding')) { progressFrame = 0; return; }
-      const progress = Math.max(0, Math.min(1, (now - holdStartedAt) / HOLD_DURATION));
-      setProgress(progress * 360);
-      if (progress < 1) progressFrame = window.requestAnimationFrame(paintProgress);
-      else progressFrame = 0;
     };
     const transitionWings = (open) => {
       if (transitionTimer !== null) window.clearTimeout(transitionTimer);
       stage.classList.remove('is-opening', 'is-closing');
       stage.classList.add('is-transitioning');
-      stage.classList.remove('is-holding', 'is-system-checking');
+      stage.classList.remove('is-holding');
       setGemSpinSpeed(1);
       if (open) {
         stage.classList.remove('is-open');
@@ -793,48 +776,19 @@
       }
       stage.classList.add('is-holding');
       setGemSpinSpeed(9);
-      holdStartedAt = window.performance.now();
-      setProgress(0);
-      stopProgressFrame();
-      progressFrame = window.requestAnimationFrame(paintProgress);
       holdTimer = window.setTimeout(() => {
         holdTimer = null;
-        stopProgressFrame();
-        setProgress(360);
-        const open = !stage.classList.contains('is-open');
-        if (!open) {
-          // Closing stays direct: keep the stable two-second hold and wing animation,
-          // without replaying the system-loading Dynamic Island sequence.
-          transitionWings(false);
-          return;
-        }
-        // First-open sequence: finish the hold, run the shared Dynamic status check,
-        // let its 0–100% progress and success tick close back to the compact pill,
-        // and only then reveal the decorative wings.
-        stage.classList.remove('is-holding');
-        stage.classList.add('is-transitioning', 'is-system-checking');
-        setGemSpinSpeed(1);
-        setProgress(0);
-        const runSystemLoading = window.ExecutorDynamicStatus?.runSystemLoading;
-        const fallbackLoading = () => new Promise(resolve => window.setTimeout(resolve, 2000));
-        Promise.resolve()
-          .then(() => typeof runSystemLoading === 'function' ? runSystemLoading({ duration: 2000 }) : fallbackLoading())
-          .catch(() => fallbackLoading())
-          .finally(() => {
-            stage.classList.remove('is-system-checking');
-            setProgress(0);
-            transitionWings(true);
-          });
+        // No percentage/loading phase: the completed hold directly toggles the
+        // favorite galaxy. Both directions use the existing wing transition.
+        transitionWings(!stage.classList.contains('is-open'));
       }, HOLD_DURATION);
       if (event.type === 'keydown') event.preventDefault();
     };
     const end = () => {
       if (holdTimer !== null) window.clearTimeout(holdTimer);
       holdTimer = null;
-      stopProgressFrame();
       stage.classList.remove('is-holding');
       setGemSpinSpeed(1);
-      setProgress(0);
     };
     // Keep the decorative wings inert while their opening/closing animation is running.
     wings.inert = true;

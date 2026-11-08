@@ -8,7 +8,8 @@
       "url": "./music/ban-tinh-oi-d2fa1b3139.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-06T14:52:45.936Z"
+      "addedAt": "2026-11-06T14:52:45.936Z",
+      "sourceUrl": "./music/ban-tinh-oi-d2fa1b3139.mp3"
     },
     {
       "id": "track-087768418c779a",
@@ -18,7 +19,8 @@
       "url": "./music/blinding-lights-b6c71a5d87.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-01T03:31:17.585Z"
+      "addedAt": "2026-11-01T03:31:17.585Z",
+      "sourceUrl": "./music/blinding-lights-b6c71a5d87.mp3"
     },
     {
       "id": "track-355cf23df44e3b",
@@ -28,7 +30,8 @@
       "url": "./music/buon-thi-cu-khoc-i-3c4e31889b.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-01T15:25:16.317Z"
+      "addedAt": "2026-11-01T15:25:16.317Z",
+      "sourceUrl": "./music/buon-thi-cu-khoc-i-3c4e31889b.mp3"
     },
     {
       "id": "track-6d8c2102db6db5",
@@ -38,7 +41,8 @@
       "url": "./music/co-gai-vang-93474ea7c1.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-06T14:53:11.939Z"
+      "addedAt": "2026-11-06T14:53:11.939Z",
+      "sourceUrl": "./music/co-gai-vang-93474ea7c1.mp3"
     },
     {
       "id": "track-5984f9fb278cfd",
@@ -48,7 +52,8 @@
       "url": "./music/counting-stars-b4f126c566.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-01T03:32:41.268Z"
+      "addedAt": "2026-11-01T03:32:41.268Z",
+      "sourceUrl": "./music/counting-stars-b4f126c566.mp3"
     },
     {
       "id": "track-8a02d242719860",
@@ -58,7 +63,8 @@
       "url": "./music/ieu-anh-biet-9688c78543.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-06T14:54:22.908Z"
+      "addedAt": "2026-11-06T14:54:22.908Z",
+      "sourceUrl": "./music/ieu-anh-biet-9688c78543.mp3"
     },
     {
       "id": "track-dea06c35091feb",
@@ -68,7 +74,8 @@
       "url": "./music/uong-quyen-tinh-yeu-a8076b4e93.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-06T14:54:46.794Z"
+      "addedAt": "2026-11-06T14:54:46.794Z",
+      "sourceUrl": "./music/uong-quyen-tinh-yeu-a8076b4e93.mp3"
     },
     {
       "id": "track-aea3e193945edd",
@@ -78,7 +85,8 @@
       "url": "./music/hay-ra-khoi-nguoi-o-i-a32df53233.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-06T14:55:37.875Z"
+      "addedAt": "2026-11-06T14:55:37.875Z",
+      "sourceUrl": "./music/hay-ra-khoi-nguoi-o-i-a32df53233.mp3"
     },
     {
       "id": "track-ad00ea945fa07e",
@@ -88,7 +96,8 @@
       "url": "./music/hen-em-o-lan-yeu-thu-2-3aaef80d4c.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-06T14:32:24.260Z"
+      "addedAt": "2026-11-06T14:32:24.260Z",
+      "sourceUrl": "./music/hen-em-o-lan-yeu-thu-2-3aaef80d4c.mp3"
     },
     {
       "id": "track-4c1b0ebe91fe3f",
@@ -98,7 +107,8 @@
       "url": "./music/she-neva-knows-f5613d5410.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-06T14:57:44.835Z"
+      "addedAt": "2026-11-06T14:57:44.835Z",
+      "sourceUrl": "./music/she-neva-knows-f5613d5410.mp3"
     },
     {
       "id": "track-99b807966ef744",
@@ -108,7 +118,8 @@
       "url": "./music/tell-me-why-a061f513bc.mp3",
       "sourceType": "audio",
       "pinned": false,
-      "addedAt": "2026-11-01T03:31:53.054Z"
+      "addedAt": "2026-11-01T03:31:53.054Z",
+      "sourceUrl": "./music/tell-me-why-a061f513bc.mp3"
     }
   ]
 }

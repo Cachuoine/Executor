@@ -2330,3 +2330,10 @@ html.executor-no-dblclick-edit body .music-dock.is-transition-locked .music-now-
 @media(max-width:800px){
   .catalog-toolbar>.catalog-search-morph{align-self:center!important;margin-top:0!important;}
 }
+
+/* v15.2.69 — clickable track source beside the current / total time. */
+.music-now-playing-time-end{display:inline-flex;align-items:center;justify-content:flex-end;gap:9px;min-width:0}
+.music-now-playing-source{cursor:pointer!important;color:#8fd8d1;font:600 10px/1.2 'DM Mono',monospace;text-decoration:none;white-space:nowrap;opacity:.88;transition:color .18s ease,opacity .18s ease}
+.music-now-playing-source:hover{color:#c7fff5;opacity:1;text-decoration:underline;text-underline-offset:3px}
+.music-now-playing-source[hidden]{display:none!important}
+@media(max-width:520px){.music-now-playing-time-end{gap:6px}.music-now-playing-source{font-size:9px}}
