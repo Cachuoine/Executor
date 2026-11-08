@@ -103,7 +103,12 @@
   }
 
   function render(value) {
-    const normalized = normalizeAnsiEscapes(String(value ?? '')).replace(/\r\n?/g, '\n');
+    let normalized = normalizeAnsiEscapes(String(value ?? '')).replace(/\r\n?/g, '\n');
+    // Older Changelog entries may contain real ANSI ESC codes without a Discord fence.
+    // Render-only compatibility: do not alter the stored text, but display it as an ANSI block.
+    if (!normalized.includes('```') && /\x1b\[[0-9;]*m/.test(normalized)) {
+      normalized = `\`\`\`ansi\n${normalized}\n\`\`\``;
+    }
     const source = escapeHtml(normalized);
     const chunks = source.split(/```([^\n`]*)\n([\s\S]*?)```/g);
     let out = '';
