@@ -91,11 +91,6 @@
   const miniSeek = $('#musicNowPlayingSeek');
   const miniElapsed = $('#musicNowPlayingElapsed');
   const miniDuration = $('#musicNowPlayingDuration');
-  // While the user is dragging, the audio element keeps emitting timeupdate events.
-  // Freeze the displayed thumb/time until the gesture is committed, otherwise the
-  // browser keeps snapping the range back to the old playback position.
-  let miniSeekIsScrubbing = false;
-  let miniSeekTrackId = '';
   const FALLBACK = []; // Public music is sourced exclusively from Admin-uploaded local MP3 files.
   // The library is managed by Admin; deleted tracks are never silently restored.
   let tracks = [];
@@ -509,8 +504,6 @@
     const track = activeTrack();
     miniPlayer.hidden = !track;
     if (!track) {
-      miniSeekIsScrubbing = false;
-      miniSeekTrackId = '';
       if (miniSeek) { miniSeek.value = '0'; miniSeek.disabled = true; miniSeek.style.setProperty('--music-mini-progress', '0%'); }
       if (miniElapsed) miniElapsed.textContent = '0:00';
       if (miniDuration) miniDuration.textContent = '0:00';
@@ -530,10 +523,6 @@
         if (miniArtworkFallback) miniArtworkFallback.hidden = false;
       }
     }
-    if (miniSeekIsScrubbing && miniSeekTrackId !== String(track.id)) {
-      miniSeekIsScrubbing = false;
-      miniSeekTrackId = '';
-    }
     const audioMatchesTrack = directAudioTrackId === String(track.id);
     const duration = audioMatchesTrack && Number.isFinite(directAudio?.duration) ? directAudio.duration : 0;
     const currentTime = audioMatchesTrack && Number.isFinite(directAudio?.currentTime)
@@ -541,12 +530,10 @@
     const progress = duration > 0 ? Math.max(0, Math.min(100, (currentTime / duration) * 100)) : 0;
     if (miniSeek) {
       miniSeek.disabled = duration <= 0;
-      if (!miniSeekIsScrubbing) {
-        miniSeek.value = String(Math.round(progress * 10));
-        miniSeek.style.setProperty('--music-mini-progress', `${progress}%`);
-      }
+      miniSeek.value = String(Math.round(progress * 10));
+      miniSeek.style.setProperty('--music-mini-progress', `${progress}%`);
     }
-    if (miniElapsed && !miniSeekIsScrubbing) miniElapsed.textContent = formatMusicTime(currentTime);
+    if (miniElapsed) miniElapsed.textContent = formatMusicTime(currentTime);
     if (miniDuration) miniDuration.textContent = formatMusicTime(duration);
   }
   function restartCurrentTrack(expectedTrackId = currentTrack) {
@@ -901,44 +888,19 @@
   island?.addEventListener('click', handleIslandToggle);
   $('#closeMusicPanel')?.addEventListener('click', () => { closeMusicSearch({ clear:true, rerender:false }); beginIslandClose(); });
   playbackModeToggle?.addEventListener('click', togglePlaybackMode);
-  function beginMiniSeekGesture() {
+  miniSeek?.addEventListener('input', () => {
     const track = activeTrack();
     const duration = Number(directAudio?.duration);
     if (!track || directAudioTrackId !== String(track.id) || !Number.isFinite(duration) || duration <= 0) return;
-    miniSeekIsScrubbing = true;
-    miniSeekTrackId = String(track.id);
-  }
-  function previewMiniSeekPosition() {
-    const track = activeTrack();
-    const duration = Number(directAudio?.duration);
-    if (!track || directAudioTrackId !== String(track.id) || !Number.isFinite(duration) || duration <= 0) return;
-    miniSeekIsScrubbing = true;
-    miniSeekTrackId = String(track.id);
-    const ratio = Math.max(0, Math.min(1, Number(miniSeek.value) / 1000));
-    const previewTime = ratio * duration;
+    const previewTime = (Number(miniSeek.value) / 1000) * duration;
     if (miniElapsed) miniElapsed.textContent = formatMusicTime(previewTime);
-    miniSeek.style.setProperty('--music-mini-progress', `${ratio * 100}%`);
-  }
-  function commitMiniSeekGesture() {
-    if (!miniSeekIsScrubbing) return;
-    const track = activeTrack();
+    miniSeek.style.setProperty('--music-mini-progress', `${Math.max(0, Math.min(100, Number(miniSeek.value) / 10))}%`);
+  });
+  miniSeek?.addEventListener('change', () => {
     const duration = Number(directAudio?.duration);
-    const validTrack = track && String(track.id) === miniSeekTrackId && directAudioTrackId === String(track.id);
-    const ratio = Math.max(0, Math.min(1, Number(miniSeek?.value || 0) / 1000));
-    miniSeekIsScrubbing = false;
-    miniSeekTrackId = '';
-    if (validTrack && Number.isFinite(duration) && duration > 0) seekCurrentTrack(ratio * duration);
-    updateMiniNowPlaying();
-  }
-  miniSeek?.addEventListener('pointerdown', beginMiniSeekGesture);
-  miniSeek?.addEventListener('input', previewMiniSeekPosition);
-  // change covers native range interaction; pointer/keyboard fallbacks make the
-  // commit reliable across Chromium, Firefox, touchscreens and keyboard use.
-  miniSeek?.addEventListener('change', commitMiniSeekGesture);
-  miniSeek?.addEventListener('pointerup', commitMiniSeekGesture);
-  miniSeek?.addEventListener('pointercancel', commitMiniSeekGesture);
-  miniSeek?.addEventListener('keyup', commitMiniSeekGesture);
-  miniSeek?.addEventListener('blur', commitMiniSeekGesture);
+    if (!Number.isFinite(duration) || duration <= 0) return;
+    seekCurrentTrack((Number(miniSeek.value) / 1000) * duration);
+  });
   searchMorph?.addEventListener('click', event => {
     // Keep clicks on the icon, input, caret and the morph surface inside this control.
     // Only a deliberate click/pointer outside the bubble is allowed to collapse it.
