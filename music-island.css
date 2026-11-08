@@ -2232,3 +2232,91 @@ html.executor-no-dblclick-edit body .music-dock.is-transition-locked .music-now-
   .site-header>.main-nav-dynamic .music-panel.is-closing>*,
   .admin-page .admin-site-header .music-panel.is-closing>*{animation-duration:.01ms!important;animation-delay:0s!important}
 }
+
+
+/* ============================================================================
+   v15.2.65-r3 — Dynamic close choreography + frame-accurate vinyl pause
+   - The closing capsule ends at the exact same width as its collapsed state.
+   - The green point stays visible and follows the moving right edge throughout.
+   - The vinyl remains visible while paused and shrinks into the capsule on close.
+   - Vinyl rotation is controlled by the persistent WAAPI timeline in music-player.js.
+   ============================================================================ */
+
+/* Keep the closing endpoint identical to the final collapsed capsule. */
+.site-header>.main-nav-dynamic .music-dock.is-closing,
+.site-header>.main-nav-dynamic .music-dock.music-centered.is-closing,
+.admin-page .admin-site-header .music-dock.is-closing,
+.admin-page .admin-site-header .music-dock.music-centered.is-closing{
+  flex:0 0 112px!important;
+  width:112px!important;min-width:112px!important;max-width:112px!important;
+  height:38px!important;min-height:38px!important;
+  transition:flex-basis var(--si-library-morph-duration) var(--si-water-ease),
+    width var(--si-library-morph-duration) var(--si-water-ease),
+    min-width var(--si-library-morph-duration) var(--si-water-ease),
+    max-width var(--si-library-morph-duration) var(--si-water-ease),
+    height var(--si-library-morph-duration) var(--si-water-ease),filter .55s ease!important;
+}
+@media(max-width:1160px){
+  .site-header>.main-nav-dynamic .music-dock.is-closing,
+  .site-header>.main-nav-dynamic .music-dock.music-centered.is-closing,
+  .admin-page .admin-site-header .music-dock.is-closing,
+  .admin-page .admin-site-header .music-dock.music-centered.is-closing{
+    flex-basis:84px!important;width:84px!important;min-width:84px!important;max-width:84px!important;
+  }
+}
+
+/* During close, keep the LED alive and pin it to the capsule's right inner edge.
+   As the pill contracts around its center, the dot travels with the moving edge;
+   it is already in its final place before the collapsed class is applied. */
+.site-header>.main-nav-dynamic .music-dock.music-centered.is-closing .music-island>.music-state-led,
+.admin-page .admin-site-header .music-dock.music-centered.is-closing .music-island>.music-state-led{
+  display:grid!important;position:absolute!important;right:10px!important;left:auto!important;top:50%!important;
+  flex:0 0 9px!important;width:9px!important;height:9px!important;margin:0!important;
+  opacity:1!important;visibility:visible!important;transform:translateY(-50%) scale(1)!important;
+  z-index:5!important;pointer-events:none!important;
+  animation:nrDynamicLedReturn .34s ease-out both!important;
+}
+.site-header>.main-nav-dynamic .music-dock.music-centered.is-closing .music-island>.music-state-led .music-live-led,
+.admin-page .admin-site-header .music-dock.music-centered.is-closing .music-island>.music-state-led .music-live-led{
+  display:block!important;opacity:1!important;visibility:visible!important;
+}
+@keyframes nrDynamicLedReturn{
+  0%{opacity:0;filter:blur(2px);scale:.62}
+  65%{opacity:1;filter:blur(0);scale:1.12}
+  100%{opacity:1;filter:blur(0);scale:1}
+}
+
+/* One live vinyl rotation timeline is managed by WAAPI. Do not let legacy CSS
+   animation rules reset the angle when is-playing is removed. */
+.site-header>.main-nav-dynamic .music-dock.music-centered.has-track .music-island-record,
+.admin-page .admin-site-header .music-dock.music-centered.has-track .music-island-record{
+  display:block!important;opacity:1!important;visibility:visible!important;
+  animation:none!important;will-change:rotate;pointer-events:none!important;
+  transition:opacity .3s ease,transform var(--si-library-morph-duration) var(--si-water-ease),
+    visibility 0s!important;
+}
+.site-header>.main-nav-dynamic .music-dock.music-centered.has-track:not(.is-closing) .music-island-record,
+.admin-page .admin-site-header .music-dock.music-centered.has-track:not(.is-closing) .music-island-record{
+  transform:scale(1)!important;
+}
+
+/* The close selector is deliberately more specific than the old paused-state
+   selectors so the record really contracts instead of retaining its full size. */
+.site-header>.main-nav-dynamic .music-dock.music-centered.is-closing.has-track .music-island-record,
+.admin-page .admin-site-header .music-dock.music-centered.is-closing.has-track .music-island-record{
+  display:block!important;opacity:0!important;visibility:hidden!important;
+  transform:translateY(2px) scale(.06)!important;
+  animation:none!important;
+  transition:opacity var(--si-library-morph-duration) ease-in,
+    transform var(--si-library-morph-duration) var(--si-water-ease),
+    visibility 0s linear var(--si-library-morph-duration)!important;
+}
+.site-header>.main-nav-dynamic .music-dock.music-centered.is-closing.has-track .music-island-track-copy,
+.site-header>.main-nav-dynamic .music-dock.music-centered.is-closing.has-track .music-island-wave,
+.admin-page .admin-site-header .music-dock.music-centered.is-closing.has-track .music-island-track-copy,
+.admin-page .admin-site-header .music-dock.music-centered.is-closing.has-track .music-island-wave{
+  opacity:0!important;visibility:hidden!important;transform:translateY(5px) scale(.76)!important;
+  transition:opacity var(--si-library-morph-duration) ease-in,
+    transform var(--si-library-morph-duration) var(--si-water-ease),
+    visibility 0s linear var(--si-library-morph-duration)!important;
+}

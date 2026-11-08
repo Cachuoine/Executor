@@ -37,6 +37,16 @@
     musicEngine?.appendChild(directAudio);
   }
   const islandRecord = $('.music-island-record');
+  // Keep one persistent rotation timeline for the vinyl. Pausing the Web Animation
+  // freezes its exact currentTime/angle; CSS class changes and closing the island
+  // cannot restart it at zero degrees.
+  const recordRotation = islandRecord && typeof islandRecord.animate === 'function'
+    ? islandRecord.animate(
+      [{ rotate: '0deg' }, { rotate: '360deg' }],
+      { duration: 5800, iterations: Infinity, easing: 'linear', fill: 'both' }
+    )
+    : null;
+  recordRotation?.pause();
   // The Dynamic no longer exposes a volume widget. Keep a comfortable default
   // level and clear stale mute/volume preferences left by older builds.
   try { localStorage.removeItem('nightreaper-music-volume-v1'); } catch {}
@@ -44,20 +54,22 @@
   directAudio.muted = false;
 
   function resetPlaybackVisuals() {
-    if (!islandRecord) return;
-    // Reset the compositor animation only when the selected track changes.
-    islandRecord.style.setProperty('animation', 'none', 'important');
-    islandRecord.style.setProperty('rotate', '0deg', 'important');
-    void islandRecord.offsetWidth;
-    islandRecord.style.removeProperty('animation');
-    islandRecord.style.removeProperty('rotate');
+    if (!islandRecord || !recordRotation) return;
+    // A newly selected song starts with a clean record; normal pause/resume never
+    // calls this, so the current angle is preserved exactly between playback states.
+    try {
+      recordRotation.pause();
+      recordRotation.currentTime = 0;
+    } catch {}
   }
   function startPlaybackVisuals() {
-    // CSS runs the vinyl on the compositor while .music-dock.is-playing is present.
-    // This avoids a permanent requestAnimationFrame loop and per-frame style writes.
+    // Resume the same timeline instead of creating a fresh CSS animation.
+    try { recordRotation?.play(); } catch {}
   }
   function stopPlaybackVisuals() {
-    // The compositor animation pauses in place when .music-dock.is-playing is removed.
+    // WAAPI pause retains the exact frame/angle, including if playback stops during
+    // the same frame that the library begins closing.
+    try { recordRotation?.pause(); } catch {}
   }
   resetPlaybackVisuals();
   let directAudioTrackId = '';
