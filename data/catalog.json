@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-08T13:29:40.806Z",
+  "updatedAt": "2026-11-08T13:30:11.438Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -30,9 +30,9 @@
       "name": "BUNNI",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "online",
+      "status": "maintenance",
       "version": "2.0.1.R7",
-      "compatibilityVersion": "f0ea5da9412f4e35",
+      "compatibilityVersion": "5a21b87bbc2641cf",
       "updatedAt": "2026-10-31T21:17:00.000Z",
       "websiteUrl": "",
       "communityUrl": "https://discord.gg/SsUw32gw5Y",
@@ -47,7 +47,7 @@
       "unc": "",
       "id": "entry-pc-bunni",
       "createdAt": "2026-11-01T13:48:28.200Z",
-      "modifiedAt": "2026-11-08T13:29:39.851Z"
+      "modifiedAt": "2026-11-08T13:30:10.518Z"
     },
     {
       "name": "BUNNI",
@@ -443,9 +443,9 @@
   ],
   "stats": {
     "total": 19,
-    "online": 11,
+    "online": 10,
     "offline": 1,
-    "maintenance": 7,
+    "maintenance": 8,
     "unknown": 0,
     "platforms": {
       "PC": 15,
