@@ -1747,7 +1747,7 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 }
 @media(prefers-reduced-motion:reduce){.music-dock.music-centered.has-track .music-island-wave i{will-change:auto!important;}}
 
-/* v15.2.65 — balanced coloured glass + a natural 500ms search-lens glide.
+/* v15.2.66 — balanced coloured glass + a natural 500ms search-lens glide.
    Keep the Dynamic visibly tinted; translucency should soften the fill, not erase it. */
 :root{
   --nr-search-duration:500ms;
@@ -2023,4 +2023,223 @@ html.executor-no-dblclick-edit body [data-allow-text-select] { cursor: text; }
 @media(prefers-reduced-motion:reduce){
   .music-search-morph,.music-search-morph.is-open,.music-search-toggle,.music-search-toggle svg,.music-search-morph input{transition:none!important;animation:none!important}
   .music-dock.music-centered.has-track .music-island-record{animation:none!important;will-change:auto!important}
+}
+
+
+/* v15.2.66 — one symmetric Dynamic motion clock, pointer-only seek control and 1s search lens. */
+:root{
+  --si-library-morph-duration:2s;
+  --si-library-reveal-duration:2s;
+  --si-island-ease:cubic-bezier(.42,0,.58,1);
+  --si-water-ease:cubic-bezier(.42,0,.58,1);
+  --nr-search-duration:1s;
+  --nr-search-ease:cubic-bezier(.42,0,.58,1);
+}
+
+/* The same duration and symmetric curve apply in both directions. The close state
+   changes only the destination geometry, so it follows the opening path backwards. */
+.site-header>.main-nav-dynamic,
+.admin-page .admin-site-header .admin-dynamic-nav{
+  transition:grid-template-columns var(--si-library-morph-duration) var(--si-island-ease),
+    gap var(--si-library-morph-duration) var(--si-island-ease)!important;
+}
+.site-header>.main-nav-dynamic .nav-side,
+.admin-page .admin-site-header .admin-dynamic-nav .nav-side,
+.site-header>.main-nav-dynamic .nav-link,
+.admin-page .admin-site-header .admin-dynamic-nav .nav-link{
+  transition:opacity var(--si-library-reveal-duration) var(--si-island-ease),
+    transform var(--si-library-morph-duration) var(--si-island-ease),
+    max-width var(--si-library-morph-duration) var(--si-island-ease),
+    gap var(--si-library-morph-duration) var(--si-island-ease)!important;
+}
+.site-header>.main-nav-dynamic:is(.music-nav-morphing,.music-nav-restoring) .nav-side,
+.admin-page .admin-site-header .admin-dynamic-nav:is(.music-nav-morphing,.music-nav-restoring) .nav-side{
+  max-width:0!important;gap:0!important;opacity:0!important;transform:scaleX(0)!important;
+  pointer-events:none!important;overflow:hidden!important;
+}
+.site-header>.main-nav-dynamic:is(.music-nav-morphing,.music-nav-restoring) .nav-link,
+.admin-page .admin-site-header .admin-dynamic-nav:is(.music-nav-morphing,.music-nav-restoring) .nav-link{
+  opacity:0!important;transform:translateX(14px) scale(.96)!important;
+}
+.site-header>.main-nav-dynamic:is(.music-nav-morphing,.music-nav-restoring) .nav-side-right .nav-link,
+.admin-page .admin-site-header .admin-dynamic-nav:is(.music-nav-morphing,.music-nav-restoring) .nav-side-right .nav-link{
+  transform:translateX(-14px) scale(.96)!important;
+}
+.site-header>.main-nav-dynamic .music-dock,
+.site-header>.main-nav-dynamic .music-dock.is-closing,
+.site-header>.main-nav-dynamic .music-dock.music-centered,
+.site-header>.main-nav-dynamic .music-dock.music-centered.is-closing,
+.admin-page .admin-site-header .music-dock,
+.admin-page .admin-site-header .music-dock.is-closing,
+.admin-page .admin-site-header .music-dock.music-centered,
+.admin-page .admin-site-header .music-dock.music-centered.is-closing{
+  transition:flex-basis var(--si-library-morph-duration) var(--si-island-ease),
+    width var(--si-library-morph-duration) var(--si-island-ease),
+    height var(--si-library-morph-duration) var(--si-island-ease),
+    max-width var(--si-library-morph-duration) var(--si-island-ease),
+    min-width var(--si-library-morph-duration) var(--si-island-ease),
+    filter var(--si-library-morph-duration) var(--si-island-ease)!important;
+}
+.site-header>.main-nav-dynamic .music-dock .music-island,
+.site-header>.main-nav-dynamic .music-dock.is-closing .music-island,
+.admin-page .admin-site-header .music-dock .music-island,
+.admin-page .admin-site-header .music-dock.is-closing .music-island{
+  transition:width var(--si-library-morph-duration) var(--si-island-ease),
+    height var(--si-library-morph-duration) var(--si-island-ease),
+    padding var(--si-library-morph-duration) var(--si-island-ease),
+    gap var(--si-library-morph-duration) var(--si-island-ease),
+    border-radius var(--si-library-morph-duration) var(--si-island-ease),
+    background-position var(--si-library-morph-duration) var(--si-island-ease),
+    box-shadow var(--si-library-morph-duration) var(--si-island-ease),
+    border-color var(--si-library-morph-duration) var(--si-island-ease)!important;
+}
+.site-header>.main-nav-dynamic .music-panel,
+.site-header>.main-nav-dynamic .music-panel.is-opening,
+.site-header>.main-nav-dynamic .music-panel.is-closing,
+.admin-page .admin-site-header .music-panel,
+.admin-page .admin-site-header .music-panel.is-opening,
+.admin-page .admin-site-header .music-panel.is-closing{
+  transition:clip-path var(--si-library-reveal-duration) var(--si-island-ease),
+    transform var(--si-library-reveal-duration) var(--si-island-ease),
+    opacity var(--si-library-reveal-duration) var(--si-island-ease),
+    filter var(--si-library-reveal-duration) var(--si-island-ease),
+    max-height var(--si-library-reveal-duration) var(--si-island-ease),
+    padding var(--si-library-reveal-duration) var(--si-island-ease),
+    border-color var(--si-library-reveal-duration) var(--si-island-ease),
+    box-shadow var(--si-library-reveal-duration) var(--si-island-ease)!important;
+}
+.site-header>.main-nav-dynamic .music-panel.is-opening,
+.site-header>.main-nav-dynamic .music-panel.is-closing,
+.admin-page .admin-site-header .music-panel.is-opening,
+.admin-page .admin-site-header .music-panel.is-closing{
+  padding:12px!important;max-height:min(56vh,460px)!important;overflow:hidden!important;
+}
+.site-header>.main-nav-dynamic .music-panel>* ,
+.admin-page .admin-site-header .music-panel>*{
+  opacity:1!important;transform:translateY(0) scale(1)!important;filter:blur(0)!important;
+  animation:none!important;
+  transition:opacity var(--si-library-reveal-duration) var(--si-island-ease),
+    transform var(--si-library-reveal-duration) var(--si-island-ease),
+    filter var(--si-library-reveal-duration) var(--si-island-ease)!important;
+}
+.site-header>.main-nav-dynamic .music-panel.is-opening>*,
+.site-header>.main-nav-dynamic .music-panel.is-closing>*,
+.admin-page .admin-site-header .music-panel.is-opening>*,
+.admin-page .admin-site-header .music-panel.is-closing>*{
+  opacity:0!important;transform:translateY(7px) scale(.985)!important;filter:blur(1px)!important;
+  animation:none!important;
+}
+.site-header>.main-nav-dynamic .music-dock.music-centered .music-island::after,
+.site-header>.main-nav-dynamic .music-dock.is-closing .music-island::after,
+.admin-page .admin-site-header .music-dock.music-centered .music-island::after,
+.admin-page .admin-site-header .music-dock.is-closing .music-island::after{
+  animation:none!important;
+  transition:opacity var(--si-library-morph-duration) var(--si-island-ease),
+    transform var(--si-library-morph-duration) var(--si-island-ease)!important;
+}
+.music-dock.music-centered.is-closing .music-island-record,
+.music-dock.music-centered.is-closing .music-island-track-copy,
+.music-dock.music-centered.is-closing .music-island-wave,
+.music-dock.music-centered .music-island-record,
+.music-dock.music-centered .music-island-track-copy,
+.music-dock.music-centered .music-island-wave{
+  transition:opacity var(--si-library-morph-duration) var(--si-island-ease),
+    transform var(--si-library-morph-duration) var(--si-island-ease),
+    filter var(--si-library-morph-duration) var(--si-island-ease),
+    visibility 0s linear var(--si-library-morph-duration)!important;
+}
+.music-dock.music-centered:not(.is-closing) .music-island-record,
+.music-dock.music-centered:not(.is-closing) .music-island-track-copy,
+.music-dock.music-centered:not(.is-closing) .music-island-wave{
+  transition-delay:0s!important;
+}
+
+/* One-second, non-bouncy magnifier glide: left edge to right edge and back. */
+.music-search-morph,
+.site-header>.main-nav-dynamic .music-search-morph,
+.admin-page .admin-site-header .music-search-morph{
+  transition:flex-basis var(--nr-search-duration) var(--nr-search-ease),
+    width var(--nr-search-duration) var(--nr-search-ease),
+    min-width var(--nr-search-duration) var(--nr-search-ease),
+    max-width var(--nr-search-duration) var(--nr-search-ease),
+    border-radius var(--nr-search-duration) var(--nr-search-ease),
+    border-color var(--nr-search-duration) var(--nr-search-ease),
+    background-color var(--nr-search-duration) var(--nr-search-ease),
+    box-shadow var(--nr-search-duration) var(--nr-search-ease)!important;
+  will-change:width,flex-basis;
+}
+.music-search-morph>.music-search-toggle,
+.site-header>.main-nav-dynamic .music-search-toggle,
+.admin-page .admin-site-header .music-search-toggle{
+  transition:left var(--nr-search-duration) var(--nr-search-ease),
+    right var(--nr-search-duration) var(--nr-search-ease),
+    color .28s ease,filter .35s ease!important;
+  will-change:left;
+}
+.music-search-morph>.music-search-toggle svg,
+.site-header>.main-nav-dynamic .music-search-toggle svg,
+.admin-page .admin-site-header .music-search-toggle svg{
+  transform:rotate(-12deg) scale(.94)!important;
+  transition:transform var(--nr-search-duration) var(--nr-search-ease)!important;
+}
+.music-search-morph.is-open>.music-search-toggle svg,
+.site-header>.main-nav-dynamic .music-search-morph.is-open .music-search-toggle svg,
+.admin-page .admin-site-header .music-search-morph.is-open .music-search-toggle svg{
+  transform:rotate(0deg) scale(1)!important;
+}
+.music-search-morph>input,
+.site-header>.main-nav-dynamic .music-search-morph>input,
+.admin-page .admin-site-header .music-search-morph>input{
+  transition:opacity .28s ease .32s,visibility 0s linear 1s!important;
+}
+.music-search-morph.is-open>input,
+.site-header>.main-nav-dynamic .music-search-morph.is-open>input,
+.admin-page .admin-site-header .music-search-morph.is-open>input{
+  transition:opacity .28s ease .34s,visibility 0s!important;
+}
+
+/* The slider alone uses a pointing-hand cursor; never the text-selection I-beam. */
+html.executor-no-dblclick-edit body input#musicNowPlayingSeek,
+html.executor-no-dblclick-edit body input.music-now-playing-seek{
+  cursor:pointer!important;
+  caret-color:transparent!important;
+  -webkit-user-select:none!important;user-select:none!important;
+  touch-action:pan-x!important;
+}
+.music-now-playing-seek{
+  height:14px!important;min-height:14px!important;
+  padding:0!important;border:0!important;outline:0!important;
+  background:transparent!important;
+  cursor:pointer!important;
+}
+.music-now-playing-seek:disabled{cursor:default!important}
+.music-now-playing-seek::-webkit-slider-runnable-track{
+  height:4px;border:0;border-radius:999px;
+  background:linear-gradient(to right,#81e7dc 0 var(--music-mini-progress),rgba(192,202,224,.2) var(--music-mini-progress) 100%);
+}
+.music-now-playing-seek::-webkit-slider-thumb{
+  -webkit-appearance:none;width:10px;height:10px;margin-top:-3px;
+  cursor:pointer;border:1px solid #ecfffc;border-radius:50%;background:#8ee8df;
+  box-shadow:0 0 0 3px rgba(127,230,224,.12);
+}
+.music-now-playing-seek::-moz-range-track{
+  height:4px;border:0;border-radius:999px;background:rgba(192,202,224,.2);
+}
+.music-now-playing-seek::-moz-range-progress{height:4px;border-radius:999px;background:#81e7dc}
+.music-now-playing-seek::-moz-range-thumb{
+  width:8px;height:8px;cursor:pointer;border:1px solid #ecfffc;border-radius:50%;background:#8ee8df;
+  box-shadow:0 0 0 3px rgba(127,230,224,.12);
+}
+
+/* Roblox has its own mark in the public version card, not the NightReaper site logo. */
+.version-logo{background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(127,230,224,.055))!important;border-color:rgba(195,205,230,.24)!important}
+.version-logo img{padding:7px!important;object-fit:contain!important;filter:drop-shadow(0 2px 5px rgba(0,0,0,.22))}
+
+@media(prefers-reduced-motion:reduce){
+  :root{--si-library-morph-duration:.01ms;--si-library-reveal-duration:.01ms;--nr-search-duration:.01ms}
+  .site-header>.main-nav-dynamic,.admin-page .admin-site-header .admin-dynamic-nav,
+  .site-header>.main-nav-dynamic *, .admin-page .admin-site-header .admin-dynamic-nav *,
+  .music-search-morph,.music-search-toggle,.music-search-toggle svg,.music-search-morph input{
+    transition-duration:.01ms!important;transition-delay:0s!important;animation-duration:.01ms!important;
+  }
 }
