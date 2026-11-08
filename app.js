@@ -27,6 +27,16 @@
   let toastTimer;
   const PUBLIC_PLATFORMS = ['PC', 'macOS', 'Android', 'iOS'];
   const PLATFORM_SYMBOLS = { PC: 'PC', Android: 'A', iOS: 'i', macOS: 'M' };
+  const PLATFORM_GLYPHS = {
+    PC: '<rect class="glyph-frame" x="5" y="5" width="38" height="28" rx="4"/><path class="glyph-fill" d="M12 11h10v8H12zM25 11h11v8H25zM12 22h10v7H12zM25 22h11v7H25z"/><path class="glyph-frame" d="M18 41h12m-6-8v8"/>',
+    macOS: '<rect class="glyph-frame" x="8" y="4" width="32" height="27" rx="3.5"/><path class="glyph-frame" d="M4 38h40l-4 5H8z"/><path class="glyph-fill" d="M24.1 15.4c-2.1-2.5-5.8-2.1-7.2.7-1.4 3.1.3 8.6 2.5 10.8 1.1 1.1 2.3.5 3.5 0 1.1-.5 2.1-.5 3.3 0 1.4.6 2.5 1 3.7-.1 2.2-2.2 3.8-7.7 2.4-10.7-1.4-2.9-5.2-3.3-7.2-.7z"/><path class="glyph-fill" d="M24.7 14.2c.1-2 1.7-3.4 3.8-3.7.1 2-1.5 3.5-3.8 3.7z"/>',
+    Android: '<path class="glyph-frame" d="m15 10-3.5-5M33 10l3.5-5"/><path class="glyph-fill" d="M10 22a14 14 0 0 1 28 0H10zm2 3h24v10a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4zM7 25a2 2 0 0 1 4 0v8a2 2 0 0 1-4 0zm30 0a2 2 0 0 1 4 0v8a2 2 0 0 1-4 0zM17 38h5v6h-5zm9 0h5v6h-5z"/><path class="glyph-cut" d="M18 16h.1m11.8 0h.1"/>',
+    iOS: '<rect class="glyph-frame" x="12" y="3" width="24" height="42" rx="5"/><path class="glyph-frame" d="M21 8h6"/><path class="glyph-fill" d="M24.1 20.5c-2.2-2.7-6.2-2.2-7.6.8-1.5 3.5.4 9.3 2.8 11.7 1.2 1.1 2.4.5 3.7 0 1.2-.5 2.3-.5 3.6.1 1.3.5 2.5 1.1 3.7-.1 2.4-2.4 4.2-8.2 2.8-11.7-1.4-3-5.2-3.5-7.6-.8z"/><path class="glyph-fill" d="M24.5 19.1c.1-2.1 1.9-3.6 4-3.8.1 2.1-1.6 3.6-4 3.8z"/>'
+  };
+  function platformIconMarkup(platform, className = 'platform-glyph') {
+    const key = Object.prototype.hasOwnProperty.call(PLATFORM_GLYPHS, platform) ? platform : 'PC';
+    return `<svg class="${className}" data-platform-icon="${key}" viewBox="0 0 48 48" aria-hidden="true" focusable="false">${PLATFORM_GLYPHS[key]}</svg>`;
+  }
   const PLATFORM_LABELS = { PC: 'PC', Android: 'Android', iOS: 'iOS', macOS: 'macOS' };
   const MUSIC_GENRE_LABELS = { Pop: 'Nhạc Pop', Rock: 'Nhạc rock', 'Dance / EDM': 'Nhạc điện tử (EDM)', Remix: 'Phối lại (Remix)', 'Lo-fi': 'Nhạc Lo-fi', 'Hip-hop': 'Nhạc Hip-hop', 'R&B': 'Nhạc R&B', Jazz: 'Nhạc Jazz', Classical: 'Nhạc cổ điển', Soundtrack: 'Nhạc phim', Other: 'Khác', 'Pop Rock': 'Nhạc Pop rock', 'Synth-pop': 'Nhạc Synth-pop' };
   const STATUS_LABELS = { online: 'Đang hoạt động', offline: 'Gián đoạn', maintenance: 'Đang cập nhật', unknown: 'Chưa xác minh' };
@@ -231,12 +241,10 @@
     $('#heroMiniVersion').textContent = mainVersion ? `Bản dựng ${mainVersion}` : 'Nguồn phiên bản';
     const box = $('#versionMain');
     if (hasVersion && Object.keys(versions).length) {
-      const platformAssets = { PC: 'pc.png', macOS: 'macos.png', Android: 'android.png', iOS: 'ios.png' };
       const rows = ['PC', 'macOS', 'Android', 'iOS'].map((key) => {
         const row = versions[key] || {};
         const versionLabel = ({ PC: 'Windows / Máy tính', macOS: 'macOS', Android: 'Android', iOS: 'iOS' })[key] || row.label || key;
-        const source = `./assets/platforms/${platformAssets[key]}`;
-        return `<div class="version-mini"><div class="version-mini-heading"><img src="${source}" alt="" loading="lazy"><small>${escapeHtml(versionLabel)}</small><i>${escapeHtml(key === 'PC' ? '01' : key === 'macOS' ? '02' : key === 'Android' ? '03' : '04')}</i></div><strong>${escapeHtml(row.version || 'Chưa cung cấp')}</strong><span>${row.updatedAt ? `Cập nhật ${escapeHtml(formatDate(row.updatedAt))}` : 'Chưa có ngày'}</span></div>`;
+        return `<div class="version-mini"><div class="version-mini-heading">${platformIconMarkup(key)}<small>${escapeHtml(versionLabel)}</small><i>${escapeHtml(key === 'PC' ? '01' : key === 'macOS' ? '02' : key === 'Android' ? '03' : '04')}</i></div><strong>${escapeHtml(row.version || 'Chưa cung cấp')}</strong><span>${row.updatedAt ? `Cập nhật ${escapeHtml(formatDate(row.updatedAt))}` : 'Chưa có ngày'}</span></div>`;
       }).join('');
       box.innerHTML = `<div class="version-version-grid">${rows}</div>`;
       $('#versionLastUpdated').textContent = timestamp ? `Lấy bản chụp lúc ${formatDate(timestamp)}` : 'Bản chụp nguồn không có thời gian lấy dữ liệu';
@@ -256,12 +264,7 @@
     };
     const list = Object.keys(fallback).map((key) => {
       const item = downloads[key] || fallback[key]; const url = safeUrl(item.url || fallback[key].url); if (!url) return '';
-      const deviceIcon = {
-        PC: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
-        macOS: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="m8 21 4-4 4 4M5 21h14"/></svg>',
-        Android: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 5h4M11 18h2"/></svg>',
-        iOS: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>'
-      }[key];
+      const deviceIcon = platformIconMarkup(key, 'platform-glyph');
       return `<a class="download-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer"><span class="download-device" data-device="${escapeHtml(key)}">${deviceIcon}</span><span><b>${escapeHtml(key)}</b><small>${escapeHtml(item.label || fallback[key].label)}</small></span><i>↗</i></a>`;
     }).join('');
     $('#downloadLinks').innerHTML = list || '<span class="loading-text">Chưa có liên kết tải an toàn.</span>';
