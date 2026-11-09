@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-09T22:54:00.144Z",
+  "updatedAt": "2026-11-09T22:54:18.677Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -352,7 +352,7 @@
       "name": "VELOCITY",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "unknown",
+      "status": "online",
       "version": "1.6.0",
       "compatibilityVersion": "f0ea5da9412f4e35",
       "updatedAt": "2026-11-09T09:31:00.000Z",
@@ -369,7 +369,7 @@
       "unc": "",
       "id": "entry-pc-velocity",
       "createdAt": "2026-11-09T22:53:58.971Z",
-      "modifiedAt": "2026-11-09T22:53:58.971Z"
+      "modifiedAt": "2026-11-09T22:54:17.760Z"
     },
     {
       "name": "VOLCANO",
@@ -466,10 +466,10 @@
   ],
   "stats": {
     "total": 20,
-    "online": 12,
+    "online": 13,
     "offline": 1,
     "maintenance": 6,
-    "unknown": 1,
+    "unknown": 0,
     "platforms": {
       "PC": 16,
       "Android": 2,
