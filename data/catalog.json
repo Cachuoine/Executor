@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-09T22:31:33.767Z",
+  "updatedAt": "2026-11-09T22:32:59.687Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -169,13 +169,13 @@
       "platform": "PC",
       "pcCategory": "free",
       "status": "online",
-      "version": "2.8.5",
+      "version": "2.8.7",
       "compatibilityVersion": "f0ea5da9412f4e35",
-      "updatedAt": "2026-11-06T00:55:00.000Z",
+      "updatedAt": "2026-11-08T15:33:00.000Z",
       "websiteUrl": "https://getmadium.net/",
       "communityUrl": "https://discord.com/invite/olemad",
       "icon": "<:madium:1552396311431487630>",
-      "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated to version-f0ea5da9412f4e35\n\u001b[1;32m[!] Fixed more detections in roblox games ( eg. Fallen Survival )\n\u001b[1;32m[!] Fixed __Index wrapper\n\u001b[1;32m[!] Fixed Hooking bugs\n\u001b[1;32m[!] Fixed bugs reguarding raknet\n\u001b[1;32m[!] Fixed a ton of executor relating in game detections\n```",
+      "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] Fixed MadiumSignal retaining callback threads after errors or yields.\n[!] Fixed Actor execution functions returning no value on success.\n[!] Fixed suspended hookfunction calls losing their original return values.\n[!] Fixed amongus.hook bugs / fallen survival bugs\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "https://cdn.weao.gg/slug/madium/logo.png",
       "websiteMainImageUrl": "",
@@ -185,7 +185,7 @@
       "unc": "98",
       "id": "entry-pc-madium",
       "createdAt": "2026-11-01T11:08:55.612Z",
-      "modifiedAt": "2026-11-06T04:30:13.555Z"
+      "modifiedAt": "2026-11-09T22:32:58.144Z"
     },
     {
       "name": "MADIUS",
