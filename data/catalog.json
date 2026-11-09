@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-09T22:56:03.092Z",
+  "updatedAt": "2026-11-09T23:04:43.490Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -428,9 +428,9 @@
       "websiteUrl": "https://www.getvortex.online/",
       "communityUrl": "https://discord.gg/vortex-993830408208785418",
       "icon": "<:vortex:1552398238437609502>",
-      "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated for the latest Roblox version\n```",
+      "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] Fixed a crash that occurred after 50 minute\n[!] Fixing obscured elements in Focus Mode\n\n\u001b[1;34m                ✚ ADD\n[+] Add functionality to the installer to download files from a backup server\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improve the injector's path-handling capability\u001b[0m\n```",
       "sourceUrl": "",
-      "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566451608450113646/01049240-5ea2-4bb4-96bb-8a87f40573ea.png?ex=6ae8973e&is=6ae745be&hm=27ac0d88636b8372a6fcb3df1dc3f6b3eb300bd17e5fbddcfe6389419cccf162&",
+      "thumbImageUrl": "./uploads/executor-1db912c4390fe849.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -438,7 +438,7 @@
       "unc": "100",
       "id": "entry-pc-vortex",
       "createdAt": "2026-11-01T14:00:34.940Z",
-      "modifiedAt": "2026-11-06T13:36:11.464Z"
+      "modifiedAt": "2026-11-09T23:04:42.439Z"
     },
     {
       "name": "WAVE",
