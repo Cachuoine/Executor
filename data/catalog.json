@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T04:43:19.987Z",
+  "updatedAt": "2026-11-10T04:44:11.111Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -14,7 +14,7 @@
       "websiteUrl": "https://spdmteam.com/index?os=android",
       "communityUrl": "https://discord.com/invite/wQKjUYf99A",
       "icon": "<:arceus:1552539185091706900>",
-      "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated to 2.744.1081\n\u001b[1;33m[~] Ban Bypass Still Undetected\n\u001b[1;32m[!] Crash Fixes\n\u001b[1;35m[*] Improved Bypasses, Performances\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to 2.744.1081\n\n\u001b[1;32m                ✓ FIX\n[!] Crash Fixes\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improved Bypasses, Performances\n\n\u001b[1;33m                ◈ NOTE\n[~] Ban Bypass Still Undetected\u001b[0m\n```",
       "sourceUrl": "",
       "thumbImageUrl": "./uploads/executor-6e699fb219196089.png",
       "websiteMainImageUrl": "",
@@ -24,7 +24,7 @@
       "unc": "",
       "id": "entry-android-arceus-x-v5-neo",
       "createdAt": "2026-11-01T14:14:04.579Z",
-      "modifiedAt": "2026-11-10T04:38:42.507Z"
+      "modifiedAt": "2026-11-10T04:44:10.243Z"
     },
     {
       "name": "BUNNI",
