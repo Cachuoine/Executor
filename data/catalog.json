@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T04:35:06.588Z",
+  "updatedAt": "2026-11-10T04:37:16.490Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -359,7 +359,7 @@
       "websiteUrl": "https://sirhurt.net/",
       "communityUrl": "https://discord.gg/sirhurt",
       "icon": "<:sirhurt:1566471311352664064>",
-      "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated to V5.477 for version-9ac8595712b447a7 and currently is working.\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to V5.477 for version-9ac8595712b447a7 and currently is working\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "https://cdn.weao.gg/slug/sirhurt/logo.png",
       "websiteMainImageUrl": "",
@@ -369,7 +369,7 @@
       "unc": "99",
       "id": "entry-pc-sirhurt",
       "createdAt": "2026-11-01T12:52:59.679Z",
-      "modifiedAt": "2026-11-01T15:18:55.937Z"
+      "modifiedAt": "2026-11-10T04:36:22.684Z"
     },
     {
       "name": "VELOCITY",
@@ -405,7 +405,7 @@
       "websiteUrl": "https://volcano.wtf/",
       "communityUrl": "https://volcano.wtf/discord.html",
       "icon": "<:volcano:1566466305391857720>",
-      "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated for version-f0ea5da9412f4e35\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-f0ea5da9412f4e35\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "https://bennnyr.com/status/logos/volcano.png",
       "websiteMainImageUrl": "",
@@ -415,7 +415,7 @@
       "unc": "99",
       "id": "entry-pc-volcano",
       "createdAt": "2026-11-01T13:20:00.604Z",
-      "modifiedAt": "2026-11-06T04:31:38.625Z"
+      "modifiedAt": "2026-11-10T04:36:51.820Z"
     },
     {
       "name": "VOLT",
@@ -428,7 +428,7 @@
       "websiteUrl": "https://voltbz.net/",
       "communityUrl": "https://discord.com/invite/voltbz",
       "icon": "<:volt:1551962506984038502>",
-      "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated for version-f0ea5da9412f4e35\n\u001b[1;32m[!] Fixed a VoltSignal crash\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-f0ea5da9412f4e35\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed a VoltSignal crash\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "https://bennnyr.com/status/logos/volt.png",
       "websiteMainImageUrl": "",
@@ -438,7 +438,7 @@
       "unc": "99",
       "id": "entry-pc-volt",
       "createdAt": "2026-11-01T08:10:17.898Z",
-      "modifiedAt": "2026-11-07T04:13:57.055Z"
+      "modifiedAt": "2026-11-10T04:37:14.585Z"
     },
     {
       "name": "VORTEX",
