@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-09T23:18:40.642Z",
+  "updatedAt": "2026-11-10T04:16:53.511Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -163,6 +163,29 @@
       "id": "entry-pc-lumen",
       "createdAt": "2026-11-01T14:55:20.631Z",
       "modifiedAt": "2026-11-06T04:35:54.665Z"
+    },
+    {
+      "name": "MACSPLOIT",
+      "platform": "macOS",
+      "pcCategory": "",
+      "status": "online",
+      "version": "746.2",
+      "compatibilityVersion": "2fc79d515be6449d",
+      "updatedAt": "2026-11-07T05:51:00.000Z",
+      "websiteUrl": "https://www.raptor.fun/",
+      "communityUrl": "https://discord.gg/HW85HmsJNz",
+      "icon": "<:macsploit:1569565767446437969>",
+      "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] fixed an issue with getcallbackvalue where it would crash\n\n\u001b[1;35m              ✦ IMPROVE\n[*] big improvement to fps uncap and setfpscap -> now fixed + can be set higher than refresh rate (suggested by chris_dsc)\u001b[0m\n```",
+      "sourceUrl": "https://whatexpsare.online/",
+      "thumbImageUrl": "./uploads/executor-7e6d516966436e25.png",
+      "websiteMainImageUrl": "",
+      "discordMainImageUrl": "",
+      "sunc": "100",
+      "suncUrl": "https://sunc.rubis.app/?scrap=Ee3DrpP3KqoKtJg6&key=6arTEAXx9FPP17jQBmArBHRSn50AUEsh",
+      "unc": "99",
+      "id": "entry-macos-macsploit",
+      "createdAt": "2026-11-10T04:16:52.379Z",
+      "modifiedAt": "2026-11-10T04:16:52.384Z"
     },
     {
       "name": "MADIUM",
@@ -465,8 +488,8 @@
     }
   ],
   "stats": {
-    "total": 20,
-    "online": 13,
+    "total": 21,
+    "online": 14,
     "offline": 1,
     "maintenance": 6,
     "unknown": 0,
@@ -474,7 +497,7 @@
       "PC": 16,
       "Android": 2,
       "iOS": 1,
-      "macOS": 1
+      "macOS": 2
     }
   },
   "platforms": [
