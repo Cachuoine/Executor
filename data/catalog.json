@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T14:37:32.937Z",
+  "updatedAt": "2026-11-10T20:21:51.670Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -352,14 +352,14 @@
       "name": "SirHurt",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "maintenance",
-      "version": "5.477",
-      "compatibilityVersion": "9ac8595712b447a7",
-      "updatedAt": "2026-10-23T02:16:00.000Z",
+      "status": "online",
+      "version": "5.480",
+      "compatibilityVersion": "4ea8e85481e34f46",
+      "updatedAt": "2026-11-10T17:06:00.000Z",
       "websiteUrl": "https://sirhurt.net/",
       "communityUrl": "https://discord.gg/sirhurt",
       "icon": "<:sirhurt:1566471311352664064>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to V5.477 for version-9ac8595712b447a7 and currently is working\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to V5.480 for version-4ea8e85481e34f46 and currently is working.\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-0d93a5f2f4f42eb0.png",
       "websiteMainImageUrl": "",
@@ -369,7 +369,7 @@
       "unc": "99",
       "id": "entry-pc-sirhurt",
       "createdAt": "2026-11-01T12:52:59.679Z",
-      "modifiedAt": "2026-11-10T13:56:52.598Z"
+      "modifiedAt": "2026-11-10T20:21:50.575Z"
     },
     {
       "name": "VELOCITY",
@@ -489,9 +489,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 2,
+    "online": 3,
     "offline": 1,
-    "maintenance": 18,
+    "maintenance": 17,
     "unknown": 0,
     "platforms": {
       "PC": 16,
