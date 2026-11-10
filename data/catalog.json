@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T13:57:47.150Z",
+  "updatedAt": "2026-11-10T13:58:32.127Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -16,7 +16,7 @@
       "icon": "<:arceus:1552539185091706900>",
       "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to 2.744.1081\n\n\u001b[1;32m                ✓ FIX\n[!] Crash Fixes\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improved Bypasses, Performances\n\n\u001b[1;33m                ◈ NOTE\n[~] Ban Bypass Still Undetected\u001b[0m\n```",
       "sourceUrl": "",
-      "thumbImageUrl": "./uploads/executor-6e699fb219196089.png",
+      "thumbImageUrl": "./uploads/executor-d7b077b771889b2b.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
@@ -24,7 +24,7 @@
       "unc": "",
       "id": "entry-android-arceus-x-v5-neo",
       "createdAt": "2026-11-01T14:14:04.579Z",
-      "modifiedAt": "2026-11-10T04:44:10.243Z"
+      "modifiedAt": "2026-11-10T13:57:58.323Z"
     },
     {
       "name": "BUNNI",
@@ -85,7 +85,7 @@
       "icon": "<:delta:1552534266347397180>",
       "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated to 2.745.1142\n\u001b[1;32m[!] Fixed lots of bugs\n\u001b[1;33m[~] Still Undetected\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "./uploads/executor-4c5e1f9d39b532e1.png",
+      "thumbImageUrl": "./uploads/executor-f7649edea20fffe8.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -93,7 +93,7 @@
       "unc": "99",
       "id": "entry-android-delta",
       "createdAt": "2026-11-01T14:20:44.080Z",
-      "modifiedAt": "2026-11-10T04:39:31.482Z"
+      "modifiedAt": "2026-11-10T13:58:08.435Z"
     },
     {
       "name": "DELTA",
@@ -108,7 +108,7 @@
       "icon": "<:delta:1552534266347397180>",
       "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to 2.737.1581\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed arg errors on some functions\n[!] Bug Fixes\n\n\u001b[1;34m                ✚ ADD\n[+] Added oth library\n  ├─ oth.hook\n  ├─ oth.unhook\n  ├─ oth.is_hook_thread\n  ├─ oth.get_original_thread\n  └─ oth.get_root_callback\n[+] Added functions\n  ├─ debug.getcallstack\n  ├─ getbspval\n  ├─ getpcd\n  ├─ isconnectionenabled\n  ├─ setconnectionenabled\n  ├─ isluaconnection\n  ├─ iswaitingconnection\n  ├─ getconnectionthread\n  ├─ getconnectionfunction\n  └─ isgamescriptconnection\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improved Stability\n[*] Remade Regex library\n[*] Improved performance\n\n\u001b[1;33m                ◈ NOTE\n[~] Still Undetected\u001b[0m\n```",
       "sourceUrl": "",
-      "thumbImageUrl": "./uploads/executor-720500196ba2fe44.png",
+      "thumbImageUrl": "./uploads/executor-c3d82c6301adfc07.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "98",
@@ -116,7 +116,7 @@
       "unc": "99",
       "id": "entry-ios-delta-ios",
       "createdAt": "2026-11-01T14:36:17.319Z",
-      "modifiedAt": "2026-11-10T04:43:19.018Z"
+      "modifiedAt": "2026-11-10T13:58:19.538Z"
     },
     {
       "name": "ISAEVA",
@@ -177,7 +177,7 @@
       "icon": "<:macsploit:1569565767446437969>",
       "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] fixed an issue with getcallbackvalue where it would crash\n\n\u001b[1;35m              ✦ IMPROVE\n[*] big improvement to fps uncap and setfpscap -> now fixed + can be set higher than refresh rate (suggested by chris_dsc)\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "./uploads/executor-7e6d516966436e25.png",
+      "thumbImageUrl": "./uploads/executor-4a62473c3fc2e787.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -185,7 +185,7 @@
       "unc": "99",
       "id": "entry-macos-macsploit",
       "createdAt": "2026-11-10T04:16:52.379Z",
-      "modifiedAt": "2026-11-10T04:16:52.384Z"
+      "modifiedAt": "2026-11-10T13:58:30.972Z"
     },
     {
       "name": "MADIUM",
