@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T04:37:16.490Z",
+  "updatedAt": "2026-11-10T04:39:26.196Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -16,7 +16,7 @@
       "icon": "<:arceus:1552539185091706900>",
       "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated to 2.744.1081\n\u001b[1;33m[~] Ban Bypass Still Undetected\n\u001b[1;32m[!] Crash Fixes\n\u001b[1;35m[*] Improved Bypasses, Performances\n```",
       "sourceUrl": "",
-      "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566454908436349048/d55145dc-090d-4056-9279-1577682e1931.png?ex=6ae89a51&is=6ae748d1&hm=90fd06130fc946dc87022284b92b48314f136974d0470f4be86ffddc6b2b3a27&",
+      "thumbImageUrl": "./uploads/executor-6e699fb219196089.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
@@ -24,7 +24,7 @@
       "unc": "",
       "id": "entry-android-arceus-x-v5-neo",
       "createdAt": "2026-11-01T14:14:04.579Z",
-      "modifiedAt": "2026-11-01T14:14:04.579Z"
+      "modifiedAt": "2026-11-10T04:38:42.507Z"
     },
     {
       "name": "BUNNI",
@@ -93,7 +93,7 @@
       "unc": "99",
       "id": "entry-android-delta",
       "createdAt": "2026-11-01T14:20:44.080Z",
-      "modifiedAt": "2026-11-10T04:21:46.321Z"
+      "modifiedAt": "2026-11-10T04:39:25.260Z"
     },
     {
       "name": "DELTA",
@@ -474,9 +474,9 @@
       "websiteUrl": "https://getwave.gg/",
       "communityUrl": "https://discord.gg/bC62U6zcRw",
       "icon": "<:Wave:1560185213492011090>",
-      "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated for latest Roblox version\n\u001b[1;34m[+] Added a json library with encoding, decoding, validation, formatting, and more\n\u001b[1;34m[+] Added a Regex library with matching, replacement, and escaping support\n\u001b[1;34m[+] Added binary format and compression support to saveinstance\n\u001b[1;35m[*] Reworked disassemble into a dedicated bytecode disassembler\n\u001b[1;34m[+] Added DecompilerOptions and DecompilerFormatter\n\u001b[1;35m[*] Improved loadstring performance with asynchronous compilation\n\u001b[1;33m[~] Reworked Actor state management\n\u001b[1;34m[+] Added getactorstates, getgamestate, getluastate, and on_actor_state_created\n\u001b[1;32m[!] Fixed Actor communication stability issues\n\u001b[1;34m[+] Added the following APIs:\n- Hooks: hooksignal, restoresignal, issignalhooked, hookproto, restoreproto, isprotohooked\n- Debug: getfunctionbytecode, trampoline_call, debug.getcallstack, debug.setinfo\n- Scripts: getmodules, getscriptthread, getallthreads\n- Instances: getinstancecache, getproperties, gethiddenproperties\n\u001b[1;35m[*] Improved performance across scheduling, networking, input, graphics, and file operations\n\u001b[1;35m[*] Improved WebSocket error handling\n\u001b[1;34m[+] Added error codes for startup and initialization failures\n\u001b[1;32m[!] Fixed getsenv on ModuleScripts\n\u001b[1;32m[!] Fixed getrunningscripts\n\u001b[1;32m[!] Fixed listfiles failing on certain paths\n\u001b[1;32m[!] Fixed getscripthash returning lowercase hexadecimal characters\n\u001b[1;32m[!] Fixed replicatesignal silently failing\n\u001b[1;32m[!] Fixed saveinstance duplicating CharacterMesh properties\n\u001b[1;32m[!] Fixed a crash in filtergc\n\u001b[1;32m[!] Fixed memory safety issues with Timer callbacks and RakNet hooks\n\u001b[1;33m[~] Note: This version contains highly experimental changes, if you experience crashes please report them immediately in a support ticket.\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for latest Roblox version\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed Actor communication stability issues\n[!] Fixed getsenv on ModuleScripts\n[!] Fixed getrunningscripts\n[!] Fixed listfiles failing on certain paths\n[!] Fixed getscripthash returning lowercase hexadecimal characters\n[!] Fixed replicatesignal silently failing\n[!] Fixed saveinstance duplicating CharacterMesh properties\n[!] Fixed a crash in filtergc\n[!] Fixed memory safety issues with Timer callbacks and RakNet hooks\n\n\u001b[1;34m                ✚ ADD\n[+] Added a json library with encoding, decoding, validation, formatting, and more\n[+] Added a Regex library with matching, replacement, and escaping support\n[+] Added binary format and compression support to saveinstance\n[+] Added DecompilerOptions and DecompilerFormatter\n[+] Added getactorstates, getgamestate, getluastate, and on_actor_state_created\n[+] Added the following APIs:\n  ├─ Hooks: hooksignal, restoresignal, issignalhooked, hookproto, restoreproto, isprotohooked\n  ├─ Debug: getfunctionbytecode, trampoline_call, debug.getcallstack, debug.setinfo\n  ├─ Scripts: getmodules, getscriptthread, getallthreads\n  └─ Instances: getinstancecache, getproperties, gethiddenproperties\n[+] Added error codes for startup and initialization failures\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Reworked disassemble into a dedicated bytecode disassembler\n[*] Improved loadstring performance with asynchronous compilation\n[*] Improved performance across scheduling, networking, input, graphics, and file operations\n[*] Improved WebSocket error handling\n\n\u001b[1;33m                ◈ NOTE\n[~] Reworked Actor state management\n[~] This version contains highly experimental changes, if you experience crashes please report them immediately in a support ticket.\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566436348171386940/9dbadaa3-e796-482c-8b43-3e005411732a.png?ex=6ae88908&is=6ae73788&hm=faba5ca3a2b6972c75b7721d2aa07fc6310bdb7ebe816e94a5c64cde3e99bc49&",
+      "thumbImageUrl": "./uploads/executor-fea473bd89a1c0ce.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -484,7 +484,7 @@
       "unc": "99",
       "id": "entry-pc-wave",
       "createdAt": "2026-11-01T12:45:11.302Z",
-      "modifiedAt": "2026-11-06T04:28:57.547Z"
+      "modifiedAt": "2026-11-10T04:38:26.233Z"
     }
   ],
   "stats": {
