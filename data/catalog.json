@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T04:24:21.763Z",
+  "updatedAt": "2026-11-10T04:25:28.870Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -154,7 +154,7 @@
       "icon": "<:lumen:1566465187668693042>",
       "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated Lumen to latest Roblox version version-f0ea5da9412f4e35\n\n\u001b[1;33m                ◈ NOTE\n[~] Please restart Lumen to receive the latest version.\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566464870562664468/9c183902-6c63-4114-9004-b2befb9565f0.png?ex=6ae8a398&is=6ae75218&hm=59eac279aa358cd865eee13970bc0c194589875d1f11944a6c4db2a1dafd5545&",
+      "thumbImageUrl": "./uploads/executor-7aa9d263e6b61e0d.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
@@ -162,7 +162,7 @@
       "unc": "",
       "id": "entry-pc-lumen",
       "createdAt": "2026-11-01T14:55:20.631Z",
-      "modifiedAt": "2026-11-10T04:22:57.572Z"
+      "modifiedAt": "2026-11-10T04:25:27.265Z"
     },
     {
       "name": "MACSPLOIT",
