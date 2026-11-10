@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T04:44:11.111Z",
+  "updatedAt": "2026-11-10T04:46:47.787Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -421,9 +421,9 @@
       "name": "VOLT",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "maintenance",
+      "status": "online",
       "version": "1.3.21.2",
-      "compatibilityVersion": "5a21b87bbc2641cf",
+      "compatibilityVersion": "f0ea5da9412f4e35",
       "updatedAt": "2026-11-06T05:28:00.000Z",
       "websiteUrl": "https://voltbz.net/",
       "communityUrl": "https://discord.com/invite/voltbz",
@@ -438,7 +438,7 @@
       "unc": "99",
       "id": "entry-pc-volt",
       "createdAt": "2026-11-01T08:10:17.898Z",
-      "modifiedAt": "2026-11-10T04:37:14.585Z"
+      "modifiedAt": "2026-11-10T04:46:46.879Z"
     },
     {
       "name": "VORTEX",
@@ -489,9 +489,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 16,
+    "online": 17,
     "offline": 1,
-    "maintenance": 4,
+    "maintenance": 3,
     "unknown": 0,
     "platforms": {
       "PC": 16,
