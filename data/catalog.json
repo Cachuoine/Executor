@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T04:39:26.196Z",
+  "updatedAt": "2026-11-10T04:39:32.379Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -76,7 +76,7 @@
       "name": "DELTA",
       "platform": "Android",
       "pcCategory": "",
-      "status": "maintenance",
+      "status": "online",
       "version": "10.107",
       "compatibilityVersion": "2.744.1081",
       "updatedAt": "2026-11-02T21:42:00.000Z",
@@ -93,7 +93,7 @@
       "unc": "99",
       "id": "entry-android-delta",
       "createdAt": "2026-11-01T14:20:44.080Z",
-      "modifiedAt": "2026-11-10T04:39:25.260Z"
+      "modifiedAt": "2026-11-10T04:39:31.482Z"
     },
     {
       "name": "DELTA",
@@ -489,9 +489,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 15,
+    "online": 16,
     "offline": 1,
-    "maintenance": 5,
+    "maintenance": 4,
     "unknown": 0,
     "platforms": {
       "PC": 16,
