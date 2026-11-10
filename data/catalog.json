@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T13:56:15.775Z",
+  "updatedAt": "2026-11-10T13:57:47.150Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -315,7 +315,7 @@
       "icon": "<:real:1552396976052768885>",
       "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Preupdated for version-f0ea5da9412f4e35\n\u001b[1;36m[^] Luau 0.744 -> 0.745 (and fixed missing luau changes)\n[^] Implemented missing Compiler Options\n\n\u001b[1;32m                ✓ FIX\n[!] Made getactors return deleted actors too ( { Actor, Thread } )\n[!] Fixed setthreadidentity(thread, identity) not working\n[!] Fixed gettenv not working with 0 args\n[!] Fixed _G and shared being overwritten in actor inits\n[!] Fixed an identity issue\n[!] Fixed RakNet, WebSocket and RealSignal connections not being invoked with identity 8\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improved Security and fixed internal themida issues\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "./uploads/executor-875ef696bb089d62.png",
+      "thumbImageUrl": "./uploads/executor-dd23b7d24d07da9b.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -323,7 +323,7 @@
       "unc": "99",
       "id": "entry-pc-real",
       "createdAt": "2026-11-01T13:11:46.629Z",
-      "modifiedAt": "2026-11-10T13:45:47.158Z"
+      "modifiedAt": "2026-11-10T13:56:28.995Z"
     },
     {
       "name": "SELIWARE",
@@ -338,7 +338,7 @@
       "icon": "<:seliware:1552082467236741172>",
       "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] Minor bug fixes\u001b[0m\n```",
       "sourceUrl": "",
-      "thumbImageUrl": "./uploads/executor-97a695e2261dba5f.png",
+      "thumbImageUrl": "./uploads/executor-80a7e1a13014c2bc.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
@@ -346,7 +346,7 @@
       "unc": "",
       "id": "entry-pc-seliware",
       "createdAt": "2026-11-01T13:34:49.597Z",
-      "modifiedAt": "2026-11-10T04:35:05.479Z"
+      "modifiedAt": "2026-11-10T13:56:39.436Z"
     },
     {
       "name": "SirHurt",
@@ -361,7 +361,7 @@
       "icon": "<:sirhurt:1566471311352664064>",
       "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to V5.477 for version-9ac8595712b447a7 and currently is working\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "https://cdn.weao.gg/slug/sirhurt/logo.png",
+      "thumbImageUrl": "./uploads/executor-0d93a5f2f4f42eb0.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -369,7 +369,7 @@
       "unc": "99",
       "id": "entry-pc-sirhurt",
       "createdAt": "2026-11-01T12:52:59.679Z",
-      "modifiedAt": "2026-11-10T13:45:57.591Z"
+      "modifiedAt": "2026-11-10T13:56:52.598Z"
     },
     {
       "name": "VELOCITY",
@@ -384,7 +384,7 @@
       "icon": "<:velocity:1569483262626365581>",
       "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Velocity is now version 1.6.0\n[^] Close the UI and reopen to apply the update.\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Luau 0.745 -> Luau 0.746 (Increased stability) Ultra Mogging\n\n\u001b[1;33m                ◈ NOTE\n[~] Hopefully this fixes some shi fr ultra mog 😎😎😎😎😎😎😎\u001b[0m\n```",
       "sourceUrl": "",
-      "thumbImageUrl": "./uploads/executor-afd4068fde561a8a.png",
+      "thumbImageUrl": "./uploads/executor-d8ffac7c56b8645c.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -392,7 +392,7 @@
       "unc": "99",
       "id": "entry-pc-velocity",
       "createdAt": "2026-11-09T22:53:58.971Z",
-      "modifiedAt": "2026-11-09T22:56:02.216Z"
+      "modifiedAt": "2026-11-10T13:57:03.897Z"
     },
     {
       "name": "VOLCANO",
@@ -407,7 +407,7 @@
       "icon": "<:volcano:1566466305391857720>",
       "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-f0ea5da9412f4e35\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "./uploads/executor-e520b6d4118fa85e.png",
+      "thumbImageUrl": "./uploads/executor-87c3c02783dae560.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "96",
@@ -415,7 +415,7 @@
       "unc": "99",
       "id": "entry-pc-volcano",
       "createdAt": "2026-11-01T13:20:00.604Z",
-      "modifiedAt": "2026-11-10T13:46:08.214Z"
+      "modifiedAt": "2026-11-10T13:57:12.620Z"
     },
     {
       "name": "VOLT",
@@ -430,7 +430,7 @@
       "icon": "<:volt:1551962506984038502>",
       "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-f0ea5da9412f4e35\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed a VoltSignal crash\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "./uploads/executor-9429465dcdc03246.png",
+      "thumbImageUrl": "./uploads/executor-e6157f764c81ac5e.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -438,7 +438,7 @@
       "unc": "99",
       "id": "entry-pc-volt",
       "createdAt": "2026-11-01T08:10:17.898Z",
-      "modifiedAt": "2026-11-10T13:46:17.260Z"
+      "modifiedAt": "2026-11-10T13:57:21.630Z"
     },
     {
       "name": "VORTEX",
@@ -453,7 +453,7 @@
       "icon": "<:vortex:1552398238437609502>",
       "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] Fixed a crash that occurred after 50 minute\n[!] Fixing obscured elements in Focus Mode\n\n\u001b[1;34m                ✚ ADD\n[+] Add functionality to the installer to download files from a backup server\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improve the injector's path-handling capability\u001b[0m\n```",
       "sourceUrl": "",
-      "thumbImageUrl": "./uploads/executor-1db912c4390fe849.png",
+      "thumbImageUrl": "./uploads/executor-1ac09b3dd9cb2e37.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -461,7 +461,7 @@
       "unc": "100",
       "id": "entry-pc-vortex",
       "createdAt": "2026-11-01T14:00:34.940Z",
-      "modifiedAt": "2026-11-09T23:04:51.218Z"
+      "modifiedAt": "2026-11-10T13:57:30.121Z"
     },
     {
       "name": "WAVE",
@@ -476,7 +476,7 @@
       "icon": "<:Wave:1560185213492011090>",
       "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for latest Roblox version\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed Actor communication stability issues\n[!] Fixed getsenv on ModuleScripts\n[!] Fixed getrunningscripts\n[!] Fixed listfiles failing on certain paths\n[!] Fixed getscripthash returning lowercase hexadecimal characters\n[!] Fixed replicatesignal silently failing\n[!] Fixed saveinstance duplicating CharacterMesh properties\n[!] Fixed a crash in filtergc\n[!] Fixed memory safety issues with Timer callbacks and RakNet hooks\n\n\u001b[1;34m                ✚ ADD\n[+] Added a json library with encoding, decoding, validation, formatting, and more\n[+] Added a Regex library with matching, replacement, and escaping support\n[+] Added binary format and compression support to saveinstance\n[+] Added DecompilerOptions and DecompilerFormatter\n[+] Added getactorstates, getgamestate, getluastate, and on_actor_state_created\n[+] Added the following APIs:\n  ├─ Hooks: hooksignal, restoresignal, issignalhooked, hookproto, restoreproto, isprotohooked\n  ├─ Debug: getfunctionbytecode, trampoline_call, debug.getcallstack, debug.setinfo\n  ├─ Scripts: getmodules, getscriptthread, getallthreads\n  └─ Instances: getinstancecache, getproperties, gethiddenproperties\n[+] Added error codes for startup and initialization failures\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Reworked disassemble into a dedicated bytecode disassembler\n[*] Improved loadstring performance with asynchronous compilation\n[*] Improved performance across scheduling, networking, input, graphics, and file operations\n[*] Improved WebSocket error handling\n\n\u001b[1;33m                ◈ NOTE\n[~] Reworked Actor state management\n[~] This version contains highly experimental changes, if you experience crashes please report them immediately in a support ticket.\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "./uploads/executor-fea473bd89a1c0ce.png",
+      "thumbImageUrl": "./uploads/executor-85208eda45911024.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -484,7 +484,7 @@
       "unc": "99",
       "id": "entry-pc-wave",
       "createdAt": "2026-11-01T12:45:11.302Z",
-      "modifiedAt": "2026-11-10T04:38:26.233Z"
+      "modifiedAt": "2026-11-10T13:57:46.196Z"
     }
   ],
   "stats": {
