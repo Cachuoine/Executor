@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T04:20:54.501Z",
+  "updatedAt": "2026-11-10T04:21:57.254Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -78,14 +78,14 @@
       "pcCategory": "",
       "status": "maintenance",
       "version": "10.107",
-      "compatibilityVersion": "2.744.1081 & 2.745.1142",
+      "compatibilityVersion": "2.744.1081",
       "updatedAt": "2026-11-02T21:42:00.000Z",
       "websiteUrl": "https://deltaexploits.gg/",
       "communityUrl": "https://discord.gg/deltax",
       "icon": "<:delta:1552534266347397180>",
       "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated to 2.745.1142\n\u001b[1;32m[!] Fixed lots of bugs\n\u001b[1;33m[~] Still Undetected\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566456532348964954/5e3018c8-4f7c-425d-a04c-529a98e69919.png?ex=6ae89bd4&is=6ae74a54&hm=364adf7253657c5e05ce2563d21acb1bd2f864e3d42b47badde2b2cbad77e964&",
+      "thumbImageUrl": "./uploads/executor-4c5e1f9d39b532e1.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "100",
@@ -93,7 +93,7 @@
       "unc": "99",
       "id": "entry-android-delta",
       "createdAt": "2026-11-01T14:20:44.080Z",
-      "modifiedAt": "2026-11-10T04:20:53.597Z"
+      "modifiedAt": "2026-11-10T04:21:46.321Z"
     },
     {
       "name": "DELTA",
@@ -108,7 +108,7 @@
       "icon": "<:delta:1552534266347397180>",
       "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;36m[^] Updated to 2.737.1581\u001b[0m\n\u001b[1;33m[~] Still Undetected\n\u001b[1;35m[*] Improved Stability\n\u001b[1;34m[+] Added `oth` library\n  + `oth.hook`\n  + `oth.unhook`\n  + `oth.is_hook_thread`\n  + `oth.get_original_thread`\n  + `oth.get_root_callback`\n\u001b[1;34m[+] Added functions\n  + `debug.getcallstack`\n  + `getbspval`\n  + `getpcd`\n  + `isconnectionenabled`\n  + `setconnectionenabled`\n  + `isluaconnection`\n  + `iswaitingconnection`\n  + `getconnectionthread`\n  + `getconnectionfunction`\n  + `isgamescriptconnection`\n\u001b[1;35m[*] Remade Regex library\n\u001b[1;32m[!] Fixed arg errors on some functions\n\u001b[1;35m[*] Improved performance\n\u001b[1;32m[!] Bug Fixes\n```",
       "sourceUrl": "",
-      "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566456532348964954/5e3018c8-4f7c-425d-a04c-529a98e69919.png?ex=6ae89bd4&is=6ae74a54&hm=364adf7253657c5e05ce2563d21acb1bd2f864e3d42b47badde2b2cbad77e964&",
+      "thumbImageUrl": "./uploads/executor-720500196ba2fe44.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "98",
@@ -116,7 +116,7 @@
       "unc": "99",
       "id": "entry-ios-delta-ios",
       "createdAt": "2026-11-01T14:36:17.319Z",
-      "modifiedAt": "2026-11-02T14:07:17.980Z"
+      "modifiedAt": "2026-11-10T04:21:56.268Z"
     },
     {
       "name": "ISAEVA",
