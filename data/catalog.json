@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T04:25:28.870Z",
+  "updatedAt": "2026-11-10T04:31:16.290Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -262,14 +262,14 @@
       "pcCategory": "external",
       "status": "maintenance",
       "version": "7.3",
-      "compatibilityVersion": "5a21b87bbc2641cf",
+      "compatibilityVersion": "2fc79d515be6449d",
       "updatedAt": "2026-10-31T15:51:00.000Z",
       "websiteUrl": "https://photons.solutions/",
       "communityUrl": "https://discord.gg/vro",
       "icon": "<:photon:1566468491853168720>",
-      "summary": "```ansi\n\u001b[4;33m✦CHANGELOG\u001b[0m\n\u001b[1;34m[+] Added lua tab mcp\n\u001b[1;34m[+] Added lua functions render load_font is_font_loaded push_font pop_font\n\u001b[1;34m[+] Added hitbox size xyz\n\u001b[1;34m[+] Added hitbox team check\n\u001b[1;34m[+] Added something\n\u001b[1;35m[*] Improved lua enviorment\n\u001b[1;35m[*] Improved aimbot delay randomization\n\u001b[1;33m[~] Reworked menu components\n\u001b[1;32m[!] Fixed bug issues\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Reworked menu components\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed bug issues\n\n\u001b[1;34m                ✚ ADD\n[+] Added lua tab \n  └─ mcp\n[+] Added lua functions \n[+] render:\n  ├─ load_font\n  ├─ is_font_loaded\n  ├─ push_font\n  └─ pop_font\n[+] Added hitbox size xyz\n[+] Added hitbox team check\n[+] Added something\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improved lua environment\n[*] Improved aimbot delay randomization\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
-      "thumbImageUrl": "https://cdn.discordapp.com/attachments/1502521266257526904/1566469061133602967/e71bfa71-b69f-498b-99da-4cb8cd91a08e.png?ex=6ae8a77f&is=6ae755ff&hm=10868f43363341661b27e5774b174c43a2c8bb2478f1062200fabd062d459124&",
+      "thumbImageUrl": "./uploads/executor-c5531ad9b0f7dd99.png",
       "websiteMainImageUrl": "",
       "discordMainImageUrl": "",
       "sunc": "",
@@ -277,7 +277,7 @@
       "unc": "",
       "id": "entry-pc-photon",
       "createdAt": "2026-11-01T15:12:48.550Z",
-      "modifiedAt": "2026-11-06T04:37:34.095Z"
+      "modifiedAt": "2026-11-10T04:31:15.189Z"
     },
     {
       "name": "POTASSIUM",
