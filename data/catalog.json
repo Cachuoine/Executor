@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T04:16:53.511Z",
+  "updatedAt": "2026-11-10T04:20:54.501Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -78,7 +78,7 @@
       "pcCategory": "",
       "status": "maintenance",
       "version": "10.107",
-      "compatibilityVersion": "2.745.1142",
+      "compatibilityVersion": "2.744.1081 & 2.745.1142",
       "updatedAt": "2026-11-02T21:42:00.000Z",
       "websiteUrl": "https://deltaexploits.gg/",
       "communityUrl": "https://discord.gg/deltax",
@@ -93,7 +93,7 @@
       "unc": "99",
       "id": "entry-android-delta",
       "createdAt": "2026-11-01T14:20:44.080Z",
-      "modifiedAt": "2026-11-07T04:13:57.055Z"
+      "modifiedAt": "2026-11-10T04:20:53.597Z"
     },
     {
       "name": "DELTA",
