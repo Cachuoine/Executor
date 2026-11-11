@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-10T20:54:56.425Z",
+  "updatedAt": "2026-11-11T04:04:28.923Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -398,14 +398,14 @@
       "name": "VOLCANO",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "maintenance",
-      "version": "3.2.9.5",
-      "compatibilityVersion": "f0ea5da9412f4e35",
-      "updatedAt": "2026-11-06T00:15:00.000Z",
+      "status": "online",
+      "version": "3.2.10.5",
+      "compatibilityVersion": "4ea8e85481e34f46",
+      "updatedAt": "2026-11-11T02:20:00.000Z",
       "websiteUrl": "https://volcano.wtf/",
       "communityUrl": "https://volcano.wtf/discord.html",
       "icon": "<:volcano:1566466305391857720>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-f0ea5da9412f4e35\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-4ea8e85481e34f46\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-87c3c02783dae560.png",
       "websiteMainImageUrl": "",
@@ -415,7 +415,7 @@
       "unc": "99",
       "id": "entry-pc-volcano",
       "createdAt": "2026-11-01T13:20:00.604Z",
-      "modifiedAt": "2026-11-10T17:03:25.106Z"
+      "modifiedAt": "2026-11-11T04:04:27.487Z"
     },
     {
       "name": "VOLT",
@@ -489,9 +489,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 5,
+    "online": 6,
     "offline": 1,
-    "maintenance": 15,
+    "maintenance": 14,
     "unknown": 0,
     "platforms": {
       "PC": 16,
