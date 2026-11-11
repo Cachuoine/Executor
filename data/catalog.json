@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-11T15:15:14.438Z",
+  "updatedAt": "2026-11-11T22:27:47.717Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -260,14 +260,14 @@
       "name": "PHOTON",
       "platform": "PC",
       "pcCategory": "external",
-      "status": "maintenance",
-      "version": "7.3",
-      "compatibilityVersion": "f0ea5da9412f4e35",
-      "updatedAt": "2026-10-31T15:51:00.000Z",
+      "status": "online",
+      "version": "7.4",
+      "compatibilityVersion": "4ea8e85481e34f46",
+      "updatedAt": "2026-03-11T16:26:00.000Z",
       "websiteUrl": "https://photons.solutions/",
       "communityUrl": "https://discord.gg/vro",
       "icon": "<:photon:1566468491853168720>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Reworked menu components\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed bug issues\n\n\u001b[1;34m                ✚ ADD\n[+] Added lua tab \n  └─ mcp\n[+] Added lua functions \n[+] render:\n  ├─ load_font\n  ├─ is_font_loaded\n  ├─ push_font\n  └─ pop_font\n[+] Added hitbox size xyz\n[+] Added hitbox team check\n[+] Added something\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improved lua environment\n[*] Improved aimbot delay randomization\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] [?] Reworked lua gc library\n[^] [?] Reworked menu components\n\n\u001b[1;32m                ✓ FIX\n[!] [#] Alot of bug issues fixed\n\n\u001b[1;34m                ✚ ADD\n[+] Added auto updater\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-c7690f37a4e269c4.png",
       "websiteMainImageUrl": "",
@@ -277,7 +277,7 @@
       "unc": "",
       "id": "entry-pc-photon",
       "createdAt": "2026-11-01T15:12:48.550Z",
-      "modifiedAt": "2026-11-10T17:03:25.106Z"
+      "modifiedAt": "2026-11-11T22:27:46.878Z"
     },
     {
       "name": "POTASSIUM",
@@ -489,9 +489,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 9,
+    "online": 10,
     "offline": 1,
-    "maintenance": 11,
+    "maintenance": 10,
     "unknown": 0,
     "platforms": {
       "PC": 16,
