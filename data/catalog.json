@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-11T04:55:52.334Z",
+  "updatedAt": "2026-11-11T15:13:19.285Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -56,11 +56,11 @@
       "status": "online",
       "version": "1.0.1.R8",
       "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-10T20:31:00.000Z",
+      "updatedAt": "2026-11-11T13:43:00.000Z",
       "websiteUrl": "",
       "communityUrl": "https://discord.gg/SsUw32gw5Y",
       "icon": "<:bunni:1553552748639813765>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] updated to latest game version\n\n\u001b[1;32m                ✓ FIX\n[!] fixed aimbot prediction\n[!] fixed the lag spike every minute\n[!] fixed stuff breaking when a game clears your character\n[!] fixed dex showing conflicting ids\n[!] fixed body velocity fly\n\n\u001b[1;34m                ✚ ADD\n[+] added invokeserver(remote, ...) and remote:InvokeServer(...)\n[+] native tracers and skeletons\n[+] icons to dex\n[+] added getfflag(name) and setfflag(name, value)\n  └─ reloadsky for sky and lightning flags\n[+] new timer\n[+] decompiler\n[+] profile customization\n[+] full debug lib for scripts (getclosures, getupvalue, setupvalue, getinfo)\n[+] game functions show in scripts instead of nil\n[+] max distance sliders for silent, aimbot, esp\n[+] mm2 support added\n[+] new radar\n[+] added possibility to bind eject to a keybind (panic button)\n[+] new color picker\n[+] prediction sliders on aimbot too\n[+] added more checks to target strafe\n[+] other small bug fixes\n\n\u001b[1;33m                ◈ NOTE\n[~] skyshader and similar stuff apply way faster\n[~] arsenal more support\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] small bug fixes\n\n\u001b[1;34m                ✚ ADD\n[+] decompiler now times out after a bit if it cant decomp\u001b[0m\n```",
       "sourceUrl": "",
       "thumbImageUrl": "./uploads/executor-e687cb06802bd114.png",
       "websiteMainImageUrl": "",
@@ -70,7 +70,7 @@
       "unc": "",
       "id": "entry-pc-bunni-external",
       "createdAt": "2026-11-01T13:52:17.625Z",
-      "modifiedAt": "2026-11-10T20:54:55.537Z"
+      "modifiedAt": "2026-11-11T15:13:18.282Z"
     },
     {
       "name": "DELTA",
