@@ -34,6 +34,18 @@
       "sourceUrl": "./music/buon-thi-cu-khoc-i-3c4e31889b.mp3"
     },
     {
+      "id": "track-5e174ed185cfc5",
+      "title": "Carousel (Lyrics)",
+      "artist": "DEAMN",
+      "genre": "Dance / EDM",
+      "url": "./music/carousel-lyrics-60acc129db.mp3",
+      "sourceType": "audio",
+      "sourceUrl": "https://youtu.be/OkZUmwUflxY?si=ZHjp6QmbACBvZlXm",
+      "artworkUrl": "./uploads/executor-ed14866829c00038.jpg",
+      "pinned": false,
+      "addedAt": "2026-11-11T04:45:32.973Z"
+    },
+    {
       "id": "track-6d8c2102db6db5",
       "title": "Cô Gái Vàng",
       "artist": "HUYR X TÙNG VIU",
