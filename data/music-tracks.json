@@ -143,6 +143,18 @@
       "updatedAt": "2026-11-12T04:31:40.392Z"
     },
     {
+      "id": "track-149180563f2cc8",
+      "title": "SHE NEVER CRIES (ACOUSTIC VERSION)",
+      "artist": "SƠN.K",
+      "genre": "Pop",
+      "url": "./music/she-never-cries-acoustic-version-e5e43e07a0.mp3",
+      "sourceType": "audio",
+      "sourceUrl": "https://www.youtube.com/watch?v=WgO8zaO-1v4&list=RDWgO8zaO-1v4&start_radio=1",
+      "artworkUrl": "./uploads/executor-30b24cee5f319909.jpg",
+      "pinned": false,
+      "addedAt": "2026-11-12T04:38:48.204Z"
+    },
+    {
       "id": "track-99b807966ef744",
       "title": "Tell Me Why",
       "artist": "Mr.A Remake by MarchGMusic",
