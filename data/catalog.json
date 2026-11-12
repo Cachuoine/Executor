@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.70",
-  "updatedAt": "2026-11-12T04:05:56.611Z",
+  "updatedAt": "2026-11-12T04:07:52.328Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -168,14 +168,14 @@
       "name": "MACSPLOIT",
       "platform": "macOS",
       "pcCategory": "",
-      "status": "maintenance",
-      "version": "746.2",
-      "compatibilityVersion": "2fc79d515be6449d",
-      "updatedAt": "2026-11-07T05:51:00.000Z",
+      "status": "online",
+      "version": "747.1",
+      "compatibilityVersion": "8001f8762ae44efe",
+      "updatedAt": "2026-11-12T00:17:00.000Z",
       "websiteUrl": "https://www.raptor.fun/",
       "communityUrl": "https://discord.gg/HW85HmsJNz",
       "icon": "<:macsploit:1569565767446437969>",
-      "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] fixed an issue with getcallbackvalue where it would crash\n\n\u001b[1;35m              ✦ IMPROVE\n[*] big improvement to fps uncap and setfpscap -> now fixed + can be set higher than refresh rate (suggested by chris_dsc)\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] updated intel and arm to version-8001f8762ae44efe\n[^] updated ui with new settings system and auto updater prompts\n\n\u001b[1;32m                ✓ FIX\n[!] fixed issues with fps uncap - toggle was broken\n[!] fixed issue with cobalt spy and setidentity (this time offeset changed)\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-4a62473c3fc2e787.png",
       "websiteMainImageUrl": "",
@@ -185,7 +185,7 @@
       "unc": "99",
       "id": "entry-macos-macsploit",
       "createdAt": "2026-11-10T04:16:52.379Z",
-      "modifiedAt": "2026-11-10T17:03:25.106Z"
+      "modifiedAt": "2026-11-12T04:07:51.317Z"
     },
     {
       "name": "MADIUM",
@@ -421,14 +421,14 @@
       "name": "VOLT",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "maintenance",
-      "version": "1.3.21.2",
-      "compatibilityVersion": "f0ea5da9412f4e35",
-      "updatedAt": "2026-11-06T05:28:00.000Z",
+      "status": "online",
+      "version": "1.3.22.1",
+      "compatibilityVersion": "4ea8e85481e34f46",
+      "updatedAt": "2026-11-12T01:43:00.000Z",
       "websiteUrl": "https://voltbz.net/",
       "communityUrl": "https://discord.com/invite/voltbz",
       "icon": "<:volt:1551962506984038502>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-f0ea5da9412f4e35\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed a VoltSignal crash\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-4ea8e85481e34f46\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed rare rendering-related crash\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-e6157f764c81ac5e.png",
       "websiteMainImageUrl": "",
@@ -438,7 +438,7 @@
       "unc": "99",
       "id": "entry-pc-volt",
       "createdAt": "2026-11-01T08:10:17.898Z",
-      "modifiedAt": "2026-11-10T17:03:25.106Z"
+      "modifiedAt": "2026-11-12T04:06:50.437Z"
     },
     {
       "name": "VORTEX",
@@ -489,9 +489,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 13,
+    "online": 15,
     "offline": 1,
-    "maintenance": 7,
+    "maintenance": 5,
     "unknown": 0,
     "platforms": {
       "PC": 16,
