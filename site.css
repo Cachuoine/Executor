@@ -1161,46 +1161,58 @@ body:not(.admin-page) .section-shell{width:min(1320px,calc(100% - 48px))}
 }
 
 
-/* v15.2.71 — tap fingerprint once; a single full-ring sweep opens the favorites galaxy. */
+/* Fingerprint progress is an animatable angle so the ring sweep stays smooth. */
 @property --fingerprint-progress {
   syntax: '<angle>';
   inherits: false;
   initial-value: 0deg;
 }
-@keyframes fingerprintRingOneTurn {
-  from { --fingerprint-progress: 0deg; }
-  to { --fingerprint-progress: 360deg; }
-}
-.fingerprint-stage.is-scanning .fingerprint-hold-ring {
-  display:block!important;
-  --fingerprint-progress: 0deg;
-  opacity: 1;
-  background: conic-gradient(from -90deg, #a7a0e0 0deg, #9bdad2 var(--fingerprint-progress), transparent var(--fingerprint-progress) 360deg);
-  animation: fingerprintRingOneTurn .72s cubic-bezier(.18,.76,.22,1) 1 both;
-}
-.fingerprint-stage.is-scanning .fingerprint-scan { display:none!important; }
-.fingerprint-stage.is-scanning .fingerprint-orb { cursor:progress; }
-@media(prefers-reduced-motion:reduce){.fingerprint-stage.is-scanning .fingerprint-hold-ring{animation-duration:.01ms!important}}
-
 /* The eight executor nodes stay evenly distributed on a shared, spacious circular orbit. */
 .universe-system{width:min(540px,calc(100vw - 30px));}
 .universe-executor{width:42px;height:42px;}
 @media(max-width:640px){.universe-system{width:calc(100vw - 24px)}.universe-executor{width:36px;height:36px;padding:4px}}
 
-/* Galaxy music shelf: a true horizontal rail with wheel-to-horizontal scrolling. */
-.universe-music-shelf{width:min(540px,calc(100vw - 30px));max-width:100%;}
-.universe-music-list{
-  display:flex!important;flex-flow:row nowrap!important;align-items:stretch;gap:8px;
-  width:100%;max-height:none!important;height:auto;min-height:58px;
-  overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;
-  padding:4px 3px 8px;overscroll-behavior-x:contain;overscroll-behavior-y:none;
-  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;
-  scrollbar-width:thin;scrollbar-color:rgba(127,230,224,.46) rgba(8,13,24,.2);
+
+
+/* v15.2.73 — hold for exactly 2 seconds; one complete, linear 360° fingerprint sweep. */
+@keyframes fingerprintHoldTwoSeconds {
+  from { --fingerprint-progress: 0deg; }
+  to { --fingerprint-progress: 360deg; }
 }
-.universe-music-list::-webkit-scrollbar{width:auto;height:5px}
-.universe-music-list::-webkit-scrollbar-track{background:rgba(8,13,24,.2);border-radius:99px}
-.universe-music-list::-webkit-scrollbar-thumb{background:rgba(127,230,224,.46);border-radius:99px}
-.universe-music-track{flex:0 0 220px!important;width:220px!important;min-width:220px;max-width:220px;scroll-snap-align:start;}
-@media(max-width:640px){.universe-music-track{flex-basis:190px!important;width:190px!important;min-width:190px;max-width:190px}.universe-music-shelf{width:calc(100vw - 26px)}}
-/* Horizontal wheel input works on desktop without requiring the scrollbar drag. */
-.universe-music-list,.fingerprint-wing-favorites{overscroll-behavior-x:contain;}
+.fingerprint-stage.is-holding .fingerprint-hold-ring {
+  display: block !important;
+  opacity: 1 !important;
+  --fingerprint-progress: 0deg;
+  background: conic-gradient(from -90deg, #a7a0e0 0deg, #9bdad2 var(--fingerprint-progress), transparent var(--fingerprint-progress) 360deg);
+  animation: fingerprintHoldTwoSeconds 2s linear 1 forwards !important;
+}
+.fingerprint-stage.is-holding .fingerprint-scan { display: none !important; opacity: 0 !important; }
+.fingerprint-stage.is-holding .fingerprint-gem-ring { animation-duration: 1.2s !important; }
+.fingerprint-orb { touch-action: none; user-select: none; -webkit-user-select: none; }
+@media (prefers-reduced-motion: reduce) {
+  .fingerprint-stage.is-holding .fingerprint-hold-ring { animation-duration: 2s !important; }
+  .fingerprint-stage.is-holding .fingerprint-gem-ring { animation-duration: 1.2s !important; }
+}
+
+
+/* v15.2.73-r11 — music favorites live only in the right fingerprint wing; no horizontal music rail. */
+.fingerprint-wing-right #fingerprintFavoriteMusic{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:38px;
+  align-content:start;gap:5px;min-width:0;min-height:0;
+  overflow-x:hidden;overflow-y:auto;touch-action:pan-y;
+  overscroll-behavior-y:contain;scroll-snap-type:none;
+  padding:1px 3px 4px;scrollbar-width:thin;
+  scrollbar-color:rgba(127,230,224,.35) rgba(8,13,24,.18);
+  cursor:default;-webkit-overflow-scrolling:touch;
+}
+.fingerprint-wing-right #fingerprintFavoriteMusic>.fingerprint-wing-music-favorite{
+  display:flex;flex: none;width:auto;min-width:0;height:38px;
+  scroll-snap-align:none;scroll-snap-stop:normal;
+}
+.fingerprint-wing-right #fingerprintFavoriteMusic>.fingerprint-wing-empty{
+  grid-column:1/-1;align-self:start;
+}
+@media(max-width:640px){
+  .fingerprint-wing-right #fingerprintFavoriteMusic{grid-template-columns:minmax(0,1fr);grid-auto-rows:36px;gap:4px}
+  .fingerprint-wing-right #fingerprintFavoriteMusic>.fingerprint-wing-music-favorite{height:36px}
+}

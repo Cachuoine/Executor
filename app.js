@@ -599,69 +599,27 @@
       const phase = (index / Math.max(1, favorites.length)) * Math.PI * 2 - Math.PI / 2;
       return `<button class="universe-executor" type="button" data-universe-item="${escapeHtml(key)}" data-universe-orbit="${orbit}" data-universe-phase="${phase}" aria-label="Xem thông tin ${escapeHtml(name)}" title="${escapeHtml(name)} · ${escapeHtml(platform)}">${icon}</button>`;
     }).join('');
+    $$('.universe-executor', nodeLayer).forEach(node => {
+      const pauseOrbit = () => { node.dataset.orbitPaused = '1'; node.style.zIndex = '30'; };
+      const resumeOrbit = () => { delete node.dataset.orbitPaused; };
+      node.addEventListener('pointerenter', pauseOrbit);
+      node.addEventListener('pointerleave', resumeOrbit);
+      node.addEventListener('focus', pauseOrbit);
+      node.addEventListener('blur', resumeOrbit);
+    });
     const empty = $('#favoriteUniverseEmpty');
     if (empty) empty.hidden = favorites.length > 0;
     const countLabel = $('#favoriteUniverseCount');
-    if (countLabel) countLabel.textContent = `${favorites.length} executor · ${favoriteMusicTracks.length} bài nhạc yêu thích`;
-    const musicLayer = $('#favoriteUniverseMusicNodes');
-    const musicCount = $('#favoriteUniverseMusicCount');
-    const musicItems = favoriteMusicTracks;
-    if (musicCount) musicCount.textContent = `${musicItems.length} ${musicItems.length === 1 ? 'bài' : 'bài'}`;
-    if (musicLayer) musicLayer.innerHTML = musicItems.length ? musicItems.map(track => {
-      const id = String(track.id || '');
-      const playing = favoriteUniversePlayback.isPlaying && favoriteUniversePlayback.trackId === id;
-      const symbol = playing ? '<i></i><i></i><i></i>' : '▶';
-      return `<div class="universe-music-track${playing ? ' is-playing' : ''}" data-track-id="${escapeHtml(id)}"><button class="universe-music-play" type="button" data-wing-music-play="${escapeHtml(id)}" aria-pressed="${playing}" aria-label="${playing ? 'Tạm dừng' : 'Phát'} ${escapeHtml(track.title || 'Bài hát')}" title="${playing ? 'Tạm dừng' : 'Phát'} ${escapeHtml(track.title || 'Bài hát')}"><span class="universe-music-note" aria-hidden="true"><span class="universe-music-note-glyph">♫</span><span class="universe-music-equalizer"><i></i><i></i><i></i><i></i></span></span><span class="universe-music-copy"><b>${escapeHtml(track.title || 'Bài hát chưa đặt tên')}</b><small>${escapeHtml(track.artist || 'Chưa rõ nghệ sĩ')}</small></span><span class="universe-music-play-symbol" aria-hidden="true">${symbol}</span></button><button class="universe-music-unfavorite" type="button" data-music-favorite="${escapeHtml(id)}" aria-label="Bỏ ${escapeHtml(track.title || 'bài hát')} khỏi yêu thích" title="Bỏ yêu thích">♥</button></div>`;
-    }).join('') : '<span class="universe-music-empty">Đánh dấu ♡ ở thư viện Dynamic để đưa bài hát vào thiên hà. Nhạc nằm ở khu riêng, không dùng chung quỹ đạo executor.</span>';
+    if (countLabel) countLabel.textContent = `${favorites.length} executor yêu thích`;
     renderFingerprintWingLists(favorites);
     root.dataset.favoriteCount = String(favorites.length);
-    root.dataset.musicFavoriteCount = String(musicItems.length);
   }
 
   function syncFavoriteUniversePlayback(detail = {}) {
-    const nextTrackId = String(detail.trackId || '');
-    const nextIsPlaying = Boolean(detail.isPlaying && nextTrackId);
-    const changed = favoriteUniversePlayback.trackId !== nextTrackId || favoriteUniversePlayback.isPlaying !== nextIsPlaying;
-    favoriteUniversePlayback = { trackId: nextTrackId, isPlaying: nextIsPlaying };
-
-    $$('.universe-music-track').forEach(card => {
-      const id = String(card.dataset.trackId || '');
-      const button = card.querySelector('.universe-music-play');
-      const symbol = card.querySelector('.universe-music-play-symbol');
-      const shouldPlay = nextIsPlaying && id === nextTrackId;
-      const wasPlaying = card.classList.contains('is-playing');
-
-      if (shouldPlay) {
-        card.classList.remove('is-stopping');
-        card.classList.add('is-playing');
-        if (!wasPlaying && changed) {
-          card.classList.remove('is-starting');
-          void card.offsetWidth;
-          card.classList.add('is-starting');
-          window.setTimeout(() => card.classList.remove('is-starting'), 760);
-        }
-        if (button) {
-          button.setAttribute('aria-pressed', 'true');
-          button.setAttribute('aria-label', `Tạm dừng ${card.querySelector('.universe-music-copy b')?.textContent || 'bài hát'}`);
-          button.title = 'Tạm dừng bài hát';
-        }
-        if (symbol) symbol.innerHTML = '<i></i><i></i><i></i>';
-      } else {
-        if (wasPlaying) {
-          card.classList.remove('is-playing', 'is-starting');
-          card.classList.add('is-stopping');
-          window.setTimeout(() => {
-            if (!card.classList.contains('is-playing')) card.classList.remove('is-stopping');
-          }, 500);
-        }
-        if (button) {
-          button.setAttribute('aria-pressed', 'false');
-          button.setAttribute('aria-label', `Phát ${card.querySelector('.universe-music-copy b')?.textContent || 'bài hát'}`);
-          button.title = 'Phát bài hát';
-        }
-        if (symbol) symbol.textContent = '▶';
-      }
-    });
+    favoriteUniversePlayback = {
+      trackId: String(detail.trackId || ''),
+      isPlaying: Boolean(detail.isPlaying && detail.trackId)
+    };
   }
 
   function stopUniverseOrbit() {
@@ -685,6 +643,7 @@
     const centerX = width / 2;
     const centerY = height / 2;
     $$('.universe-executor', system).forEach(node => {
+      if (node.dataset.orbitPaused === '1') return;
       const orbitIndex = Math.max(0, Math.min(UNIVERSE_ORBITS.length - 1, Number(node.dataset.universeOrbit) || 0));
       const orbit = UNIVERSE_ORBITS[orbitIndex];
       const phase = Number(node.dataset.universePhase) || 0;
@@ -719,35 +678,19 @@
     } else { universeLastFrame = 0; stopUniverseOrbit(); }
   }
 
-  function enableHorizontalFavoriteWheel() {
-    const rails = ['#favoriteUniverseMusicNodes', '#fingerprintFavoriteMusic', '#fingerprintFavoriteExecutors']
-      .map(selector => $(selector)).filter(Boolean);
-    rails.forEach(rail => {
-      if (rail.dataset.horizontalWheelBound === '1') return;
-      rail.dataset.horizontalWheelBound = '1';
-      rail.addEventListener('wheel', event => {
-        if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-        const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
-        if (maxScroll <= 1) return;
-        const next = Math.max(0, Math.min(maxScroll, rail.scrollLeft + event.deltaY));
-        if (Math.abs(next - rail.scrollLeft) < 0.5) return;
-        rail.scrollLeft = next;
-        event.preventDefault();
-      }, { passive:false });
-    });
-  }
   function initFingerprintControl() {
     const stage = $('#fingerprintStage'), orb = $('#fingerprintOrb'), wings = $('#fingerprintSides');
     if (!stage || !orb || !wings) return;
     let transitionTimer = null;
+    let holdTimer = null;
     let isScanning = false;
-    const SCAN_DURATION = 720;
+    const HOLD_DURATION = 2000;
     const WING_OPEN_DURATION = 760;
     const WING_CLOSE_DURATION = 650;
     const isTransitioning = () => stage.classList.contains('is-transitioning') || isScanning;
     const transitionWings = (open) => {
       if (transitionTimer !== null) window.clearTimeout(transitionTimer);
-      stage.classList.remove('is-opening', 'is-closing');
+      stage.classList.remove('is-opening', 'is-closing', 'is-holding');
       stage.classList.add('is-transitioning');
       if (open) {
         stage.classList.remove('is-open');
@@ -776,21 +719,52 @@
         }, WING_CLOSE_DURATION);
       }
     };
-    const toggle = () => {
-      if (isTransitioning()) return;
+    const cancelHold = () => {
+      if (holdTimer !== null) window.clearTimeout(holdTimer);
+      holdTimer = null;
+      isScanning = false;
+      stage.classList.remove('is-holding');
+      stage.style.removeProperty('--fingerprint-progress');
+    };
+    const beginHold = event => {
+      if (isTransitioning() || holdTimer !== null) return;
+      if (event && event.button !== undefined && event.button !== 0) return;
+      event?.preventDefault?.();
       isScanning = true;
-      stage.classList.add('is-scanning');
-      // The user only taps/clicks once. A single 360° ring sweep replaces the old 2-second hold.
-      window.setTimeout(() => {
-        stage.classList.remove('is-scanning');
+      stage.classList.add('is-holding');
+      if (event?.pointerId !== undefined && orb.setPointerCapture) {
+        try { orb.setPointerCapture(event.pointerId); } catch {}
+      }
+      holdTimer = window.setTimeout(() => {
+        holdTimer = null;
         isScanning = false;
+        stage.classList.remove('is-holding');
+        stage.style.removeProperty('--fingerprint-progress');
         transitionWings(!stage.classList.contains('is-open'));
-      }, SCAN_DURATION);
+      }, HOLD_DURATION);
+    };
+    const endHold = event => {
+      if (event?.pointerId !== undefined && orb.hasPointerCapture?.(event.pointerId)) {
+        try { orb.releasePointerCapture(event.pointerId); } catch {}
+      }
+      if (holdTimer !== null) cancelHold();
     };
     wings.inert = true;
-    enableHorizontalFavoriteWheel();
-    orb.setAttribute('aria-label', 'Chạm để mở hoặc đóng thiên hà yêu thích');
-    orb.addEventListener('click', toggle);
+    orb.setAttribute('aria-label', 'Giữ nút vân tay đủ 2 giây để mở hoặc đóng thiên hà yêu thích');
+    orb.addEventListener('pointerdown', beginHold);
+    orb.addEventListener('pointerup', endHold);
+    orb.addEventListener('pointercancel', endHold);
+    orb.addEventListener('lostpointercapture', endHold);
+    orb.addEventListener('keydown', event => {
+      if (event.key === ' ' || event.key === 'Enter') {
+        event.preventDefault();
+        if (!event.repeat) beginHold(event);
+      }
+    });
+    orb.addEventListener('keyup', event => {
+      if (event.key === ' ' || event.key === 'Enter') endHold();
+    });
+    orb.addEventListener('blur', () => { if (holdTimer !== null) cancelHold(); });
   }
   const dataFingerprint = { catalog: '', versions: '', music: '' };
   let initialDataLoaded = false;
