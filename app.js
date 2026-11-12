@@ -599,14 +599,6 @@
       const phase = (index / Math.max(1, favorites.length)) * Math.PI * 2 - Math.PI / 2;
       return `<button class="universe-executor" type="button" data-universe-item="${escapeHtml(key)}" data-universe-orbit="${orbit}" data-universe-phase="${phase}" aria-label="Xem thông tin ${escapeHtml(name)}" title="${escapeHtml(name)} · ${escapeHtml(platform)}">${icon}</button>`;
     }).join('');
-    $$('.universe-executor', nodeLayer).forEach(node => {
-      const pauseOrbit = () => { node.dataset.orbitPaused = '1'; node.style.zIndex = '30'; };
-      const resumeOrbit = () => { delete node.dataset.orbitPaused; };
-      node.addEventListener('pointerenter', pauseOrbit);
-      node.addEventListener('pointerleave', resumeOrbit);
-      node.addEventListener('focus', pauseOrbit);
-      node.addEventListener('blur', resumeOrbit);
-    });
     const empty = $('#favoriteUniverseEmpty');
     if (empty) empty.hidden = favorites.length > 0;
     const countLabel = $('#favoriteUniverseCount');
@@ -643,7 +635,6 @@
     const centerX = width / 2;
     const centerY = height / 2;
     $$('.universe-executor', system).forEach(node => {
-      if (node.dataset.orbitPaused === '1') return;
       const orbitIndex = Math.max(0, Math.min(UNIVERSE_ORBITS.length - 1, Number(node.dataset.universeOrbit) || 0));
       const orbit = UNIVERSE_ORBITS[orbitIndex];
       const phase = Number(node.dataset.universePhase) || 0;

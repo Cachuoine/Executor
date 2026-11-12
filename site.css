@@ -1174,7 +1174,7 @@ body:not(.admin-page) .section-shell{width:min(1320px,calc(100% - 48px))}
 
 
 
-/* v15.2.73 — hold for exactly 2 seconds; one complete, linear 360° fingerprint sweep. */
+/* v15.2.74 — hold for exactly 2 seconds; one complete, linear 360° fingerprint sweep. */
 @keyframes fingerprintHoldTwoSeconds {
   from { --fingerprint-progress: 0deg; }
   to { --fingerprint-progress: 360deg; }
@@ -1195,24 +1195,22 @@ body:not(.admin-page) .section-shell{width:min(1320px,calc(100% - 48px))}
 }
 
 
-/* v15.2.73-r11 — music favorites live only in the right fingerprint wing; no horizontal music rail. */
+/* v15.2.74 — mirror the executor wing: horizontal music cards flow outward to the right. */
 .fingerprint-wing-right #fingerprintFavoriteMusic{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:38px;
-  align-content:start;gap:5px;min-width:0;min-height:0;
-  overflow-x:hidden;overflow-y:auto;touch-action:pan-y;
-  overscroll-behavior-y:contain;scroll-snap-type:none;
-  padding:1px 3px 4px;scrollbar-width:thin;
-  scrollbar-color:rgba(127,230,224,.35) rgba(8,13,24,.18);
-  cursor:default;-webkit-overflow-scrolling:touch;
+  display:flex;flex-direction:row-reverse;flex-wrap:nowrap;justify-content:flex-start;align-items:center;
+  gap:6px;min-width:0;min-height:0;padding:1px 2px 5px;
+  overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+  touch-action:pan-x;overscroll-behavior-x:contain;scroll-snap-type:x proximity;
+  scrollbar-width:thin;scrollbar-color:rgba(127,230,224,.42) rgba(8,13,24,.2);
+  cursor:grab;
 }
+.fingerprint-wing-right #fingerprintFavoriteMusic:active{cursor:grabbing}
+.fingerprint-wing-right #fingerprintFavoriteMusic:focus-visible{outline:1px solid rgba(127,230,224,.5);outline-offset:2px;border-radius:7px}
 .fingerprint-wing-right #fingerprintFavoriteMusic>.fingerprint-wing-music-favorite{
-  display:flex;flex: none;width:auto;min-width:0;height:38px;
-  scroll-snap-align:none;scroll-snap-stop:normal;
+  display:flex;flex:0 0 134px;width:134px;min-width:0;height:42px;
+  scroll-snap-align:start;scroll-snap-stop:normal;
 }
-.fingerprint-wing-right #fingerprintFavoriteMusic>.fingerprint-wing-empty{
-  grid-column:1/-1;align-self:start;
-}
+.fingerprint-wing-right #fingerprintFavoriteMusic>.fingerprint-wing-empty{flex:0 0 100%;align-self:center}
 @media(max-width:640px){
-  .fingerprint-wing-right #fingerprintFavoriteMusic{grid-template-columns:minmax(0,1fr);grid-auto-rows:36px;gap:4px}
-  .fingerprint-wing-right #fingerprintFavoriteMusic>.fingerprint-wing-music-favorite{height:36px}
+  .fingerprint-wing-right #fingerprintFavoriteMusic>.fingerprint-wing-music-favorite{flex-basis:112px;width:112px;height:39px}
 }
