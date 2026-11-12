@@ -43,7 +43,8 @@
       "sourceUrl": "https://youtu.be/OkZUmwUflxY?si=ZHjp6QmbACBvZlXm",
       "artworkUrl": "./uploads/executor-ed14866829c00038.jpg",
       "pinned": false,
-      "addedAt": "2026-11-11T04:45:32.973Z"
+      "addedAt": "2026-11-11T04:45:32.973Z",
+      "updatedAt": "2026-11-12T04:32:13.154Z"
     },
     {
       "id": "track-6d8c2102db6db5",
@@ -87,9 +88,9 @@
       "sourceType": "audio",
       "pinned": false,
       "addedAt": "2026-11-06T14:54:46.794Z",
-      "sourceUrl": "",
+      "sourceUrl": "https://www.youtube.com/watch?v=6ypxNyZMJt0&list=RDARwpZBKGkcU&index=7",
       "artworkUrl": "./uploads/executor-3a02264ed4f42a39.jpg",
-      "updatedAt": "2026-11-12T04:29:48.629Z"
+      "updatedAt": "2026-11-12T04:32:08.059Z"
     },
     {
       "id": "track-aea3e193945edd",
@@ -102,7 +103,7 @@
       "addedAt": "2026-11-06T14:55:37.875Z",
       "sourceUrl": "https://www.youtube.com/watch?v=ARwpZBKGkcU&list=RDARwpZBKGkcU&start_radio=1",
       "artworkUrl": "./uploads/executor-b6f564019fbee996.jpg",
-      "updatedAt": "2026-11-11T04:55:51.165Z"
+      "updatedAt": "2026-11-12T04:32:17.498Z"
     },
     {
       "id": "track-ad00ea945fa07e",
@@ -125,7 +126,8 @@
       "sourceUrl": "https://youtu.be/8t6BS1XJnSY?si=DljeZq9NCwPpDDbx",
       "artworkUrl": "./uploads/executor-054b3b160c6abeb9.jpg",
       "pinned": false,
-      "addedAt": "2026-11-11T04:40:38.752Z"
+      "addedAt": "2026-11-11T04:40:38.752Z",
+      "updatedAt": "2026-11-12T04:32:21.947Z"
     },
     {
       "id": "track-4c1b0ebe91fe3f",
