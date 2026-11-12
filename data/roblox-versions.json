@@ -4,35 +4,31 @@
     "sourceName": "Roblox official stores + WEAO / Roblox Client Settings",
     "sourceUrl": "https://create.roblox.com/docs/reference/engine",
     "apiUrl": "https://weao.xyz/api/versions/current",
-    "fetchedAt": "2026-11-12T14:51:26.706Z",
-    "error": "Android: Không tìm thấy số phiên bản Roblox trong trang Google Play.",
+    "fetchedAt": "2026-11-12T18:21:28.084Z",
+    "error": "WEAO: The operation was aborted due to timeout · Android: Không tìm thấy số phiên bản Roblox trong trang Google Play.",
     "versions": {
       "PC": {
         "label": "Windows / PC",
-        "version": "version-4ea8e85481e34f46",
-        "updatedAt": "11/10/2026, 5:01:13 PM UTC",
-        "checkedAt": "2026-11-12T14:51:26.706Z",
-        "source": "WEAO",
+        "version": "0.747.0.7471481",
+        "updatedAt": "",
+        "checkedAt": "2026-11-12T18:21:40.732Z",
+        "source": "Roblox Client Settings",
         "metadata": {
           "version": "0.747.0.7471481",
           "clientVersionUpload": "version-4ea8e85481e34f46",
-          "bootstrapperVersion": "",
-          "timestamp": 1794330073,
-          "type": "new"
+          "bootstrapperVersion": ""
         }
       },
       "macOS": {
         "label": "macOS",
-        "version": "version-8001f8762ae44efe",
-        "updatedAt": "11/10/2026, 5:00:40 PM UTC",
-        "checkedAt": "2026-11-12T14:51:26.706Z",
-        "source": "WEAO",
+        "version": "0.747.0.7471481",
+        "updatedAt": "",
+        "checkedAt": "2026-11-12T18:21:40.725Z",
+        "source": "Roblox Client Settings",
         "metadata": {
           "version": "0.747.0.7471481",
           "clientVersionUpload": "version-8001f8762ae44efe",
-          "bootstrapperVersion": "",
-          "timestamp": 1794330040,
-          "type": "new"
+          "bootstrapperVersion": ""
         }
       },
       "Android": {
@@ -47,7 +43,7 @@
         "label": "iOS",
         "version": "2.747.1480",
         "updatedAt": "2026-11-11T20:08:07Z",
-        "checkedAt": "2026-11-12T14:51:27.172Z",
+        "checkedAt": "2026-11-12T18:21:40.444Z",
         "source": "Apple App Store",
         "metadata": {
           "trackId": 431946152,
@@ -59,8 +55,8 @@
     "history": {},
     "historyFetchedAt": "",
     "historyError": "",
-    "lastAttemptAt": "2026-11-12T14:51:26.706Z",
-    "lastVersionChangeAt": "2026-11-12T01:03:29.617Z"
+    "lastAttemptAt": "2026-11-12T18:21:28.084Z",
+    "lastVersionChangeAt": "2026-11-12T18:21:28.084Z"
   },
   "downloads": {
     "PC": {
