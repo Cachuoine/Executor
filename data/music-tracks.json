@@ -79,7 +79,9 @@
       "sourceType": "audio",
       "pinned": false,
       "addedAt": "2026-11-06T14:54:22.908Z",
-      "sourceUrl": "./music/ieu-anh-biet-9688c78543.mp3"
+      "sourceUrl": "https://www.youtube.com/watch?v=NIQ3IgVkr68",
+      "artworkUrl": "./uploads/executor-c5fda62bc39f94aa.jpg",
+      "updatedAt": "2026-11-12T04:44:46.007Z"
     },
     {
       "id": "track-dea06c35091feb",
@@ -116,7 +118,9 @@
       "sourceType": "audio",
       "pinned": false,
       "addedAt": "2026-11-06T14:32:24.260Z",
-      "sourceUrl": "./music/hen-em-o-lan-yeu-thu-2-3aaef80d4c.mp3"
+      "sourceUrl": "https://www.youtube.com/watch?v=lB3SRFPYf98",
+      "artworkUrl": "./uploads/executor-d21e1caa1d50d8e3.jpg",
+      "updatedAt": "2026-11-12T04:43:44.243Z"
     },
     {
       "id": "track-47e32108840c64",
