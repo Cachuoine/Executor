@@ -41,7 +41,7 @@
     },
     {
       "id": "track-5e174ed185cfc5",
-      "title": "Carousel (Lyrics)",
+      "title": "Carousel",
       "artist": "DEAMN",
       "genre": "Dance / EDM",
       "url": "./music/carousel-lyrics-60acc129db.mp3",
@@ -50,20 +50,20 @@
       "artworkUrl": "./uploads/executor-ed14866829c00038.jpg",
       "pinned": false,
       "addedAt": "2026-11-11T04:45:32.973Z",
-      "updatedAt": "2026-11-12T04:32:13.154Z"
+      "updatedAt": "2026-11-12T04:53:04.983Z"
     },
     {
       "id": "track-6d8c2102db6db5",
       "title": "Cô Gái Vàng",
       "artist": "HUYR X TÙNG VIU",
-      "genre": "Remix",
+      "genre": "Dance / EDM",
       "url": "./music/co-gai-vang-93474ea7c1.mp3",
       "sourceType": "audio",
       "pinned": false,
       "addedAt": "2026-11-06T14:53:11.939Z",
       "sourceUrl": "https://www.youtube.com/watch?v=SFvVDYvoSVE&list=RDARwpZBKGkcU&index=23",
       "artworkUrl": "./uploads/executor-e319cea10e9cf47d.jpg",
-      "updatedAt": "2026-11-12T04:42:48.742Z"
+      "updatedAt": "2026-11-12T04:54:02.407Z"
     },
     {
       "id": "track-5984f9fb278cfd",
