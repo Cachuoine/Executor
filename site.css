@@ -1159,3 +1159,48 @@ body:not(.admin-page) .section-shell{width:min(1320px,calc(100% - 48px))}
   .detail-description-block.discord-embed-mock.catalog-detail-preview{padding:13px 13px 15px 16px}
   .detail-description-block .discord-embed-mock-description pre.discord-ansi-block{padding:15px 13px!important;border-radius:15px!important;font-size:10px!important}
 }
+
+
+/* v15.2.71 — tap fingerprint once; a single full-ring sweep opens the favorites galaxy. */
+@property --fingerprint-progress {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes fingerprintRingOneTurn {
+  from { --fingerprint-progress: 0deg; }
+  to { --fingerprint-progress: 360deg; }
+}
+.fingerprint-stage.is-scanning .fingerprint-hold-ring {
+  display:block!important;
+  --fingerprint-progress: 0deg;
+  opacity: 1;
+  background: conic-gradient(from -90deg, #a7a0e0 0deg, #9bdad2 var(--fingerprint-progress), transparent var(--fingerprint-progress) 360deg);
+  animation: fingerprintRingOneTurn .72s cubic-bezier(.18,.76,.22,1) 1 both;
+}
+.fingerprint-stage.is-scanning .fingerprint-scan { display:none!important; }
+.fingerprint-stage.is-scanning .fingerprint-orb { cursor:progress; }
+@media(prefers-reduced-motion:reduce){.fingerprint-stage.is-scanning .fingerprint-hold-ring{animation-duration:.01ms!important}}
+
+/* The eight executor nodes stay evenly distributed on a shared, spacious circular orbit. */
+.universe-system{width:min(540px,calc(100vw - 30px));}
+.universe-executor{width:42px;height:42px;}
+@media(max-width:640px){.universe-system{width:calc(100vw - 24px)}.universe-executor{width:36px;height:36px;padding:4px}}
+
+/* Galaxy music shelf: a true horizontal rail with wheel-to-horizontal scrolling. */
+.universe-music-shelf{width:min(540px,calc(100vw - 30px));max-width:100%;}
+.universe-music-list{
+  display:flex!important;flex-flow:row nowrap!important;align-items:stretch;gap:8px;
+  width:100%;max-height:none!important;height:auto;min-height:58px;
+  overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;
+  padding:4px 3px 8px;overscroll-behavior-x:contain;overscroll-behavior-y:none;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;touch-action:pan-x;
+  scrollbar-width:thin;scrollbar-color:rgba(127,230,224,.46) rgba(8,13,24,.2);
+}
+.universe-music-list::-webkit-scrollbar{width:auto;height:5px}
+.universe-music-list::-webkit-scrollbar-track{background:rgba(8,13,24,.2);border-radius:99px}
+.universe-music-list::-webkit-scrollbar-thumb{background:rgba(127,230,224,.46);border-radius:99px}
+.universe-music-track{flex:0 0 220px!important;width:220px!important;min-width:220px;max-width:220px;scroll-snap-align:start;}
+@media(max-width:640px){.universe-music-track{flex-basis:190px!important;width:190px!important;min-width:190px;max-width:190px}.universe-music-shelf{width:calc(100vw - 26px)}}
+/* Horizontal wheel input works on desktop without requiring the scrollbar drag. */
+.universe-music-list,.fingerprint-wing-favorites{overscroll-behavior-x:contain;}

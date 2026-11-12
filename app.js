@@ -522,13 +522,13 @@
   }
 
   const FAVORITES_KEY = 'executor-favorite-ids-v1';
-  const MAX_FAVORITES = 6;
+  const MAX_FAVORITES = 8;
   function getFavoriteIds() {
     try {
       const stored = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
       const raw = Array.isArray(stored) ? stored.map(String) : [];
       const normalized = [...new Set(raw.filter(Boolean))].slice(0, MAX_FAVORITES);
-      // Repair older browser storage that may already contain more than six favorites.
+      // Repair older browser storage that may already contain more than eight favorites.
       if (JSON.stringify(raw) !== JSON.stringify(normalized)) localStorage.setItem(FAVORITES_KEY, JSON.stringify(normalized));
       return new Set(normalized);
     } catch { return new Set(); }
@@ -540,7 +540,7 @@
     if (favorites.has(key)) favorites.delete(key);
     else {
       if (favorites.size >= MAX_FAVORITES) {
-        showToast('Bạn đã đạt giới hạn 6 executor yêu thích. Hãy bỏ yêu thích một mục trước.');
+        showToast('Bạn đã đạt giới hạn 8 executor yêu thích. Hãy bỏ yêu thích một mục trước.');
         return;
       }
       favorites.add(key);
@@ -584,7 +584,7 @@
       .sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'vi'))
       .slice(0, MAX_FAVORITES);
     // All favorites use the same primary orbit and angular velocity. Distribute their
-    // phases around the full 360° so six items remain evenly spaced instead of clumping
+    // phases around the full 360° so eight items remain evenly spaced instead of clumping
     // on three different rings with different speeds.
     const orbit = 0;
     nodeLayer.innerHTML = favorites.map((item, index) => {
@@ -719,30 +719,36 @@
     } else { universeLastFrame = 0; stopUniverseOrbit(); }
   }
 
+  function enableHorizontalFavoriteWheel() {
+    const rails = ['#favoriteUniverseMusicNodes', '#fingerprintFavoriteMusic', '#fingerprintFavoriteExecutors']
+      .map(selector => $(selector)).filter(Boolean);
+    rails.forEach(rail => {
+      if (rail.dataset.horizontalWheelBound === '1') return;
+      rail.dataset.horizontalWheelBound = '1';
+      rail.addEventListener('wheel', event => {
+        if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+        const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+        if (maxScroll <= 1) return;
+        const next = Math.max(0, Math.min(maxScroll, rail.scrollLeft + event.deltaY));
+        if (Math.abs(next - rail.scrollLeft) < 0.5) return;
+        rail.scrollLeft = next;
+        event.preventDefault();
+      }, { passive:false });
+    });
+  }
   function initFingerprintControl() {
     const stage = $('#fingerprintStage'), orb = $('#fingerprintOrb'), wings = $('#fingerprintSides');
     if (!stage || !orb || !wings) return;
-    const gemRing = $('.fingerprint-gem-ring', orb);
-    let holdTimer = null;
     let transitionTimer = null;
-    const HOLD_DURATION = 2000;
-    const WING_OPEN_DURATION = 820;
-    const WING_CLOSE_DURATION = 720;
-    const isTransitioning = () => stage.classList.contains('is-transitioning');
-    const setGemSpinSpeed = (rate) => {
-      if (!gemRing || typeof gemRing.getAnimations !== 'function') return;
-      const animation = gemRing.getAnimations().find((item) => item.animationName === 'fingerprintGems');
-      // Playback-rate changes preserve the current animation phase.
-      if (animation && typeof animation.updatePlaybackRate === 'function' && Math.abs(animation.playbackRate - rate) > 0.01) {
-        animation.updatePlaybackRate(rate);
-      }
-    };
+    let isScanning = false;
+    const SCAN_DURATION = 720;
+    const WING_OPEN_DURATION = 760;
+    const WING_CLOSE_DURATION = 650;
+    const isTransitioning = () => stage.classList.contains('is-transitioning') || isScanning;
     const transitionWings = (open) => {
       if (transitionTimer !== null) window.clearTimeout(transitionTimer);
       stage.classList.remove('is-opening', 'is-closing');
       stage.classList.add('is-transitioning');
-      stage.classList.remove('is-holding');
-      setGemSpinSpeed(1);
       if (open) {
         stage.classList.remove('is-open');
         stage.classList.add('is-opening');
@@ -756,7 +762,6 @@
           wings.setAttribute('aria-hidden', 'false');
           wings.inert = false;
           orb.setAttribute('aria-expanded', 'true');
-          // Reveal the multiverse only after Dynamic has collapsed and both wings have finished opening.
           setUniverseVisible(true);
         }, WING_OPEN_DURATION);
       } else {
@@ -771,35 +776,21 @@
         }, WING_CLOSE_DURATION);
       }
     };
-    const begin = (event) => {
-      if (event.type === 'keydown' && (![' ', 'Enter'].includes(event.key) || event.repeat)) return;
-      if (isTransitioning() || holdTimer !== null || stage.classList.contains('is-holding')) return;
-      if (event.type === 'pointerdown' && typeof orb.setPointerCapture === 'function' && Number.isInteger(event.pointerId)) {
-        try { orb.setPointerCapture(event.pointerId); } catch {}
-      }
-      stage.classList.add('is-holding');
-      setGemSpinSpeed(9);
-      holdTimer = window.setTimeout(() => {
-        holdTimer = null;
-        // No percentage/loading phase: the completed hold directly toggles the
-        // favorite galaxy. Both directions use the existing wing transition.
+    const toggle = () => {
+      if (isTransitioning()) return;
+      isScanning = true;
+      stage.classList.add('is-scanning');
+      // The user only taps/clicks once. A single 360° ring sweep replaces the old 2-second hold.
+      window.setTimeout(() => {
+        stage.classList.remove('is-scanning');
+        isScanning = false;
         transitionWings(!stage.classList.contains('is-open'));
-      }, HOLD_DURATION);
-      if (event.type === 'keydown') event.preventDefault();
+      }, SCAN_DURATION);
     };
-    const end = () => {
-      if (holdTimer !== null) window.clearTimeout(holdTimer);
-      holdTimer = null;
-      stage.classList.remove('is-holding');
-      setGemSpinSpeed(1);
-    };
-    // Keep the decorative wings inert while their opening/closing animation is running.
     wings.inert = true;
-    orb.addEventListener('pointerdown', begin);
-    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => orb.addEventListener(type, end));
-    orb.addEventListener('keydown', begin);
-    orb.addEventListener('keyup', end);
-    orb.addEventListener('blur', end);
+    enableHorizontalFavoriteWheel();
+    orb.setAttribute('aria-label', 'Chạm để mở hoặc đóng thiên hà yêu thích');
+    orb.addEventListener('click', toggle);
   }
   const dataFingerprint = { catalog: '', versions: '', music: '' };
   let initialDataLoaded = false;
