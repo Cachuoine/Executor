@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.88",
-  "updatedAt": "2026-11-19T22:38:04.172Z",
+  "updatedAt": "2026-11-19T22:40:18.592Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -104,13 +104,13 @@
       "platform": "iOS",
       "pcCategory": "",
       "status": "maintenance",
-      "version": "10.50",
-      "compatibilityVersion": "2.737.1581",
-      "updatedAt": "2026-09-08T19:00:00.000Z",
+      "version": "10.60",
+      "compatibilityVersion": "2.747.1486",
+      "updatedAt": "2026-11-17T01:12:00.000Z",
       "websiteUrl": "https://deltaexploits.gg/",
       "communityUrl": "https://discord.gg/deltax",
       "icon": "<:delta:1552534266347397180>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to 2.737.1581\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed arg errors on some functions\n[!] Bug Fixes\n\n\u001b[1;34m                ✚ ADD\n[+] Added oth library\n  ├─ oth.hook\n  ├─ oth.unhook\n  ├─ oth.is_hook_thread\n  ├─ oth.get_original_thread\n  └─ oth.get_root_callback\n[+] Added functions\n  ├─ debug.getcallstack\n  ├─ getbspval\n  ├─ getpcd\n  ├─ isconnectionenabled\n  ├─ setconnectionenabled\n  ├─ isluaconnection\n  ├─ iswaitingconnection\n  ├─ getconnectionthread\n  ├─ getconnectionfunction\n  └─ isgamescriptconnection\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improved Stability\n[*] Remade Regex library\n[*] Improved performance\n\n\u001b[1;33m                ◈ NOTE\n[~] Still Undetected\u001b[0m\n```",
+      "summary": "```ansi\n\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to 2.747.1486\n[^] Still Undetected\n\n\u001b[1;32m                ✓ FIX\n[!] Bug Fixes\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Performance Upgrades\u001b[0m\n```",
       "sourceUrl": "",
       "thumbImageUrl": "./uploads/executor-c3d82c6301adfc07.png",
       "websiteMainImageUrl": "",
@@ -120,8 +120,8 @@
       "unc": "99",
       "id": "entry-ios-delta-ios",
       "createdAt": "2026-11-01T14:36:17.319Z",
-      "modifiedAt": "2026-11-10T13:58:19.538Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-19T22:38:56.229Z",
+      "idicon": "<:delta:1552534266347397180>"
     },
     {
       "name": "ISAEVA",
@@ -151,14 +151,14 @@
       "name": "LUMEN",
       "platform": "PC",
       "pcCategory": "external",
-      "status": "maintenance",
+      "status": "online",
       "version": "1.0.9",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-11T04:05:00.000Z",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-17T22:56:00.000Z",
       "websiteUrl": "https://getlumen.net/",
       "communityUrl": "https://discord.gg/getlumen",
       "icon": "<:lumen:1566465187668693042>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated Lumen to latest Roblox version version-4ea8e85481e34f46\n\n\u001b[1;33m                ◈ NOTE\n[~] Please restart Lumen to receive the latest version.\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated Lumen to latest Roblox version version-2c6fd5e09aaf4cfa\n\n\u001b[1;33m                ◈ NOTE\n[~] Please restart Lumen to receive the latest version.\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-cb94fbcf063f1d3e.png",
       "websiteMainImageUrl": "",
@@ -168,8 +168,8 @@
       "unc": "",
       "id": "entry-pc-lumen",
       "createdAt": "2026-11-01T14:55:20.631Z",
-      "modifiedAt": "2026-11-19T16:25:30.766Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-19T22:40:17.169Z",
+      "idicon": "<:lumen:1566465187668693042>"
     },
     {
       "name": "MACSPLOIT",
@@ -510,9 +510,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 10,
+    "online": 11,
     "offline": 1,
-    "maintenance": 10,
+    "maintenance": 9,
     "unknown": 0,
     "platforms": {
       "PC": 16,
