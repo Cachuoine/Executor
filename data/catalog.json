@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.88",
-  "updatedAt": "2026-11-19T22:22:42.215Z",
+  "updatedAt": "2026-11-19T22:24:42.414Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -128,13 +128,13 @@
       "platform": "PC",
       "pcCategory": "paid",
       "status": "maintenance",
-      "version": "2.6.9",
+      "version": "2.6.10",
       "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-11T20:45:00.000Z",
+      "updatedAt": "2026-11-16T02:47:00.000Z",
       "websiteUrl": "https://isaeva.xyz/",
       "communityUrl": "https://discord.gg/ZD7nDurbPj",
       "icon": "<:isaeva:1553227271140147361>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to version-4ea8e85481e34f46\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed crash in trampoline_call\n[!] Fixed crash (FFLags)\n[!] Fixed Script Hub loading\n[!] Fixed decoding of RScripts WebP thumbnails\n[!] Fixed script list scrolling after resizing so more scripts continue loading\n[!] Fixed the theme border by drawing it directly on the window\n\n\u001b[1;31m               × REMOVE\n[-] Removed Mathematics Library\n[-] Removed Timer Library\n[-] Removed Regex Library\n[-] Removed the system frame that appeared when the window lost focus\n\n\u001b[1;34m                ✚ ADD\n[+] Added hookproto, isprotohooked, restoreproto\n[+] Added ProtoProxy\n[+] Added on_actor_state_created, getgamestate, getluastate\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;33m                ◈ NOTE\n[~] 2.6.10\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-7ee993100c76c69a.png",
       "websiteMainImageUrl": "",
@@ -144,8 +144,8 @@
       "unc": "99",
       "id": "entry-pc-isaeva",
       "createdAt": "2026-11-01T13:28:47.681Z",
-      "modifiedAt": "2026-11-19T16:25:30.766Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-19T22:24:14.923Z",
+      "idicon": "<:isaeva:1553227271140147361>"
     },
     {
       "name": "LUMEN",
