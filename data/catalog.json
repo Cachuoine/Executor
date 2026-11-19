@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.88",
-  "updatedAt": "2026-11-19T22:27:42.578Z",
+  "updatedAt": "2026-11-19T22:29:42.412Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -319,14 +319,14 @@
       "name": "REAL",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "maintenance",
-      "version": "3.1.1",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-13T22:21:00.000Z",
+      "status": "online",
+      "version": "3.2.2",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-18T22:25:00.000Z",
       "websiteUrl": "https://realest.gg/",
       "communityUrl": "https://discord.gg/projectreal",
       "icon": "<:real:1552396976052768885>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] big update soon, i'm just too tired rn\n[^] Updated to version-4ea8e85481e34f46\n\n\u001b[1;32m                ✓ FIX\n[!] Changed Compiler options to fix some weird crashes that users with old CPUs were experiencing\n\n\u001b[1;31m               × REMOVE\n[-] Removed threads from getactors (please decide on 1 fucking implementation), now only returns Actor instances\n\n\u001b[1;33m                ◈ NOTE\n[~] Luau 0.745 -> 0.746\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;31m               × REMOVE\n[-] Removed unnecessary crash handling (forgot to comment out in last release)\n\n\u001b[1;33m                ◈ NOTE\n[~] Luau 0.746 -> 0.747 yes a lil late\n[~] https://open.fxspotify.com/track/6WXjw92qo9Dl7O6aDuDc6z\n[~] now i know what's real what's fake\n[~] rather sleep than stay awake\n[~] goodnight <3\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-dd23b7d24d07da9b.png",
       "websiteMainImageUrl": "",
@@ -336,8 +336,8 @@
       "unc": "99",
       "id": "entry-pc-real",
       "createdAt": "2026-11-01T13:11:46.629Z",
-      "modifiedAt": "2026-11-19T16:25:30.766Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-19T22:28:14.348Z",
+      "idicon": "<:real:1552396976052768885>"
     },
     {
       "name": "SELIWARE",
@@ -415,14 +415,14 @@
       "name": "VOLCANO",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "maintenance",
-      "version": "3.2.10.5",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-11T02:20:00.000Z",
+      "status": "online",
+      "version": "3.2.11.5",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-17T17:01:00.000Z",
       "websiteUrl": "https://volcano.wtf/",
       "communityUrl": "https://volcano.wtf/discord.html",
       "icon": "<:volcano:1566466305391857720>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-4ea8e85481e34f46\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-2c6fd5e09aaf4cfa\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-87c3c02783dae560.png",
       "websiteMainImageUrl": "",
@@ -432,8 +432,8 @@
       "unc": "99",
       "id": "entry-pc-volcano",
       "createdAt": "2026-11-01T13:20:00.604Z",
-      "modifiedAt": "2026-11-19T16:25:30.766Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-19T22:29:25.470Z",
+      "idicon": "<:volcano:1566466305391857720>"
     },
     {
       "name": "VOLT",
@@ -510,9 +510,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 6,
+    "online": 8,
     "offline": 1,
-    "maintenance": 14,
+    "maintenance": 12,
     "unknown": 0,
     "platforms": {
       "PC": 16,
