@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.88",
-  "updatedAt": "2026-11-19T22:18:42.320Z",
+  "updatedAt": "2026-11-19T22:20:42.354Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -312,8 +312,8 @@
       "unc": "99",
       "id": "entry-pc-potassium",
       "createdAt": "2026-11-01T03:10:04.828Z",
-      "modifiedAt": "2026-11-19T22:17:04.067Z",
-      "idicon": "1551958124800249877"
+      "modifiedAt": "2026-11-19T22:19:30.667Z",
+      "idicon": "<:potassium:1551958124800249877>"
     },
     {
       "name": "REAL",
