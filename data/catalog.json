@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.88",
-  "updatedAt": "2026-11-19T16:25:34.625Z",
+  "updatedAt": "2026-11-19T22:17:05.995Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -295,14 +295,14 @@
       "name": "POTASSIUM",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "maintenance",
-      "version": "2.6.2",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-11T23:57:00.000Z",
+      "status": "online",
+      "version": "2.6.3",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-19T00:10:00.000Z",
       "websiteUrl": "https://www.potassium.pro/",
       "communityUrl": "https://discord.gg/potassium",
       "icon": "<:potassium:1551958124800249877>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated Potassium for version-4ea8e85481e34f46\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed a minor key press related bug in the editor\n[!] Fixed setscriptable not affecting a specific lookup\n\n\u001b[1;34m                ✚ ADD\n[+] Added Instance & Property Explorer in the internal UI (subject to changes, may not be perfect in its current state)\n[+] Added proper mouse unlocking for the internal UI\n\n\u001b[1;33m                ◈ NOTE\n[~] Hi\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated Potassium for version-2c6fd5e09aaf4cfa\n[^] Changed the explorer icons to be more fitting\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed a WebSocket crash\n[!] Fixed a setthreadidentity persistency issue\n[!] Fixed request silently dropping cookies\n[!] Fixed a rare getsenv issue\n[!] Fixed a few rendering bugs that affected shader placement and multi-shader frames\n[!] Fixed a race condition when creating \"Image\" drawing objects\n[!] Fixed \"Show Nil Instances\" in the explorer spamming errors under certain conditions\n[!] Fixed a rare filesystem crash\n\n\u001b[1;34m                ✚ ADD\n[+] Added ProtoProxy; check out the documentation for further info\n[+] Added Set and Get for passing data to a \"Shader\" drawing object via a register(b1) cbuffer\n[+] Added scene passthrough, declare a Texture2D at register(t0) to sample the game behind a Shader\n[+] Added support for methods \"HEAD\" and \"OPTIONS\" in request\n[+] Added \"Winter\" theme\n\n\u001b[1;33m                ◈ NOTE\n[~] Ǎ̴̏̊̍d̶̆̾̔͝d̶̊͐̒͆ë̵́͛̓̚d̶̛̛̊̌ ̴̖͎̽͝Bellyman̷͊̄̓͠\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-9a2f1fc4c8a4a9dd.png",
       "websiteMainImageUrl": "",
@@ -312,8 +312,8 @@
       "unc": "99",
       "id": "entry-pc-potassium",
       "createdAt": "2026-11-01T03:10:04.828Z",
-      "modifiedAt": "2026-11-19T16:25:30.766Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-19T22:17:04.067Z",
+      "idicon": "1551958124800249877"
     },
     {
       "name": "REAL",
@@ -510,9 +510,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 2,
+    "online": 3,
     "offline": 1,
-    "maintenance": 18,
+    "maintenance": 17,
     "unknown": 0,
     "platforms": {
       "PC": 16,
