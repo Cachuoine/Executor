@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.88",
-  "updatedAt": "2026-11-19T22:20:42.354Z",
+  "updatedAt": "2026-11-19T22:22:42.215Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -439,14 +439,14 @@
       "name": "VOLT",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "maintenance",
-      "version": "1.3.22.1",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-12T01:43:00.000Z",
+      "status": "online",
+      "version": "1.3.23.1",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-18T21:50:00.000Z",
       "websiteUrl": "https://voltbz.net/",
       "communityUrl": "https://discord.com/invite/voltbz",
       "icon": "<:volt:1551962506984038502>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-4ea8e85481e34f46\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed rare rendering-related crash\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for version-2c6fd5e09aaf4cfa\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-e6157f764c81ac5e.png",
       "websiteMainImageUrl": "",
@@ -456,8 +456,8 @@
       "unc": "99",
       "id": "entry-pc-volt",
       "createdAt": "2026-11-01T08:10:17.898Z",
-      "modifiedAt": "2026-11-19T16:25:30.766Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-19T22:21:28.685Z",
+      "idicon": "<:volt:1551962506984038502>"
     },
     {
       "name": "VORTEX",
@@ -488,7 +488,7 @@
       "platform": "PC",
       "pcCategory": "paid",
       "status": "online",
-      "version": "1.6.2",
+      "version": "1.6.3",
       "compatibilityVersion": "2c6fd5e09aaf4cfa",
       "updatedAt": "2026-11-19T00:49:00.000Z",
       "websiteUrl": "https://getwave.gg/",
@@ -504,15 +504,15 @@
       "unc": "99",
       "id": "entry-pc-wave",
       "createdAt": "2026-11-01T12:45:11.302Z",
-      "modifiedAt": "2026-11-19T22:18:22.126Z",
+      "modifiedAt": "2026-11-19T22:22:16.864Z",
       "idicon": "<:Wave:1560185213492011090>"
     }
   ],
   "stats": {
     "total": 21,
-    "online": 4,
+    "online": 5,
     "offline": 1,
-    "maintenance": 16,
+    "maintenance": 15,
     "unknown": 0,
     "platforms": {
       "PC": 16,
