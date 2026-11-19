@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.88",
-  "updatedAt": "2026-11-19T22:29:42.412Z",
+  "updatedAt": "2026-11-19T22:32:03.147Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -391,14 +391,14 @@
       "name": "VELOCITY",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "maintenance",
-      "version": "1.6.3",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-14T17:48:00.000Z",
+      "status": "online",
+      "version": "1.6.4",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-17T21:25:00.000Z",
       "websiteUrl": "",
       "communityUrl": "",
       "icon": "<:velocity:1569483262626365581>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated Luau to 0.747\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed gethiddenproperty/sethiddenproperty on SharedString properties\n[!] Fixed getscriptbytecode/getscripthash/getscriptclosure/decompile on core/CoreGui scripts\n[!] Fixed crypt.encrypt/decrypt round-trip on binary data\n[!] Fixed crypt.encrypt/decrypt defaults\n[!] Fixed crypt.hash/encrypt/decrypt rejecting empty strings\n[!] Fixed debug.getcallstack to accept an optional thread\n[!] Fixed debug.getstack/setstack to accept an optional thread\n[!] Fixed debug.getconstants exposing import slots\n[!] Fixed debug.getproto activated=true\n[!] Fixed Drawing TextBounds stuck at 0\n[!] Fixed Drawing Image.Loaded staying false after valid PNG data\n[!] Fixed Drawing:Destroy() erroring on the second call\n[!] Fixed Drawing returning nil for unknown properties\n[!] Fixed delfile silently deleting folders\n[!] Fixed delfolder silently deleting files\n[!] Fixed delfile/delfolder erroring on missing path\n[!] Fixed appendfile not creating missing parent directories\n[!] Fixed getcustomasset returning a stale URL\n[!] Fixed workspace extension blocklist bypasses\n[!] Fixed get_comm_channel silently returning nil\n[!] Fixed gethiddenproperty/sethiddenproperty/isscriptable/setscriptable silently returning nil\n[!] Fixed getscriptbytecode/getscriptclosure/getscripthash silently returning nil\n[!] Fixed getsenv silently returning nil\n[!] Fixed setrawmetatable not working on frozen tables\n[!] Fixed setrawmetatable silently accepting nil\n[!] Fixed setfpscap silently accepting negative values\n[!] Fixed getfpscap capping the reported value at 10000\n[!] Fixed request not decompressing gzip responses\n[!] Fixed request User-Agent not containing the executor name\n[!] Fixed restorefunction silently no-opping on an unhooked function\n[!] Fixed restorefunction not restoring the original\n[!] Fixed getnamecallmethod and setnamecallmethod\n[!] Fixed lz4decompress ignoring the size argument\n[!] Fixed getsignalarguments/getsignalargumentsinfo returning a fake entry for no-arg signals\n[!] Fixed Connection:Fire/:Defer erroring on C connections\n[!] Fixed getconnections losing the Thread/Function field\n[!] Fixed filtergc ignoring UpvalueCount/ConstantCount/Source/StartLine filters\n[!] Fixed WebSocket IsClosed property being missing\n[!] Fixed getactors missing running Actors\n[!] Fixed loadstring errors missing the chunkname\n[!] Fixed hookfunction/newcclosure errors losing the chunkname:line prefix\n[!] Fixed newcclosure converting non-string error objects into strings\n[!] Fixed isexecutorclosure returning true for game script functions\n\n\u001b[1;34m                ✚ ADD\n[+] Added AES-GCM and AES-ECB modes to crypt\n[+] Added Drawing OutlineOpacity property\n[+] Added Drawing Centered alias for Center, Outlined alias for Outline\n[+] Added ClickDetector.MouseActionReplicated + ProximityPrompt TriggeredActionReplicated/TriggerEndedActionReplicated to getsignalwhitelist\n\n\u001b[1;33m                ◈ NOTE\n[~] Rewrote Heartbeat as a native rbx::signal slot on RunService\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Velocity is now version 1.6.4\n[^] Close the UI and reopen to apply the update.\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed base64decode silently returning empty on invalid input\n[!] Fixed setscriptable enabling a property on one instance making it readable on every instance\n\n\u001b[1;34m                ✚ ADD\n[+] Patched ContentProvider:PreloadAsync detection on CoreGui\n[+] Added isnetworkowner\u001b[0m\n```",
       "sourceUrl": "",
       "thumbImageUrl": "./uploads/executor-d8ffac7c56b8645c.png",
       "websiteMainImageUrl": "",
@@ -408,8 +408,8 @@
       "unc": "99",
       "id": "entry-pc-velocity",
       "createdAt": "2026-11-09T22:53:58.971Z",
-      "modifiedAt": "2026-11-19T16:25:30.766Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-19T22:32:00.610Z",
+      "idicon": "<:velocity:1569483262626365581>"
     },
     {
       "name": "VOLCANO",
@@ -510,9 +510,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 8,
+    "online": 9,
     "offline": 1,
-    "maintenance": 12,
+    "maintenance": 11,
     "unknown": 0,
     "platforms": {
       "PC": 16,
