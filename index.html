@@ -1,0 +1,173 @@
+<!doctype html>
+<html class="executor-no-dblclick-edit" lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="si-build" content="15.2.88">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0c13">
+  <meta name="description" content="NightReaper — trung tâm quản lý executor, phiên bản Roblox và âm nhạc.">
+  <base href="./">
+  <title>NightReaper — Trung tâm điều hành</title>
+  <link rel="icon" type="image/png" href="./assets/nightreaper-logo.png?v=15.2.88"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css?v=15.2.88-r2">
+  <script src="changelog-layout.js?v=15.2.88-r2" defer></script><script src="discord-description.js?v=15.2.88-r2" defer></script><script src="roblox-version-display.js?v=15.2.88-r2" defer></script><script src="app.js?v=15.2.88-r2" defer></script>
+  <link rel="stylesheet" href="music-island.css?v=15.2.88-r2">
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+  <div class="grid-backdrop" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Trang chủ NightReaper">
+      <span class="brand-mark brand-image-mark" aria-hidden="true"><img src="./assets/nightreaper-logo.png" alt=""></span>
+      <span class="brand-copy"><strong>NightReaper<span>.</span></strong><small>TRUNG TÂM ĐIỀU HÀNH</small></span>
+    </a>
+    <nav class="main-nav main-nav-dynamic" aria-label="Điều hướng chính">
+      <div class="nav-side nav-side-left"><a class="nav-link active" href="#home" data-main-nav="home">Tổng quan</a><a class="nav-link" href="#catalog" data-main-nav="catalog">Danh mục</a></div>
+      <div class="music-dock home-music-dock hidden" id="musicDock">
+      <button class="music-island" id="musicIslandToggle" type="button" aria-expanded="false" aria-controls="musicPanel" aria-label="Mở thư viện nhạc"><span class="music-island-empty-space" aria-hidden="true"></span><span class="music-island-record" aria-hidden="true"><i></i><img id="musicIslandRecordArt" class="music-island-record-art" alt="" hidden></span><span class="music-island-track-copy" aria-live="polite"><b id="musicIslandTrackTitle"></b><small id="musicIslandTrackArtist"></small></span><span class="music-island-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="music-state-led" aria-hidden="true"><i class="music-live-led"></i></span></button>
+      <section class="music-panel hidden" id="musicPanel" aria-label="Trình phát và thư viện nhạc">
+        <div class="music-panel-heading"><div><small id="musicPanelEyebrow">NIGHTREAPER · THƯ VIỆN NHẠC</small><strong id="musicPanelTitle">Thư viện nhạc</strong></div><div class="music-heading-actions"><button type="button" id="musicPlaybackModeToggle" class="music-playback-toggle music-playback-mode-toggle music-playback-mode-compact" data-playback-mode="shuffle" aria-label="Chế độ chuyển bài ngẫu nhiên" aria-pressed="false" title="Chuyển ngẫu nhiên sang một bài khác khi bài hiện tại kết thúc"><svg class="music-mode-icon music-mode-shuffle" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16 3h5v5M4 7h2.5c4 0 6 10 10 10H21M16 16l5 1v4M16 8l5-5M4 17h2.5c1.5 0 2.6-1.1 3.6-2.6"/></svg><svg class="music-mode-icon music-mode-repeat" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m17 2 4 4-4 4M3 11V8a2 2 0 0 1 2-2h16M7 22l-4-4 4-4M21 13v3a2 2 0 0 1-2 2H3"/><path d="M12 9v6m-1.5-4L12 9l1.5 2"/></svg><span class="music-mode-label" id="musicPlaybackModeLabel">RANDOM NEXT</span></button><button type="button" class="music-close" id="closeMusicPanel" aria-label="Đóng thư viện nhạc" title="Đóng">×</button></div></div>
+        <div class="music-library-view" id="musicLibraryView"><div class="music-library-filters" role="group" aria-label="Lọc thư viện nhạc"><button type="button" class="music-library-filter is-active" data-music-filter="all" aria-pressed="true">Tất cả</button><button type="button" class="music-library-filter" data-music-filter="favorites" aria-pressed="false"><span aria-hidden="true">♡</span> Yêu thích <b id="musicFavoriteCount">0</b></button><div class="music-search-morph" id="musicSearchForm"><button type="button" class="music-search-toggle" id="musicSearchToggle" aria-label="Mở tìm kiếm" aria-expanded="false" title="Tìm kiếm"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.6"></circle><path d="m16 16 4.4 4.4"></path></svg></button><input id="musicSearch" type="search" placeholder="Tìm bài hát…" autocomplete="off" aria-label="Tìm tên bài hát hoặc nghệ sĩ" tabindex="-1"></div></div><div class="music-library-meta"><span id="musicLibraryCount">Đang tải thư viện…</span></div>
+        <div class="music-track-list" id="musicTrackList"><div class="music-library-loading">Đang tải thư viện nhạc…</div></div>
+        <div class="music-now-playing-mini" id="musicNowPlayingMini" hidden aria-label="Tiến trình bài hát đang chọn"><div class="music-now-playing-main"><img class="music-now-playing-art" id="musicNowPlayingArt" alt="" hidden><span class="music-now-playing-art-fallback" id="musicNowPlayingArtFallback" aria-hidden="true">♫</span><span class="music-now-playing-copy"><strong id="musicNowPlayingTitle">Chưa chọn bài hát</strong><small id="musicNowPlayingArtist">Chọn một bài hát trong thư viện</small></span></div><div class="music-now-playing-progress"><input id="musicNowPlayingSeek" class="music-now-playing-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Vị trí phát nhạc" disabled><div class="music-now-playing-time"><span id="musicNowPlayingElapsed">0:00</span><span class="music-now-playing-time-end"><span id="musicNowPlayingDuration">0:00</span><a id="musicNowPlayingSource" class="music-now-playing-source" href="#" target="_blank" rel="noopener noreferrer" hidden>Nguồn nhạc ↗</a></span></div></div></div><div class="music-panel-footer"><span class="music-live-led"></span><span id="musicPlaybackStatus">Sẵn sàng phát nhạc.</span></div></div></section>
+      <div class="music-engine" aria-hidden="true"><audio id="musicDirectAudio" preload="metadata" hidden></audio></div>
+    </div>
+      <div class="nav-side nav-side-right"><a class="nav-link" href="#versions" data-main-nav="versions">Phiên bản</a><a class="nav-link" href="#music" data-main-nav="music">Nhạc</a></div>
+    </nav>
+    <div class="header-actions">
+      <span class="connection-pill"><i class="signal-dot" aria-hidden="true"></i><span id="connectionText">Danh mục đã sẵn sàng</span></span>
+      <a id="adminLink" class="admin-link" href="/admin" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 19 6v5c0 4.7-2.8 8.1-7 10-4.2-1.9-7-5.3-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg><span>Quản trị</span></a>
+      <button class="mobile-menu" id="mobileMenuToggle" type="button" aria-label="Mở điều hướng" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="fingerprint-stage" id="fingerprintStage">
+    <div class="fingerprint-wings" id="fingerprintSides" aria-hidden="true" inert>
+      <div class="fingerprint-wing fingerprint-wing-left">
+        <section class="fingerprint-wing-panel" aria-label="Executor yêu thích">
+          <div class="fingerprint-wing-heading"><span>01 / EXECUTOR</span><small>YÊU THÍCH</small></div>
+          <div class="fingerprint-wing-favorites" id="fingerprintFavoriteExecutors"><span class="fingerprint-wing-empty">Chưa có executor yêu thích</span></div>
+        </section>
+      </div>
+      <div class="fingerprint-wing fingerprint-wing-right">
+        <section class="fingerprint-wing-panel" aria-label="Nhạc yêu thích">
+          <div class="fingerprint-wing-heading"><span>YÊU THÍCH</span><small>MUSIC / 02</small></div>
+          <div class="fingerprint-wing-favorites" id="fingerprintFavoriteMusic" role="region" aria-label="Danh sách nhạc yêu thích" tabindex="0"><span class="fingerprint-wing-empty">Chưa có nhạc yêu thích</span></div>
+        </section>
+      </div>
+    </div>
+    <button class="fingerprint-orb" id="fingerprintOrb" type="button" aria-label="Giữ trong 2 giây để mở hoặc đóng thiên hà yêu thích" aria-expanded="false">
+      <span class="fingerprint-gem-ring" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <svg class="fingerprint-mark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="fingerprintStroke" x1="8" y1="10" x2="55" y2="55" gradientUnits="userSpaceOnUse"><stop stop-color="#d7d0f8"/><stop offset=".52" stop-color="#aaa2e2"/><stop offset="1" stop-color="#9adad2"/></linearGradient></defs><path d="M20 25c2-9 22-12 27 0 2 5 1 12 0 17M14 29c0-13 10-20 20-20s20 7 20 20c0 14-3 23-8 29M25 19c5-3 12-2 16 2 4 5 3 13 2 19M9 34c0 12-2 19-5 23M31 26c-3 0-5 3-5 7 0 10-1 17-4 22M34 33c0 10-1 17-4 23M18 39c0 6-1 11-3 15" stroke="url(#fingerprintStroke)"/></svg>
+      <span class="fingerprint-scan" aria-hidden="true"></span><span class="fingerprint-hold-ring" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="favorite-universe-overlay" id="favoriteUniverse" aria-hidden="true" inert>
+    <section class="favorite-universe-scene" aria-label="Đa vũ trụ executor yêu thích">
+      <div class="universe-heading">
+        <span class="universe-kicker"><i></i> ASTRAL ATLAS / HỆ QUỸ ĐẠO</span>
+        <strong>Thiên hà yêu thích</strong>
+      </div>
+      <div class="universe-system" id="favoriteUniverseSystem">
+        <span class="universe-orbit universe-orbit-outer" aria-hidden="true"></span>
+        <span class="universe-orbit universe-orbit-middle" aria-hidden="true"></span>
+        <span class="universe-orbit universe-orbit-inner" aria-hidden="true"></span>
+        <span class="universe-star universe-star-a" aria-hidden="true"></span>
+        <span class="universe-star universe-star-b" aria-hidden="true"></span>
+        <span class="universe-star universe-star-c" aria-hidden="true"></span>
+        <span class="universe-star universe-star-d" aria-hidden="true"></span>
+        <div class="universe-core" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <defs>
+              <radialGradient id="universePlanetFill" cx="30%" cy="22%" r="80%"><stop offset="0" stop-color="#c0b4ff"/><stop offset=".34" stop-color="#766ac8"/><stop offset=".7" stop-color="#344f79"/><stop offset="1" stop-color="#14212f"/></radialGradient>
+              <linearGradient id="universeLandFill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b8f2de"/><stop offset="1" stop-color="#77b8c6"/></linearGradient>
+              <clipPath id="universePlanetClip"><circle cx="60" cy="60" r="49"/></clipPath>
+            </defs>
+            <circle cx="60" cy="60" r="53" fill="none" stroke="rgba(183,176,242,.2)" stroke-width=".8"/>
+            <circle cx="60" cy="60" r="49" fill="url(#universePlanetFill)" stroke="#b9b0f1" stroke-opacity=".58" stroke-width="1.1"/>
+            <g clip-path="url(#universePlanetClip)">
+              <path d="M18 35 34 23 47 29 50 40 43 48 29 46 24 57 13 51ZM59 17 77 24 82 36 72 43 75 55 63 63 55 53 57 43 48 36ZM83 65 99 60 107 72 99 91 82 96 74 83ZM39 73 53 66 65 75 61 91 47 101 34 89Z" fill="url(#universeLandFill)" opacity=".76"/>
+              <path d="M13 53C36 41 76 39 107 54M13 70C40 58 78 59 106 72M31 15C18 43 18 79 41 103M80 14C100 42 101 77 78 105" fill="none" stroke="#d8e2ff" stroke-opacity=".2" stroke-width="1.2"/>
+              <ellipse cx="60" cy="60" rx="24" ry="49" fill="none" stroke="#e0dcff" stroke-opacity=".2" stroke-width="1"/>
+            </g>
+            <circle cx="60" cy="60" r="56" fill="none" stroke="#9bded6" stroke-opacity=".38" stroke-width=".6" stroke-dasharray="2 7"/>
+          </svg>
+          <span class="universe-core-signal"></span>
+        </div>
+        <div class="universe-executor-nodes" id="favoriteUniverseNodes" aria-label="Executor yêu thích"></div>
+        <div class="universe-empty-message" id="favoriteUniverseEmpty" hidden>
+          <span>♡</span><b>Chưa có quỹ đạo nào</b><small>Đánh dấu trái tim trên executor để đưa chúng vào đa vũ trụ.</small>
+        </div>
+      </div>
+      <div class="universe-footer"><span class="universe-count" id="favoriteUniverseCount">0 executor yêu thích</span><span class="universe-footer-dot"></span><span>Tối đa 8 executor · Chạm executor để xem thông tin</span></div>
+    </section>
+  </div>
+
+  <main id="home">
+    <section class="hero section-shell">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span class="eyebrow-line"></span> TRUNG TÂM ĐIỀU HÀNH <span class="eyebrow-vn">/ TRUNG TÂM TỔNG HỢP</span></div>
+        <h1>Một nơi.<br><span>Mọi nền tảng.</span></h1>
+        <p class="hero-lead">Khám phá executor, kiểm tra khả năng tương thích, theo dõi phiên bản Roblox và nghe những bản nhạc yêu thích trong cùng một giao diện.</p>
+        <form class="hero-search" id="heroSearchForm" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg>
+          <input id="heroSearch" type="search" placeholder="Tìm executor, nền tảng, phiên bản…" autocomplete="off" aria-label="Tìm kiếm trên website">
+          <kbd>↵</kbd>
+        </form>
+        <div class="hero-buttons"><a class="button button-primary" href="#catalog">Khám phá danh mục <span>↗</span></a><a class="button button-quiet" href="#versions">Phiên bản mới nhất <span>↓</span></a></div>
+        
+      </div>
+      <div class="hero-art reveal reveal-late" aria-label="Minh họa bảng điều khiển NightReaper">
+        <div class="orbital orbital-one"></div><div class="orbital orbital-two"></div><div class="hero-glow"></div>
+        <div class="hero-card hero-card-back"><div class="ghost-head"><span></span><span></span><span></span></div><div class="ghost-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="hero-card hero-card-front">
+          <div class="mock-top"><span class="mock-icon">◈</span><span class="mock-kicker">TỔNG QUAN HỆ THỐNG</span><span class="mock-state"><i class="signal-dot" aria-hidden="true"></i> TRỰC TIẾP</span></div>
+          <div class="mock-title">Bảng điều khiển<br><b>gọn gàng, rõ ràng.</b></div>
+          <div class="mock-graph"><div class="graph-grid"></div><svg viewBox="0 0 420 118" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="graphFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#a78bfa" stop-opacity=".38"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></linearGradient></defs><path d="M0 92 C20 88 27 66 48 72 S78 92 99 61 S136 72 153 48 S183 70 206 55 S241 61 259 29 S300 53 318 38 S349 52 370 16 S402 30 420 8 L420 118 L0 118Z" fill="url(#graphFill)"/><path d="M0 92 C20 88 27 66 48 72 S78 92 99 61 S136 72 153 48 S183 70 206 55 S241 61 259 29 S300 53 318 38 S349 52 370 16 S402 30 420 8" fill="none" stroke="#b9a4ff" stroke-width="2.3"/></svg></div>
+          <div class="mock-bottom"><div><small>HỆ THỐNG</small><strong>NR <span>trung tâm điều hành</span></strong></div><div><small>DANH MỤC</small><strong id="heroCardCount">— <span>mục đã đăng</span></strong></div></div>
+        </div>
+        <div class="float-tag float-tag-top"><span class="float-tag-icon float-tag-icon-roblox"><svg class="roblox-mark" viewBox="0 0 48 48" role="img" aria-label="Roblox" focusable="false"><defs><linearGradient id="rbxMark2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1efff"/><stop offset="1" stop-color="#7fe6e0"/></linearGradient></defs><g transform="rotate(-14 24 24)"><path fill="url(#rbxMark2)" fill-rule="evenodd" d="M14 9h20a5 5 0 0 1 5 5v20a5 5 0 0 1-5 5H14a5 5 0 0 1-5-5V14a5 5 0 0 1 5-5zM20 20v8h8v-8z"/></g></svg></span><span><b id="heroMiniVersion">Nguồn phiên bản</b><small>BẢN DỰNG ROBLOX</small></span></div>
+        <div class="float-tag float-tag-bottom"><span class="float-tag-icon purple">♫</span><span><b>Trình phát nhạc</b><small>NHẠC CỦA BẠN</small></span></div>
+        <span class="art-cross cross-one">+</span><span class="art-cross cross-two">+</span>
+      </div>
+    </section>
+
+    <section class="stats-strip section-shell reveal" aria-label="Thống kê danh mục">
+      <div class="stats-intro"><span class="section-tag">TỔNG QUAN NHANH</span><b>Thông tin tổng hợp hệ thống.</b></div>
+      <div class="stat-cell"><span>Danh mục đã đăng</span><strong id="statTotal">—</strong><small id="statTotalHint">Mục trong danh mục</small></div>
+      <div class="stat-cell"><span>Đang hoạt động</span><strong id="statOnline">—</strong><small>Được đánh dấu đang hoạt động</small></div>
+      
+      <div class="stat-updated"><button class="mini-ring" id="captureCurrentTime" type="button" aria-label="Hiển thị ngày giờ hiện tại" title="Nhấn để ghi nhận ngày giờ hiện tại">↻</button><span><small id="lastUpdatedLabel">BẢN CHỤP DỮ LIỆU</small><b id="lastUpdated">Đang tải danh mục…</b></span></div>
+    </section>
+<section class="section-shell catalog-section" id="catalog">
+      <div class="section-heading reveal"><div><span class="section-tag">DANH MỤC</span><h2>Tìm theo <em>nền tảng.</em></h2><p>Duyệt danh mục executor và mở từng mục để xem mô tả, khả năng tương thích cùng các liên kết chính thức.</p></div><div class="section-aside"><span class="aside-number">01</span><span>KHÁM PHÁ / SO SÁNH / MỞ</span></div></div>
+      <div class="catalog-toolbar reveal"><div class="filter-tabs" id="platformFilters" role="group" aria-label="Lọc theo nền tảng"><button class="filter-chip active" type="button" data-platform="ALL" aria-pressed="true">Tất cả nền tảng <span id="allCount">0</span></button><button class="filter-chip" type="button" data-platform="PC" aria-pressed="false"><img class="platform-glyph platform-glyph-image" data-platform-icon="PC" src="https://cdn.discordapp.com/emojis/1572256316884385982.gif?size=64&amp;quality=lossless" alt="" loading="lazy" decoding="async">PC</button><button class="filter-chip" type="button" data-platform="macOS" aria-pressed="false"><img class="platform-glyph platform-glyph-image" data-platform-icon="macOS" src="https://cdn.discordapp.com/emojis/1572627782998171850.gif?size=64&amp;quality=lossless" alt="" loading="lazy" decoding="async">macOS</button><button class="filter-chip" type="button" data-platform="Android" aria-pressed="false"><img class="platform-glyph platform-glyph-image" data-platform-icon="Android" src="https://cdn.discordapp.com/emojis/1572256296458133534.gif?size=64&amp;quality=lossless" alt="" loading="lazy" decoding="async">Android</button><button class="filter-chip" type="button" data-platform="iOS" aria-pressed="false"><img class="platform-glyph platform-glyph-image" data-platform-icon="iOS" src="https://cdn.discordapp.com/emojis/1572256306801148074.gif?size=64&amp;quality=lossless" alt="" loading="lazy" decoding="async">iOS</button></div><div class="music-search-morph catalog-search-morph" id="catalogSearchForm" role="search" aria-label="Tìm trong danh mục"><button type="button" class="music-search-toggle catalog-search-toggle" id="catalogSearchToggle" aria-label="Mở tìm kiếm danh mục" aria-expanded="false" title="Tìm trong danh mục"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.8" cy="10.8" r="6.6"></circle><path d="m16 16 4.4 4.4"></path></svg></button><input id="catalogSearch" type="search" placeholder="Lọc danh mục…" autocomplete="off" aria-label="Lọc danh mục" tabindex="-1"></div></div>
+      <div class="catalog-summary"><span id="catalogResultLabel">Đang tải danh sách…</span><span class="catalog-summary-right"><i class="signal-dot" aria-hidden="true"></i> Bản chụp danh mục</span></div>
+      <div id="executorGrid" class="executor-grid" aria-live="polite"><div class="loading-card"><span class="loader-ring"></span><span>Đang tải danh mục…</span></div></div>
+    </section>
+
+    <section class="versions-section section-shell" id="versions"><div class="section-heading reveal"><div><span class="section-tag">THÔNG TIN PHIÊN BẢN</span><h2>Phiên bản <em>Roblox.</em></h2><p>Thông tin phiên bản được cập nhật từ bảng điều khiển localhost khi nguồn dữ liệu khả dụng. Liên kết tải dẫn đến trang chính thức hoặc nhà cung cấp được ghi rõ.</p></div><div class="section-aside"><span class="aside-number">03</span><span>BẢN CHỤP PHIÊN BẢN</span></div></div>
+      <div class="version-layout reveal"><div class="version-primary"><div class="version-topline"><span class="version-logo version-logo-roblox"><svg class="roblox-mark" viewBox="0 0 48 48" role="img" aria-label="Roblox" focusable="false"><defs><linearGradient id="rbxMark1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1efff"/><stop offset="1" stop-color="#7fe6e0"/></linearGradient></defs><g transform="rotate(-14 24 24)"><path fill="url(#rbxMark1)" fill-rule="evenodd" d="M14 9h20a5 5 0 0 1 5 5v20a5 5 0 0 1-5 5H14a5 5 0 0 1-5-5V14a5 5 0 0 1 5-5zM20 20v8h8v-8z"/></g></svg></span><span><small>ỨNG DỤNG ROBLOX</small><b>Thông tin bản dựng hiện tại</b></span><span id="versionSourceBadge" class="version-badge">Bản chụp</span></div><div class="version-main" id="versionMain"><span class="loader-ring"></span><span>Đang kiểm tra phiên bản…</span></div><div class="version-foot"><span id="versionLastUpdated">Nguồn chưa cung cấp thời gian cập nhật</span><a href="https://whatexpsare.online/" target="_blank" rel="noopener noreferrer">Nguồn phiên bản ↗</a></div></div>
+        <div class="download-panel"><span class="section-tag">LIÊN KẾT NHANH</span><h3>Chọn thiết bị của bạn.</h3><p>Mở trang tải xuống hoặc cửa hàng ứng dụng tương ứng với từng nền tảng.</p><div id="downloadLinks" class="download-links"><span class="loading-text">Đang chuẩn bị liên kết…</span></div><div class="download-disclaimer">Hãy kiểm tra đích đến và yêu cầu hệ thống trước khi tải xuống hoặc cài đặt phần mềm.</div></div></div>
+    </section>
+
+    <section class="music-section" id="music"><div class="section-shell music-inner"><div class="music-copy reveal"><span class="section-tag">KHÔNG GIAN ÂM NHẠC</span><h2>Giữ nhịp điệu.<br><em>Tạm quên ồn ào.</em></h2><p>Các tệp MP3 được quản lý trong bảng quản trị localhost sẽ xuất hiện tại đây. Chọn bài để phát — nhạc không tự động phát khi mở trang.</p><div class="music-meta"><span class="music-disc"><i></i></span><span><b id="musicCount">0 bài hát trong thư viện</b><small>QUẢN LÝ TỪ BẢNG QUẢN TRỊ LOCALHOST</small></span></div></div><div class="music-list-wrap reveal"><div class="music-list-heading"><span >BÀI HÁT</span><span>THỂ LOẠI</span><span>PHÁT</span></div><div id="musicSectionTrackList" class="music-track-list"><div class="loading-text">Đang tải thư viện nhạc…</div></div><div id="musicEmpty" class="music-empty" hidden>Chưa có bài hát nào được xuất bản.</div>
+      </div></div></section>
+
+    <section class="closing-section section-shell reveal"><a id="closingBrowseLink" href="#catalog" hidden aria-hidden="true"></a><div class="closing-orbit" aria-hidden="true"><span></span><span></span><span></span></div><div><span class="section-tag">MỘT NGUỒN DỮ LIỆU</span><h2>Thay đổi tại máy.<br><em>Cập nhật lên công khai.</em></h2><p>Quản lý danh mục, phiên bản Roblox, nhạc và Discord từ bảng điều khiển localhost. Dữ liệu công khai được xuất bản lên GitHub Pages mà không tiết lộ cấu hình riêng.</p></div><a class="button button-primary" id="closingAdminLink" href="/admin" hidden>Mở bảng quản trị localhost <span>↗</span></a></section>
+  </main>
+
+  <footer class="site-footer"><div class="section-shell footer-inner"><a class="brand brand-footer" href="#home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 44 44"><path d="M22 3.5 39 13v18L22 40.5 5 31V13L22 3.5Z"/><path d="m22 11 9.5 5.4v11.2L22 33l-9.5-5.4V16.4L22 11Z"/><path d="M22 11v22M12.5 16.4 22 22l9.5-5.6M12.5 27.6 22 22l9.5 5.6"/></svg></span><span class="brand-copy"><strong>NightReaper<span>.</span></strong><small>TRUNG TÂM ĐIỀU HÀNH</small></span></a><div class="footer-note"><span>© <span id="copyrightYear">2026</span> NightReaper</span><span>RÕ RÀNG, DỄ DÙNG <i class="footer-point"></i> TIẾNG VIỆT</span></div><a class="footer-top" href="#home">Lên đầu trang ↑</a></div></footer>
+
+  <dialog id="detailDialog" class="detail-dialog" aria-labelledby="detailTitle"><form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Đóng chi tiết">×</button></form><div id="detailContent"></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  
+  <script src="music-player.js?v=15.2.88-r2" defer></script>
+  <script src="ambient-motion.js?v=15.2.88" defer></script>
+</body>
+</html>
