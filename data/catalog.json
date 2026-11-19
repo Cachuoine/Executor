@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.88",
-  "updatedAt": "2026-11-19T22:32:03.147Z",
+  "updatedAt": "2026-11-19T22:34:22.372Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -463,14 +463,14 @@
       "name": "VORTEX",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "maintenance",
-      "version": "1.4.8.32",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-14T01:38:00.000Z",
+      "status": "online",
+      "version": "1.4.8.33",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-18T02:11:00.000Z",
       "websiteUrl": "https://www.getvortex.online/",
       "communityUrl": "https://discord.gg/vortex-993830408208785418",
       "icon": "<:vortex:1552398238437609502>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Update to the new injection program because the old one has been patched by Roblox\n\n\u001b[1;33m                ◈ NOTE\n[~] Luau 0.746 -> 0.747\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated for the latest Roblox version\n[^] Update the anti-cheat for the game Fisch\u001b[0m\n```",
       "sourceUrl": "",
       "thumbImageUrl": "./uploads/executor-1ac09b3dd9cb2e37.png",
       "websiteMainImageUrl": "",
@@ -480,8 +480,8 @@
       "unc": "100",
       "id": "entry-pc-vortex",
       "createdAt": "2026-11-01T14:00:34.940Z",
-      "modifiedAt": "2026-11-19T16:25:30.766Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-19T22:34:18.945Z",
+      "idicon": "<:vortex:1552398238437609502>"
     },
     {
       "name": "WAVE",
@@ -510,9 +510,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 9,
+    "online": 10,
     "offline": 1,
-    "maintenance": 11,
+    "maintenance": 10,
     "unknown": 0,
     "platforms": {
       "PC": 16,
