@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "15.2.88",
-  "updatedAt": "2026-11-20T04:06:45.507Z",
+  "updatedAt": "2026-11-20T04:08:27.411Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -48,8 +48,8 @@
       "unc": "",
       "id": "entry-pc-bunni",
       "createdAt": "2026-11-01T13:48:28.200Z",
-      "modifiedAt": "2026-11-10T13:55:00.593Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-20T04:07:31.955Z",
+      "idicon": "<:bunni:1553552748639813765>"
     },
     {
       "name": "BUNNI",
@@ -72,8 +72,8 @@
       "unc": "",
       "id": "entry-pc-bunni-external",
       "createdAt": "2026-11-01T13:52:17.625Z",
-      "modifiedAt": "2026-11-19T16:25:30.766Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-20T04:07:36.397Z",
+      "idicon": "<:bunni:1553552748639813765>"
     },
     {
       "name": "DELTA",
@@ -288,8 +288,8 @@
       "unc": "",
       "id": "entry-pc-photon",
       "createdAt": "2026-11-01T15:12:48.550Z",
-      "modifiedAt": "2026-11-19T22:41:54.099Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-20T04:08:26.339Z",
+      "idicon": "<:photon:1566468491853168720>"
     },
     {
       "name": "POTASSIUM",
@@ -360,8 +360,8 @@
       "unc": "",
       "id": "entry-pc-seliware",
       "createdAt": "2026-11-01T13:34:49.597Z",
-      "modifiedAt": "2026-11-10T13:56:39.436Z",
-      "idicon": ""
+      "modifiedAt": "2026-11-20T04:08:45.713Z",
+      "idicon": "<:seliware:1552082467236741172>"
     },
     {
       "name": "SirHurt",
