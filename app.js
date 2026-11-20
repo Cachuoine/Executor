@@ -413,6 +413,8 @@
       }
     });
     $('#detailDialog')?.addEventListener('click', (event) => { if (event.target === $('#detailDialog')) $('#detailDialog').close(); });
+    // Page-like portal navigation owns the main sections when enabled; keep legacy scroll navigation only as fallback.
+    if (document.body.classList.contains('nr-portal-mode')) return;
     // Canonical section URLs: empty fragments and the legacy #top are always normalized to #home.
     // A reload/reset starts at Home; while scrolling, the hash follows the visible section.
     const sectionKeys = ['home', 'catalog', 'versions', 'music'];
