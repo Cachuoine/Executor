@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "version": "15.2.91",
+  "version": "15.2.92",
   "updatedAt": "2026-11-19T14:20:12.784Z",
   "items": [
     {
@@ -72,7 +72,7 @@
       "unc": "",
       "id": "entry-pc-bunni-external",
       "createdAt": "2026-11-01T13:52:17.625Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -144,7 +144,7 @@
       "unc": "99",
       "id": "entry-pc-isaeva",
       "createdAt": "2026-11-01T13:28:47.681Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -168,7 +168,7 @@
       "unc": "",
       "id": "entry-pc-lumen",
       "createdAt": "2026-11-01T14:55:20.631Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -192,7 +192,7 @@
       "unc": "99",
       "id": "entry-macos-macsploit",
       "createdAt": "2026-11-10T04:16:52.379Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -216,7 +216,7 @@
       "unc": "98",
       "id": "entry-pc-madium",
       "createdAt": "2026-11-01T11:08:55.612Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -240,7 +240,7 @@
       "unc": "",
       "id": "entry-pc-madius",
       "createdAt": "2026-11-01T13:41:01.752Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -264,7 +264,7 @@
       "unc": "99",
       "id": "entry-macos-opiumware",
       "createdAt": "2026-11-01T14:45:20.401Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -288,7 +288,7 @@
       "unc": "",
       "id": "entry-pc-photon",
       "createdAt": "2026-11-01T15:12:48.550Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -312,7 +312,7 @@
       "unc": "99",
       "id": "entry-pc-potassium",
       "createdAt": "2026-11-01T03:10:04.828Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -336,7 +336,7 @@
       "unc": "99",
       "id": "entry-pc-real",
       "createdAt": "2026-11-01T13:11:46.629Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -384,7 +384,7 @@
       "unc": "99",
       "id": "entry-pc-sirhurt",
       "createdAt": "2026-11-01T12:52:59.679Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -408,7 +408,7 @@
       "unc": "99",
       "id": "entry-pc-velocity",
       "createdAt": "2026-11-09T22:53:58.971Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -432,7 +432,7 @@
       "unc": "99",
       "id": "entry-pc-volcano",
       "createdAt": "2026-11-01T13:20:00.604Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -456,7 +456,7 @@
       "unc": "99",
       "id": "entry-pc-volt",
       "createdAt": "2026-11-01T08:10:17.898Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -480,7 +480,7 @@
       "unc": "100",
       "id": "entry-pc-vortex",
       "createdAt": "2026-11-01T14:00:34.940Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     },
     {
@@ -504,7 +504,7 @@
       "unc": "99",
       "id": "entry-pc-wave",
       "createdAt": "2026-11-01T12:45:11.302Z",
-      "modifiedAt": "2026-11-21T00:24:07.067Z",
+      "modifiedAt": "2026-11-21T01:13:21.037Z",
       "idicon": ""
     }
   ],

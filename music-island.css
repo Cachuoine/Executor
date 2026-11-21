@@ -2336,26 +2336,6 @@ html.executor-no-dblclick-edit body .music-dock.is-transition-locked .music-now-
 .music-now-playing-source[hidden]{display:none!important}
 @media(max-width:520px){.music-now-playing-time-end{gap:6px}.music-now-playing-source{font-size:9px}}
 
-
-/* v15.2.91 — calm, consistent tab transitions for public site and Admin. */
-.site-header{position:sticky;top:0;z-index:100;background:rgba(10,12,19,.88);-webkit-backdrop-filter:blur(14px) saturate(112%);backdrop-filter:blur(14px) saturate(112%);isolation:isolate}
-.site-view-panel[hidden],[data-site-home-only][hidden]{display:none!important}
-.site-view-panel{min-width:0;transform-origin:center top}
-.site-view-panel.site-view-entering{animation:nrSiteTabIn .22s cubic-bezier(.2,.72,.25,1) both}
-.site-view-panel.site-view-from-right{--nr-tab-shift:9px}
-.site-view-panel.site-view-from-left{--nr-tab-shift:-9px}
-@keyframes nrSiteTabIn{from{opacity:0;transform:translate3d(var(--nr-tab-shift,0),0,0) scale(.997)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
-.site-header .main-nav-dynamic .nav-link{position:relative;border:1px solid transparent;transition:color .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
-.site-header .main-nav-dynamic .nav-link.active{transform:none;border-color:rgba(167,139,250,.2);background:linear-gradient(115deg,rgba(167,139,250,.13),rgba(127,230,224,.055));box-shadow:inset 0 1px rgba(255,255,255,.045)}
-.site-header .main-nav-dynamic .nav-link.active::after{left:30%;right:30%;bottom:3px;height:2px;animation:nrNavMarkIn .2s ease both}
-@keyframes nrNavMarkIn{from{transform:scaleX(.55);opacity:.35}to{transform:scaleX(1);opacity:1}}
-.admin-site-header .admin-dynamic-nav .admin-section-tab{position:relative;border:1px solid transparent;border-radius:10px;transition:color .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
-.admin-site-header .admin-dynamic-nav .admin-section-tab:hover{background:rgba(255,255,255,.045);color:#eef0fa}
-.admin-site-header .admin-dynamic-nav .admin-section-tab.active{transform:none;border-color:rgba(167,139,250,.22);background:linear-gradient(115deg,rgba(167,139,250,.15),rgba(127,230,224,.055));box-shadow:inset 0 1px rgba(255,255,255,.055),0 4px 12px rgba(0,0,0,.12)}
-.admin-site-header .admin-dynamic-nav .admin-section-tab.active::after{left:28%;right:28%;bottom:3px;height:2px;animation:nrNavMarkIn .2s ease both}
-.admin-tab-panel.admin-tab-entering:not(.hidden){animation:nrAdminTabIn .22s cubic-bezier(.2,.72,.25,1) both}
-@keyframes nrAdminTabIn{from{opacity:0;transform:translate3d(0,7px,0) scale(.998)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+/* v15.2.92 — retain lightweight ambient rendering without changing classic navigation. */
 .ambient{filter:blur(70px);opacity:.11;contain:paint;transform:translateZ(0)}
 .grid-backdrop{background-size:64px 64px;opacity:.11}
-@media(max-width:800px){.site-header{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}.site-view-panel.site-view-entering{animation-duration:.18s}.admin-tab-panel.admin-tab-entering:not(.hidden){animation-duration:.18s}}
-@media(prefers-reduced-motion:reduce){.site-view-panel.site-view-entering,.admin-tab-panel.admin-tab-entering:not(.hidden){animation:none!important}.site-header .main-nav-dynamic .nav-link,.admin-site-header .admin-dynamic-nav .admin-section-tab{transition:none!important}}

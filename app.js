@@ -388,7 +388,7 @@
       state.query = String(heroSearch?.value || '').trim();
       if (catalogSearch) catalogSearch.value = state.query;
       if (state.query) setCatalogSearchOpen(true, { focus:false });
-      state.activePlatform = 'ALL'; renderCatalog(); activateSiteView('catalog', { push: true, focusSearch: Boolean(state.query) });
+      state.activePlatform = 'ALL'; renderCatalog(); $('#catalog').scrollIntoView({ behavior: 'smooth' });
     });
     heroSearch?.addEventListener('input', () => {
       if (catalogSearch) catalogSearch.value = heroSearch.value;
@@ -413,99 +413,101 @@
       }
     });
     $('#detailDialog')?.addEventListener('click', (event) => { if (event.target === $('#detailDialog')) $('#detailDialog').close(); });
-    // The public navigation is a real view switcher, not a long-page scroll menu.
-    // Each view keeps its original markup and data hooks; only visibility changes.
-    const siteViewKeys = ['home', 'catalog', 'versions', 'music'];
-    const siteViewPanels = new Map(siteViewKeys.map(key => [key, document.querySelector(`[data-site-panel="${key}"]`)]));
-    const homeOnlyNodes = [...document.querySelectorAll('[data-site-home-only]')];
-    const navLinks = [...document.querySelectorAll('.main-nav-dynamic [data-main-nav]')];
-    const normalizeSiteView = value => {
-      const key = String(value || '').trim().replace(/^#/, '');
-      return siteViewKeys.includes(key) && siteViewPanels.get(key) ? key : 'home';
+    // Canonical section URLs: empty fragments and the legacy #top are always normalized to #home.
+    // A reload/reset starts at Home; while scrolling, the hash follows the visible section.
+    const sectionKeys = ['home', 'catalog', 'versions', 'music'];
+    const navLinks = [...new Set($$('.main-nav-dynamic [data-main-nav], .main-nav-dynamic a[href*="#"], [data-section-nav]'))];
+    const normalizeSectionKey = value => {
+      const key = String(value ?? '').trim().replace(/^#/, '');
+      return !key || key === 'top' ? 'home' : key;
     };
-    const updateSiteNav = key => {
+    const sectionKeyForLink = link => {
+      const explicit = normalizeSectionKey(link.dataset.sectionNav || link.dataset.mainNav || '');
+      const href = link.getAttribute('href') || '';
+      const rawHash = href.includes('#') ? href.slice(href.lastIndexOf('#') + 1) : '';
+      const hash = normalizeSectionKey(rawHash);
+      if (sectionKeys.includes(hash) && document.getElementById(hash)) return hash;
+      if (sectionKeys.includes(explicit) && document.getElementById(explicit)) return explicit;
+      if (rawHash && document.getElementById(rawHash)) return normalizeSectionKey(rawHash);
+      return explicit;
+    };
+    let navScrollQueued = false;
+    const setActiveSection = key => {
       navLinks.forEach(link => {
-        const active = normalizeSiteView(link.dataset.mainNav || link.getAttribute('href')) === key;
+        const active = sectionKeyForLink(link) === key;
         link.classList.toggle('active', active);
         if (active) {
-          link.setAttribute('aria-current', 'page');
+          link.setAttribute('aria-current', 'location');
+          if (link.matches('button[data-admin-tab]')) link.setAttribute('aria-selected', 'true');
         } else {
           link.removeAttribute('aria-current');
+          if (link.matches('button[data-admin-tab]')) link.setAttribute('aria-selected', 'false');
         }
       });
     };
-    const writeSiteLocation = (key, push) => {
+    const setSectionHash = key => {
+      const canonicalKey = sectionKeys.includes(key) ? key : 'home';
       const nextUrl = new URL(window.location.href);
-      nextUrl.hash = key;
+      nextUrl.hash = canonicalKey; // Assigning a real key prevents a trailing bare "#".
       const nextAddress = `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`;
       const currentAddress = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-      if (nextAddress === currentAddress) return;
-      if (push) window.history.pushState({ nightReaperView: key }, '', nextAddress);
-      else window.history.replaceState(window.history.state, '', nextAddress);
+      if (currentAddress !== nextAddress) window.history.replaceState(window.history.state, '', nextAddress);
     };
-    const activateSiteView = (requestedKey, options = {}) => {
-      const key = normalizeSiteView(requestedKey);
-      const previousKey = normalizeSiteView(document.body.dataset.siteView || 'home');
-      const changed = previousKey !== key;
-      document.body.dataset.siteView = key;
-      for (const [panelKey, panel] of siteViewPanels) {
-        if (!panel) continue;
-        const active = panelKey === key;
-        panel.hidden = !active;
-        panel.setAttribute('aria-hidden', String(!active));
-        panel.classList.remove('site-view-entering', 'site-view-from-left', 'site-view-from-right');
-        if (active && changed && !options.initial) {
-          panel.classList.add('site-view-entering', keyOrder(key) >= keyOrder(previousKey) ? 'site-view-from-right' : 'site-view-from-left');
-          panel.addEventListener('animationend', () => panel.classList.remove('site-view-entering', 'site-view-from-left', 'site-view-from-right'), { once: true });
-        }
-      }
-      homeOnlyNodes.forEach(node => { node.hidden = key !== 'home'; });
-      updateSiteNav(key);
-      if (!options.skipLocation) writeSiteLocation(key, Boolean(options.push));
-      if (!options.keepScroll) {
-        const rootStyle = document.documentElement.style;
-        const previousBehavior = rootStyle.scrollBehavior;
-        rootStyle.scrollBehavior = 'auto';
-        window.scrollTo(0, 0);
-        rootStyle.scrollBehavior = previousBehavior;
-      }
-      if (key === 'catalog') {
-        requestAnimationFrame(() => {
-          const search = $('#catalogSearch');
-          if (options.focusSearch && search) {
-            setCatalogSearchOpen(true, { focus:true });
-          }
-        });
-      }
-      if (key === 'music') {
-        document.dispatchEvent(new CustomEvent('nightreaper:viewchange', { detail:{ view:key } }));
-      }
-      return key;
+    const scrollToHomeTop = () => {
+      const rootStyle = document.documentElement.style;
+      const previousScrollBehavior = rootStyle.scrollBehavior;
+      rootStyle.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      rootStyle.scrollBehavior = previousScrollBehavior;
     };
-    function keyOrder(key) { return siteViewKeys.indexOf(key); }
-
-    // Internal links switch views immediately and remain compatible with deep links.
-    document.addEventListener('click', event => {
-      const link = event.target instanceof Element ? event.target.closest('a[href^="#"]') : null;
-      if (!link) return;
-      const raw = (link.getAttribute('href') || '').slice(1);
-      if (!siteViewKeys.includes(raw) || !siteViewPanels.get(raw)) return;
-      event.preventDefault();
-      activateSiteView(raw, { push:true });
-      $('.main-nav')?.classList.remove('open');
-      $('#mobileMenuToggle')?.setAttribute('aria-expanded', 'false');
-    });
-
-    // Platform shortcuts always open the catalog view first.
-    document.querySelectorAll('[data-jump-platform]').forEach(button => button.addEventListener('click', () => {
-      activateSiteView('catalog', { push:true });
+    const updateActiveNavFromScroll = () => {
+      navScrollQueued = false;
+      const readingLine = Math.max(115, Math.min(260, window.innerHeight * 0.30));
+      let activeKey = 'home';
+      for (const key of sectionKeys) {
+        const section = document.getElementById(key);
+        if (section && section.getBoundingClientRect().top <= readingLine) activeKey = key;
+      }
+      if (window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8) {
+        activeKey = sectionKeys[sectionKeys.length - 1];
+      }
+      setActiveSection(activeKey);
+      setSectionHash(activeKey);
+    };
+    const queueActiveNavUpdate = () => {
+      if (navScrollQueued) return;
+      navScrollQueued = true;
+      window.requestAnimationFrame(updateActiveNavFromScroll);
+    };
+    navLinks.forEach(link => link.addEventListener('click', () => {
+      const key = sectionKeyForLink(link);
+      if (sectionKeys.includes(key)) {
+        setActiveSection(key);
+        setSectionHash(key);
+      }
+      queueActiveNavUpdate();
     }));
-
+    window.addEventListener('scroll', queueActiveNavUpdate, { passive: true });
+    window.addEventListener('resize', queueActiveNavUpdate, { passive: true });
+    window.addEventListener('hashchange', () => {
+      const rawHash = window.location.hash;
+      const key = normalizeSectionKey(rawHash);
+      if (!rawHash || !sectionKeys.includes(key)) {
+        setSectionHash('home');
+        setActiveSection('home');
+        scrollToHomeTop();
+        return;
+      }
+      setActiveSection(key);
+      queueActiveNavUpdate();
+    });
+    // Disable browser scroll restoration so F5/Ctrl+R cannot reopen an old tab position.
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
-    const startKey = normalizeSiteView(window.location.hash);
-    activateSiteView(startKey, { initial:true, skipLocation:false });
-    window.addEventListener('popstate', () => activateSiteView(normalizeSiteView(window.location.hash), { initial:true, skipLocation:true }));
-    window.addEventListener('hashchange', () => activateSiteView(normalizeSiteView(window.location.hash), { initial:true, skipLocation:true }));
+    const startsAtCanonicalHome = window.location.hash === '#home';
+    setSectionHash('home');
+    if (!startsAtCanonicalHome || window.scrollY > 0) scrollToHomeTop();
+    setActiveSection('home');
+    updateActiveNavFromScroll();
     document.addEventListener('keydown', (event) => {
       if ((event.key === '/' || (event.key.toLowerCase() === 'k' && (event.ctrlKey || event.metaKey))) && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
         event.preventDefault(); $('#heroSearch').focus();
