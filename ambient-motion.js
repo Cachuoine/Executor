@@ -18,7 +18,7 @@
 
   let width = 1, height = 1, ratio = 1;
   let particles = [], frame = 0, lastFrame = 0, running = true, clock = 0, coarseDevice = false;
-  const frameInterval = () => coarseDevice ? (1000 / 24) : (1000 / 30);
+  const frameInterval = () => coarseDevice ? (1000 / 18) : (1000 / 24);
   const palette = [
     { r: 127, g: 230, b: 224 },
     { r: 167, g: 139, b: 250 },
@@ -69,7 +69,7 @@
     width = nextWidth;
     height = nextHeight;
     coarseDevice = Boolean(window.matchMedia?.('(pointer: coarse)').matches || nextWidth <= 760);
-    ratio = Math.min(window.devicePixelRatio || 1, coarseDevice ? 1 : 1.2);
+    ratio = Math.min(window.devicePixelRatio || 1, 1);
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     canvas.style.width = `${width}px`;
@@ -77,8 +77,8 @@
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     // More particles, distributed across the whole viewport and capped for performance.
     const count = coarseDevice
-      ? Math.max(36, Math.min(112, Math.round((width * height) / 9200)))
-      : Math.max(72, Math.min(220, Math.round((width * height) / 7600)));
+      ? Math.max(20, Math.min(48, Math.round((width * height) / 22000)))
+      : Math.max(48, Math.min(112, Math.round((width * height) / 15000)));
     if (particles.length !== count) seedSpreadParticles(count);
   }
 
@@ -89,9 +89,9 @@
       { y: .59, amp: 12, freq: .0062, speed: .26, phase: 4.1, color: 'rgba(136,182,255,.072)', line: .9 },
       { y: .82, amp: 16, freq: .0045, speed: -.22, phase: 1.4, color: 'rgba(127,230,224,.065)', line: .85 }
     ];
-    for (const wave of waves.slice(0, coarseDevice ? 2 : waves.length)) {
+    for (const wave of waves.slice(0, coarseDevice ? 1 : 2)) {
       ctx.beginPath();
-      for (let x = -12; x <= width + 12; x += 7) {
+      for (let x = -12; x <= width + 12; x += coarseDevice ? 14 : 10) {
         const y = height * wave.y
           + Math.sin(x * wave.freq + clock * wave.speed + wave.phase) * Math.min(wave.amp, height * .022)
           + Math.sin(x * wave.freq * .43 - clock * wave.speed * .8 + wave.phase * 1.7) * wave.amp * .34;
@@ -104,7 +104,7 @@
   }
 
   function drawParticles(delta) {
-    const linkDistance = Math.min(148, Math.max(92, width * .105));
+    const linkDistance = Math.min(126, Math.max(82, width * .095));
     const linkDistanceSq = linkDistance * linkDistance;
     const cellSize = linkDistance;
     const cols = Math.max(1, Math.ceil(width / cellSize));

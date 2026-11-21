@@ -149,7 +149,7 @@
 .music-panel::-webkit-scrollbar-track,.music-track-list::-webkit-scrollbar-track{background:transparent}
 .music-panel::-webkit-scrollbar-thumb,.music-track-list::-webkit-scrollbar-thumb{background:rgba(167,139,250,.42);border-radius:99px;border:0}
 .music-panel::-webkit-scrollbar-thumb:hover,.music-track-list::-webkit-scrollbar-thumb:hover{background:rgba(127,230,224,.65)}
-.admin-tab-panel.admin-tab-entering:not(.hidden){animation:siAdminPanelIn .42s var(--si-island-ease) both}
+.admin-tab-panel.admin-tab-entering:not(.hidden){animation:nrAdminTabIn .22s cubic-bezier(.2,.72,.25,1) both}
 @keyframes siAdminPanelIn{from{opacity:0;transform:translateY(10px);filter:blur(2px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
 .admin-site-header .admin-dynamic-nav .admin-section-tab{transition:opacity .4s ease,transform .55s var(--si-island-ease),color .24s ease,background .24s ease,box-shadow .24s ease}
 .admin-site-header .admin-dynamic-nav .admin-section-tab.active::after{content:"";position:absolute;left:22%;right:22%;bottom:4px;height:2px;border-radius:99px;background:linear-gradient(90deg,#7fe6e0,#a78bfa);box-shadow:0 0 10px rgba(127,230,224,.36);animation:siNavIndicator .36s var(--si-island-ease) both}
@@ -305,8 +305,6 @@
 .music-panel::-webkit-scrollbar-track,.music-track-list::-webkit-scrollbar-track{background:transparent!important}
 .music-panel::-webkit-scrollbar-thumb,.music-track-list::-webkit-scrollbar-thumb{background:rgba(167,139,250,.42)!important;border:0!important;border-radius:99px}
 .music-panel::-webkit-scrollbar-thumb:hover,.music-track-list::-webkit-scrollbar-thumb:hover{background:rgba(127,230,224,.68)!important}
-.admin-tab-panel:not(.hidden){animation:siAdminPanelIn .55s var(--si-island-ease) both}
-@keyframes siAdminPanelIn{from{opacity:0;transform:translateY(12px);filter:blur(2px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
 .admin-page .admin-site-header .music-dock.is-collapsed{width:84px!important;max-width:84px!important;height:38px!important;flex-basis:84px!important}
 .admin-page .admin-site-header .music-dock.music-centered{width:min(330px,calc(100vw - 36px))!important;max-width:min(330px,calc(100vw - 36px))!important;height:50px!important}
 .admin-page .admin-site-header .music-dock.is-closing,.admin-page .admin-site-header .music-dock.music-centered.is-closing{width:84px!important;max-width:84px!important;height:38px!important}
@@ -2337,3 +2335,27 @@ html.executor-no-dblclick-edit body .music-dock.is-transition-locked .music-now-
 .music-now-playing-source:hover{color:#c7fff5;opacity:1;text-decoration:underline;text-underline-offset:3px}
 .music-now-playing-source[hidden]{display:none!important}
 @media(max-width:520px){.music-now-playing-time-end{gap:6px}.music-now-playing-source{font-size:9px}}
+
+
+/* v15.2.91 — calm, consistent tab transitions for public site and Admin. */
+.site-header{position:sticky;top:0;z-index:100;background:rgba(10,12,19,.88);-webkit-backdrop-filter:blur(14px) saturate(112%);backdrop-filter:blur(14px) saturate(112%);isolation:isolate}
+.site-view-panel[hidden],[data-site-home-only][hidden]{display:none!important}
+.site-view-panel{min-width:0;transform-origin:center top}
+.site-view-panel.site-view-entering{animation:nrSiteTabIn .22s cubic-bezier(.2,.72,.25,1) both}
+.site-view-panel.site-view-from-right{--nr-tab-shift:9px}
+.site-view-panel.site-view-from-left{--nr-tab-shift:-9px}
+@keyframes nrSiteTabIn{from{opacity:0;transform:translate3d(var(--nr-tab-shift,0),0,0) scale(.997)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+.site-header .main-nav-dynamic .nav-link{position:relative;border:1px solid transparent;transition:color .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.site-header .main-nav-dynamic .nav-link.active{transform:none;border-color:rgba(167,139,250,.2);background:linear-gradient(115deg,rgba(167,139,250,.13),rgba(127,230,224,.055));box-shadow:inset 0 1px rgba(255,255,255,.045)}
+.site-header .main-nav-dynamic .nav-link.active::after{left:30%;right:30%;bottom:3px;height:2px;animation:nrNavMarkIn .2s ease both}
+@keyframes nrNavMarkIn{from{transform:scaleX(.55);opacity:.35}to{transform:scaleX(1);opacity:1}}
+.admin-site-header .admin-dynamic-nav .admin-section-tab{position:relative;border:1px solid transparent;border-radius:10px;transition:color .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.admin-site-header .admin-dynamic-nav .admin-section-tab:hover{background:rgba(255,255,255,.045);color:#eef0fa}
+.admin-site-header .admin-dynamic-nav .admin-section-tab.active{transform:none;border-color:rgba(167,139,250,.22);background:linear-gradient(115deg,rgba(167,139,250,.15),rgba(127,230,224,.055));box-shadow:inset 0 1px rgba(255,255,255,.055),0 4px 12px rgba(0,0,0,.12)}
+.admin-site-header .admin-dynamic-nav .admin-section-tab.active::after{left:28%;right:28%;bottom:3px;height:2px;animation:nrNavMarkIn .2s ease both}
+.admin-tab-panel.admin-tab-entering:not(.hidden){animation:nrAdminTabIn .22s cubic-bezier(.2,.72,.25,1) both}
+@keyframes nrAdminTabIn{from{opacity:0;transform:translate3d(0,7px,0) scale(.998)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+.ambient{filter:blur(70px);opacity:.11;contain:paint;transform:translateZ(0)}
+.grid-backdrop{background-size:64px 64px;opacity:.11}
+@media(max-width:800px){.site-header{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}.site-view-panel.site-view-entering{animation-duration:.18s}.admin-tab-panel.admin-tab-entering:not(.hidden){animation-duration:.18s}}
+@media(prefers-reduced-motion:reduce){.site-view-panel.site-view-entering,.admin-tab-panel.admin-tab-entering:not(.hidden){animation:none!important}.site-header .main-nav-dynamic .nav-link,.admin-site-header .admin-dynamic-nav .admin-section-tab{transition:none!important}}
