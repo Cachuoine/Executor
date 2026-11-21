@@ -1,9 +1,10 @@
-/* EXECUTOR v15.2.7 — ambient fluid waves + connected particles.
- * Decorative only: no pointer capture, no network calls, and no layout impact.
+/* NIGHTREAPER — balanced galaxy / liquid ambience.
+ * Decorative canvas only: it never captures input, loads external assets, or changes layout.
  */
 (() => {
   'use strict';
   if (!document.body || document.querySelector('.ambient-particle-field')) return;
+
   const motionQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
   if (motionQuery?.matches) return;
 
@@ -13,12 +14,10 @@
   canvas.setAttribute('role', 'presentation');
   canvas.tabIndex = -1;
   document.body.insertBefore(canvas, document.body.firstChild);
+
   const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
   if (!ctx) { canvas.remove(); return; }
 
-  let width = 1, height = 1, ratio = 1;
-  let particles = [], frame = 0, lastFrame = 0, running = true, clock = 0, coarseDevice = false;
-  const frameInterval = () => coarseDevice ? (1000 / 18) : (1000 / 24);
   const palette = [
     { r: 127, g: 230, b: 224 },
     { r: 167, g: 139, b: 250 },
@@ -28,20 +27,20 @@
   const rand = (min, max) => min + Math.random() * (max - min);
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
-  function createParticle(x, y, index = 0) {
-    const tone = palette[Math.floor(Math.random() * palette.length)];
-    return {
-      x: Number.isFinite(x) ? x : rand(0, width),
-      y: Number.isFinite(y) ? y : rand(0, height),
-      vx: rand(-0.34, 0.34), vy: rand(-0.28, 0.28),
-      r: rand(0.72, 1.82), phase: rand(0, Math.PI * 2), tone,
-      twinkle: rand(0.38, 1), index
-    };
-  }
+  let width = 1;
+  let height = 1;
+  let ratio = 1;
+  let coarseDevice = false;
+  let particles = [];
+  let frame = 0;
+  let lastFrame = 0;
+  let clock = 0;
+  let running = true;
 
-  function seedSpreadParticles(count) {
-    // Stratified sampling gives every region its own particles instead of allowing
-    // random initialization to create conspicuous clumps in the center.
+  const frameInterval = () => coarseDevice ? 1000 / 20 : 1000 / 30;
+
+  function seedParticles(count) {
+    // Stratified grid + small jitter keeps density visually even across the whole canvas.
     const columns = Math.max(1, Math.ceil(Math.sqrt(count * width / Math.max(1, height))));
     const rows = Math.max(1, Math.ceil(count / columns));
     const cellWidth = width / columns;
@@ -49,53 +48,93 @@
     particles = Array.from({ length: count }, (_, index) => {
       const column = index % columns;
       const row = Math.floor(index / columns);
-      const x = clamp((column + 0.5) * cellWidth + rand(-cellWidth * 0.36, cellWidth * 0.36), 2, Math.max(2, width - 2));
-      const y = clamp((row + 0.5) * cellHeight + rand(-cellHeight * 0.36, cellHeight * 0.36), 2, Math.max(2, height - 2));
-      return createParticle(x, y, index);
+      const baseX = (column + 0.5) * cellWidth + rand(-cellWidth * 0.13, cellWidth * 0.13);
+      const baseY = (row + 0.5) * cellHeight + rand(-cellHeight * 0.13, cellHeight * 0.13);
+      return {
+        baseX: clamp(baseX, 3, Math.max(3, width - 3)),
+        baseY: clamp(baseY, 3, Math.max(3, height - 3)),
+        x: baseX,
+        y: baseY,
+        phase: rand(0, Math.PI * 2),
+        tone: palette[(column + row * 2 + Math.floor(rand(0, 2))) % palette.length],
+        radius: rand(0.75, 1.75),
+        twinkle: rand(0.45, 1),
+        drift: rand(7, 17),
+        index
+      };
     });
   }
 
   function resize() {
-    const previousWidth = width;
-    const previousHeight = height;
     const nextWidth = Math.max(1, window.innerWidth || document.documentElement.clientWidth || 1);
     const nextHeight = Math.max(1, window.innerHeight || document.documentElement.clientHeight || 1);
-    if (particles.length && previousWidth > 1 && previousHeight > 1) {
-      for (const particle of particles) {
-        particle.x = clamp((particle.x / previousWidth) * nextWidth, 2, Math.max(2, nextWidth - 2));
-        particle.y = clamp((particle.y / previousHeight) * nextHeight, 2, Math.max(2, nextHeight - 2));
-      }
-    }
     width = nextWidth;
     height = nextHeight;
-    coarseDevice = Boolean(window.matchMedia?.('(pointer: coarse)').matches || nextWidth <= 760);
-    ratio = Math.min(window.devicePixelRatio || 1, 1);
+    coarseDevice = Boolean(window.matchMedia?.('(pointer: coarse)').matches || width <= 760);
+    ratio = Math.min(window.devicePixelRatio || 1, coarseDevice ? 1 : 1.15);
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    // More particles, distributed across the whole viewport and capped for performance.
+
+    const area = width * height;
     const count = coarseDevice
-      ? Math.max(20, Math.min(48, Math.round((width * height) / 22000)))
-      : Math.max(48, Math.min(112, Math.round((width * height) / 15000)));
-    if (particles.length !== count) seedSpreadParticles(count);
+      ? Math.max(42, Math.min(76, Math.round(area / 15000)))
+      : Math.max(100, Math.min(176, Math.round(area / 10500)));
+    if (particles.length !== count) seedParticles(count);
+    else seedParticles(count);
+  }
+
+  function updateParticles() {
+    for (const particle of particles) {
+      const phase = particle.phase;
+      const drift = particle.drift;
+      // Each point orbits a stable, evenly spaced anchor instead of wandering into clumps.
+      particle.x = particle.baseX
+        + Math.sin(clock * 0.31 + phase) * drift
+        + Math.cos(clock * 0.13 + phase * 1.7) * drift * 0.23;
+      particle.y = particle.baseY
+        + Math.cos(clock * 0.27 + phase * 1.2) * drift * 0.82
+        + Math.sin(clock * 0.11 + phase) * drift * 0.2;
+    }
+  }
+
+  function drawNebula() {
+    const blobs = [
+      { x: 0.16, y: 0.23, sx: 0.25, sy: 0.30, phase: 0.2, color: '127,230,224', alpha: 0.050 },
+      { x: 0.78, y: 0.21, sx: 0.29, sy: 0.34, phase: 2.1, color: '167,139,250', alpha: 0.060 },
+      { x: 0.43, y: 0.72, sx: 0.34, sy: 0.30, phase: 4.4, color: '136,182,255', alpha: 0.042 },
+      { x: 0.94, y: 0.78, sx: 0.20, sy: 0.25, phase: 1.4, color: '200,241,105', alpha: 0.028 }
+    ];
+    for (const blob of blobs) {
+      const cx = width * blob.x + Math.sin(clock * 0.12 + blob.phase) * width * 0.035;
+      const cy = height * blob.y + Math.cos(clock * 0.10 + blob.phase) * height * 0.035;
+      const radius = Math.max(80, Math.min(width * blob.sx, height * blob.sy));
+      const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+      gradient.addColorStop(0, `rgba(${blob.color},${blob.alpha})`);
+      gradient.addColorStop(0.48, `rgba(${blob.color},${blob.alpha * 0.36})`);
+      gradient.addColorStop(1, `rgba(${blob.color},0)`);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+    }
   }
 
   function drawFluidWaves() {
     const waves = [
-      { y: .19, amp: 14, freq: .0049, speed: .43, phase: .4, color: 'rgba(127,230,224,.105)', line: 1.05 },
-      { y: .37, amp: 19, freq: .0037, speed: -.31, phase: 2.2, color: 'rgba(167,139,250,.09)', line: 1.0 },
-      { y: .59, amp: 12, freq: .0062, speed: .26, phase: 4.1, color: 'rgba(136,182,255,.072)', line: .9 },
-      { y: .82, amp: 16, freq: .0045, speed: -.22, phase: 1.4, color: 'rgba(127,230,224,.065)', line: .85 }
+      { y: 0.15, amp: 15, freq: 0.0042, speed: 0.34, phase: 0.3, color: 'rgba(127,230,224,.14)', line: 1.15 },
+      { y: 0.34, amp: 22, freq: 0.0034, speed: -0.26, phase: 2.1, color: 'rgba(167,139,250,.125)', line: 1.0 },
+      { y: 0.57, amp: 17, freq: 0.0047, speed: 0.21, phase: 4.2, color: 'rgba(136,182,255,.105)', line: 0.95 },
+      { y: 0.81, amp: 19, freq: 0.0038, speed: -0.18, phase: 1.4, color: 'rgba(127,230,224,.09)', line: 0.85 }
     ];
-    for (const wave of waves.slice(0, coarseDevice ? 1 : 2)) {
+    const visibleWaves = coarseDevice ? waves.slice(0, 3) : waves;
+    for (const wave of visibleWaves) {
       ctx.beginPath();
-      for (let x = -12; x <= width + 12; x += coarseDevice ? 14 : 10) {
-        const y = height * wave.y
-          + Math.sin(x * wave.freq + clock * wave.speed + wave.phase) * Math.min(wave.amp, height * .022)
-          + Math.sin(x * wave.freq * .43 - clock * wave.speed * .8 + wave.phase * 1.7) * wave.amp * .34;
-        if (x <= -12) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      for (let x = -16; x <= width + 16; x += coarseDevice ? 16 : 10) {
+        const slow = Math.sin(x * wave.freq + clock * wave.speed + wave.phase);
+        const detail = Math.sin(x * wave.freq * 0.47 - clock * wave.speed * 0.72 + wave.phase * 1.6);
+        const y = height * wave.y + slow * Math.min(wave.amp, height * 0.023) + detail * wave.amp * 0.33;
+        if (x <= -16) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.strokeStyle = wave.color;
       ctx.lineWidth = wave.line;
@@ -103,86 +142,97 @@
     }
   }
 
-  function drawParticles(delta) {
-    const linkDistance = Math.min(126, Math.max(82, width * .095));
+  function drawOrbitRings() {
+    ctx.save();
+    ctx.lineWidth = 0.7;
+    ctx.strokeStyle = 'rgba(167,139,250,.055)';
+    ctx.beginPath();
+    ctx.ellipse(width * 0.52, height * 0.48, width * 0.37, height * 0.25, Math.sin(clock * 0.06) * 0.08, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(127,230,224,.045)';
+    ctx.beginPath();
+    ctx.ellipse(width * 0.48, height * 0.52, width * 0.45, height * 0.34, -Math.cos(clock * 0.05) * 0.06, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawConnections() {
+    const linkDistance = Math.min(142, Math.max(94, width * 0.105));
     const linkDistanceSq = linkDistance * linkDistance;
-    const cellSize = linkDistance;
-    const cols = Math.max(1, Math.ceil(width / cellSize));
-    const rows = Math.max(1, Math.ceil(height / cellSize));
+    const cols = Math.max(1, Math.ceil(width / linkDistance));
+    const rows = Math.max(1, Math.ceil(height / linkDistance));
     const cells = new Map();
 
-    for (const p of particles) {
-      // A gentle flowing vector field makes paths curve like water rather than move linearly.
-      const flow = clock * .34 + p.phase + p.y * .0032;
-      p.vx = clamp(p.vx + Math.sin(flow) * .0022 * delta, -.43, .43);
-      p.vy = clamp(p.vy + Math.cos(flow * .83 + p.x * .002) * .0018 * delta, -.36, .36);
-      p.x += p.vx * delta;
-      p.y += p.vy * delta + Math.sin(clock * .56 + p.phase + p.x * .002) * .075 * delta;
-      if (p.x < -8) p.x = width + 8; else if (p.x > width + 8) p.x = -8;
-      if (p.y < -8) p.y = height + 8; else if (p.y > height + 8) p.y = -8;
-      const cx = clamp(Math.floor(p.x / cellSize), 0, cols - 1);
-      const cy = clamp(Math.floor(p.y / cellSize), 0, rows - 1);
+    for (const particle of particles) {
+      const cx = clamp(Math.floor(particle.x / linkDistance), 0, cols - 1);
+      const cy = clamp(Math.floor(particle.y / linkDistance), 0, rows - 1);
       const key = cy * cols + cx;
       if (!cells.has(key)) cells.set(key, []);
-      cells.get(key).push(p);
+      cells.get(key).push(particle);
     }
 
-    // Soft separation prevents particles from drifting into visible clumps. The force is
-    // intentionally slight so their paths still feel fluid rather than like a rigid grid.
-    const minGap = 27;
-    const minGapSq = minGap * minGap;
     for (const [key, group] of cells) {
-      const cx = key % cols, cy = Math.floor(key / cols);
-      for (let oy = -1; oy <= 1; oy++) for (let ox = -1; ox <= 1; ox++) {
-        const nx = cx + ox, ny = cy + oy;
-        if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) continue;
-        const other = cells.get(ny * cols + nx);
-        if (!other) continue;
-        for (const a of group) for (const b of other) {
-          if (a.index >= b.index) continue;
-          let dx = a.x - b.x, dy = a.y - b.y;
-          const distSq = dx * dx + dy * dy;
-          if (distSq < 0.01 || distSq >= minGapSq) continue;
-          const dist = Math.sqrt(distSq);
-          const push = ((minGap - dist) / minGap) * 0.12;
-          dx /= dist; dy /= dist;
-          a.x += dx * push; a.y += dy * push;
-          b.x -= dx * push; b.y -= dy * push;
+      const cx = key % cols;
+      const cy = Math.floor(key / cols);
+      for (let oy = -1; oy <= 1; oy++) {
+        for (let ox = -1; ox <= 1; ox++) {
+          const nx = cx + ox;
+          const ny = cy + oy;
+          if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) continue;
+          const other = cells.get(ny * cols + nx);
+          if (!other) continue;
+          for (const a of group) for (const b of other) {
+            if (a.index >= b.index) continue;
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const distanceSq = dx * dx + dy * dy;
+            if (distanceSq >= linkDistanceSq) continue;
+            const alpha = (1 - Math.sqrt(distanceSq) / linkDistance) * (coarseDevice ? 0.085 : 0.12);
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.lineWidth = 0.55;
+            ctx.strokeStyle = `rgba(${a.tone.r},${a.tone.g},${a.tone.b},${alpha})`;
+            ctx.stroke();
+          }
         }
       }
     }
+  }
 
-    // Spatial grid keeps the dense field inexpensive: compare only neighbouring cells.
-    for (const [key, group] of cells) {
-      const cx = key % cols, cy = Math.floor(key / cols);
-      for (let oy = -1; oy <= 1; oy++) for (let ox = -1; ox <= 1; ox++) {
-        const nx = cx + ox, ny = cy + oy;
-        if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) continue;
-        const other = cells.get(ny * cols + nx);
-        if (!other) continue;
-        for (const a of group) for (const b of other) {
-          if (a === b || (a.y > b.y || (a.y === b.y && a.x >= b.x))) continue;
-          const dx = a.x - b.x, dy = a.y - b.y, distSq = dx * dx + dy * dy;
-          if (distSq >= linkDistanceSq) continue;
-          const alpha = (1 - Math.sqrt(distSq) / linkDistance) * .15;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-          ctx.lineWidth = .52;
-          ctx.strokeStyle = `rgba(${a.tone.r},${a.tone.g},${a.tone.b},${alpha})`;
-          ctx.stroke();
-        }
-      }
-    }
-
-    for (const p of particles) {
-      const pulse = .63 + Math.sin(clock * 1.2 + p.phase) * .23;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (.88 + pulse * .2), 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${p.tone.r},${p.tone.g},${p.tone.b},${.34 * pulse * p.twinkle})`;
+  function drawParticles() {
+    for (const particle of particles) {
+      const pulse = 0.64 + Math.sin(clock * 1.45 + particle.phase) * 0.28;
+      const radius = particle.radius * (0.9 + pulse * 0.17);
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${particle.tone.r},${particle.tone.g},${particle.tone.b},${0.42 * pulse * particle.twinkle})`;
       ctx.fill();
-      if (p.r > 1.35) {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${p.tone.r},${p.tone.g},${p.tone.b},${.045 * pulse})`;
+      if (particle.radius > 1.35) {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, radius * 2.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${particle.tone.r},${particle.tone.g},${particle.tone.b},${0.055 * pulse})`;
         ctx.fill();
       }
+    }
+
+    // A few evenly-spaced glints add depth without turning the whole background into noise.
+    const glints = coarseDevice ? 4 : 7;
+    for (let i = 0; i < glints; i++) {
+      const phase = i * 2.17;
+      const x = ((i + 0.5) / glints) * width + Math.sin(clock * 0.19 + phase) * width * 0.035;
+      const y = height * (0.13 + ((i * 37) % 79) / 100) + Math.cos(clock * 0.15 + phase) * 12;
+      const alpha = 0.22 + (Math.sin(clock * 1.2 + phase) + 1) * 0.12;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(221,226,255,${alpha})`;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(x - 4, y); ctx.lineTo(x + 4, y);
+      ctx.moveTo(x, y - 4); ctx.lineTo(x, y + 4);
+      ctx.strokeStyle = `rgba(190,205,255,${alpha * 0.42})`;
+      ctx.lineWidth = 0.65;
+      ctx.stroke();
     }
   }
 
@@ -190,13 +240,17 @@
     if (!running) return;
     frame = requestAnimationFrame(render);
     if (now - lastFrame < frameInterval()) return;
-    const delta = Math.min(1.8, lastFrame ? (now - lastFrame) / frameInterval() : 1);
+    const delta = Math.min(2, lastFrame ? (now - lastFrame) / frameInterval() : 1);
     lastFrame = now;
-    clock += delta * .018;
+    clock += delta * 0.018;
     ctx.clearRect(0, 0, width, height);
     ctx.globalCompositeOperation = 'lighter';
+    drawNebula();
+    drawOrbitRings();
     drawFluidWaves();
-    drawParticles(delta);
+    updateParticles();
+    drawConnections();
+    drawParticles();
     ctx.globalCompositeOperation = 'source-over';
   }
 
@@ -206,15 +260,27 @@
     frame = 0;
   }
   function start() {
-    if (running) return;
-    running = true; lastFrame = 0;
+    if (running || document.hidden) return;
+    running = true;
+    lastFrame = 0;
     frame = requestAnimationFrame(render);
   }
-  function onVisibility() { if (document.hidden) stop(); else start(); }
-  function onMotionChange(event) {
-    if (event.matches) { stop(); canvas.hidden = true; ctx.clearRect(0, 0, width, height); }
-    else { canvas.hidden = false; resize(); start(); }
+  function onVisibility() {
+    if (document.hidden) stop();
+    else start();
   }
+  function onMotionChange(event) {
+    if (event.matches) {
+      stop();
+      canvas.hidden = true;
+      ctx.clearRect(0, 0, width, height);
+    } else {
+      canvas.hidden = false;
+      resize();
+      start();
+    }
+  }
+
   resize();
   window.addEventListener('resize', resize, { passive: true });
   document.addEventListener('visibilitychange', onVisibility, { passive: true });
