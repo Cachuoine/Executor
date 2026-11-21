@@ -1218,3 +1218,71 @@ body:not(.admin-page) .section-shell{width:min(1320px,calc(100% - 48px))}
 
 /* v15.2.85 — use the supplied animated Discord platform emoji across the public website. */
 .platform-glyph-image{object-fit:contain;overflow:hidden;vertical-align:middle}
+
+/* v15.2.94 — AURORA PRISM visual atmosphere (public homepage + GitHub Pages). */
+body:not(.admin-page) {
+  background:
+    radial-gradient(ellipse at 11% 8%, rgba(88, 72, 174, .18), transparent 36%),
+    radial-gradient(ellipse at 88% 24%, rgba(35, 126, 139, .13), transparent 34%),
+    radial-gradient(ellipse at 52% 92%, rgba(106, 61, 151, .10), transparent 40%),
+    linear-gradient(155deg, #080a17 0%, #080d18 46%, #090b16 100%);
+}
+body:not(.admin-page) .ambient {
+  position: fixed !important;
+  width: min(74vw, 980px);
+  height: min(58vw, 760px);
+  filter: blur(112px);
+  opacity: .22;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -2;
+  will-change: transform;
+}
+body:not(.admin-page) .ambient-a {
+  top: -26vh;
+  right: -23vw;
+  left: auto;
+  background: radial-gradient(ellipse, rgba(126, 91, 255, .72) 0%, rgba(95, 91, 218, .24) 38%, transparent 72%);
+  animation: nrPrismBloomA 29s ease-in-out infinite alternate;
+}
+body:not(.admin-page) .ambient-b {
+  top: 38vh;
+  bottom: auto;
+  left: -27vw;
+  right: auto;
+  background: radial-gradient(ellipse, rgba(65, 207, 196, .56) 0%, rgba(62, 141, 190, .20) 42%, transparent 74%);
+  animation: nrPrismBloomB 34s ease-in-out infinite alternate;
+}
+body:not(.admin-page) .grid-backdrop {
+  opacity: .055;
+  background-size: 84px 84px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.8), transparent 78%);
+  animation: nrPrismGridDrift 52s ease-in-out infinite alternate;
+}
+body:not(.admin-page) .ambient-particle-field {
+  opacity: .96;
+  mix-blend-mode: screen;
+}
+@keyframes nrPrismBloomA {
+  0% { transform: translate3d(0, 0, 0) scale(.92) rotate(-5deg); }
+  100% { transform: translate3d(-7vw, 7vh, 0) scale(1.12) rotate(7deg); }
+}
+@keyframes nrPrismBloomB {
+  0% { transform: translate3d(0, 0, 0) scale(1.08) rotate(4deg); }
+  100% { transform: translate3d(9vw, -5vh, 0) scale(.92) rotate(-8deg); }
+}
+@keyframes nrPrismGridDrift {
+  0% { background-position: 0 0; opacity: .035; }
+  100% { background-position: 42px 28px; opacity: .065; }
+}
+@media (max-width: 760px) {
+  body:not(.admin-page) .ambient { width: 112vw; height: 86vw; filter: blur(88px); opacity: .15; }
+  body:not(.admin-page) .ambient-a { top: -15vh; right: -45vw; }
+  body:not(.admin-page) .ambient-b { top: 48vh; left: -47vw; }
+  body:not(.admin-page) .ambient-particle-field { opacity: .78; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.admin-page) .ambient-a,
+  body:not(.admin-page) .ambient-b,
+  body:not(.admin-page) .grid-backdrop { animation: none !important; }
+}

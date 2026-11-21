@@ -2336,6 +2336,6 @@ html.executor-no-dblclick-edit body .music-dock.is-transition-locked .music-now-
 .music-now-playing-source[hidden]{display:none!important}
 @media(max-width:520px){.music-now-playing-time-end{gap:6px}.music-now-playing-source{font-size:9px}}
 
-/* v15.2.93 — retain lightweight ambient rendering without changing classic navigation. */
+/* v15.2.94 — retain lightweight ambient rendering without changing classic navigation. */
 .ambient{filter:blur(70px);opacity:.11;contain:paint;transform:translateZ(0)}
 .grid-backdrop{background-size:64px 64px;opacity:.11}

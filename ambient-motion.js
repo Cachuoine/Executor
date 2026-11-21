@@ -1,13 +1,13 @@
-/* NIGHTREAPER — balanced galaxy / liquid ambience.
- * Decorative canvas only: it never captures input, loads external assets, or changes layout.
+/**
+ * NightReaper — AURORA PRISM / LUMEN FIELD
+ * A new full-page atmosphere: flowing aurora curtains, prismatic orbital arcs,
+ * distant stars and slow luminous dust. Decorative only; never captures input.
  */
 (() => {
   'use strict';
-  if (!document.body || document.querySelector('.ambient-particle-field')) return;
+  if (!document.body || document.body.classList?.contains?.('admin-page') || document.querySelector('.ambient-particle-field')) return;
 
   const motionQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-  if (motionQuery?.matches) return;
-
   const canvas = document.createElement('canvas');
   canvas.className = 'ambient-particle-field';
   canvas.setAttribute('aria-hidden', 'true');
@@ -18,11 +18,13 @@
   const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
   if (!ctx) { canvas.remove(); return; }
 
+  const TAU = Math.PI * 2;
   const palette = [
-    { r: 127, g: 230, b: 224 },
-    { r: 167, g: 139, b: 250 },
-    { r: 136, g: 182, b: 255 },
-    { r: 200, g: 241, b: 105 }
+    { r: 143, g: 121, b: 255 }, // spectral violet
+    { r: 102, g: 224, b: 222 }, // glacial teal
+    { r: 142, g: 174, b: 255 }, // periwinkle
+    { r: 226, g: 164, b: 255 }, // orchid
+    { r: 211, g: 236, b: 169 }  // pale lime
   ];
   const rand = (min, max) => min + Math.random() * (max - min);
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -30,240 +32,294 @@
   let width = 1;
   let height = 1;
   let ratio = 1;
-  let coarseDevice = false;
-  let particles = [];
+  let clock = 0;
   let frame = 0;
   let lastFrame = 0;
-  let clock = 0;
-  let running = true;
+  let running = false;
+  let coarseDevice = false;
+  let pointerX = 0;
+  let pointerY = 0;
+  let stars = [];
+  let dust = [];
 
-  const frameInterval = () => coarseDevice ? 1000 / 20 : 1000 / 30;
+  const ribbonSpecs = [
+    { x: .10, amplitude: .075, width: .045, speed: .18, phase: .3, hue: 0 },
+    { x: .28, amplitude: .055, width: .035, speed: -.14, phase: 2.1, hue: 1 },
+    { x: .49, amplitude: .082, width: .052, speed: .12, phase: 4.2, hue: 2 },
+    { x: .72, amplitude: .064, width: .040, speed: -.16, phase: 1.4, hue: 3 },
+    { x: .91, amplitude: .070, width: .047, speed: .13, phase: 5.1, hue: 1 }
+  ];
 
-  function seedParticles(count) {
-    // Stratified grid + small jitter keeps density visually even across the whole canvas.
+  function makeSpecks(count, kind) {
     const columns = Math.max(1, Math.ceil(Math.sqrt(count * width / Math.max(1, height))));
     const rows = Math.max(1, Math.ceil(count / columns));
-    const cellWidth = width / columns;
-    const cellHeight = height / rows;
-    particles = Array.from({ length: count }, (_, index) => {
-      const column = index % columns;
+    const cellW = width / columns;
+    const cellH = height / rows;
+    return Array.from({ length: count }, (_, index) => {
+      const col = index % columns;
       const row = Math.floor(index / columns);
-      const baseX = (column + 0.5) * cellWidth + rand(-cellWidth * 0.13, cellWidth * 0.13);
-      const baseY = (row + 0.5) * cellHeight + rand(-cellHeight * 0.13, cellHeight * 0.13);
+      const tone = palette[Math.floor(Math.random() * palette.length)];
       return {
-        baseX: clamp(baseX, 3, Math.max(3, width - 3)),
-        baseY: clamp(baseY, 3, Math.max(3, height - 3)),
-        x: baseX,
-        y: baseY,
-        phase: rand(0, Math.PI * 2),
-        tone: palette[(column + row * 2 + Math.floor(rand(0, 2))) % palette.length],
-        radius: rand(0.75, 1.75),
-        twinkle: rand(0.45, 1),
-        drift: rand(7, 17),
+        x: clamp((col + rand(.18, .82)) * cellW, 2, width - 2),
+        y: clamp((row + rand(.18, .82)) * cellH, 2, height - 2),
+        phase: rand(0, TAU),
+        radius: kind === 'star' ? rand(.45, 1.4) : rand(.8, 2.1),
+        tone,
+        speed: rand(.45, 1.1),
+        drift: rand(.08, .34),
         index
       };
     });
   }
 
   function resize() {
-    const nextWidth = Math.max(1, window.innerWidth || document.documentElement.clientWidth || 1);
-    const nextHeight = Math.max(1, window.innerHeight || document.documentElement.clientHeight || 1);
-    width = nextWidth;
-    height = nextHeight;
+    const oldW = width;
+    const oldH = height;
+    width = Math.max(1, window.innerWidth || document.documentElement.clientWidth || 1);
+    height = Math.max(1, window.innerHeight || document.documentElement.clientHeight || 1);
     coarseDevice = Boolean(window.matchMedia?.('(pointer: coarse)').matches || width <= 760);
-    ratio = Math.min(window.devicePixelRatio || 1, coarseDevice ? 1 : 1.15);
+    ratio = Math.min(window.devicePixelRatio || 1, coarseDevice ? 1 : 1.2);
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-    const area = width * height;
-    const count = coarseDevice
-      ? Math.max(42, Math.min(76, Math.round(area / 15000)))
-      : Math.max(100, Math.min(176, Math.round(area / 10500)));
-    if (particles.length !== count) seedParticles(count);
-    else seedParticles(count);
-  }
-
-  function updateParticles() {
-    for (const particle of particles) {
-      const phase = particle.phase;
-      const drift = particle.drift;
-      // Each point orbits a stable, evenly spaced anchor instead of wandering into clumps.
-      particle.x = particle.baseX
-        + Math.sin(clock * 0.31 + phase) * drift
-        + Math.cos(clock * 0.13 + phase * 1.7) * drift * 0.23;
-      particle.y = particle.baseY
-        + Math.cos(clock * 0.27 + phase * 1.2) * drift * 0.82
-        + Math.sin(clock * 0.11 + phase) * drift * 0.2;
-    }
-  }
-
-  function drawNebula() {
-    const blobs = [
-      { x: 0.16, y: 0.23, sx: 0.25, sy: 0.30, phase: 0.2, color: '127,230,224', alpha: 0.050 },
-      { x: 0.78, y: 0.21, sx: 0.29, sy: 0.34, phase: 2.1, color: '167,139,250', alpha: 0.060 },
-      { x: 0.43, y: 0.72, sx: 0.34, sy: 0.30, phase: 4.4, color: '136,182,255', alpha: 0.042 },
-      { x: 0.94, y: 0.78, sx: 0.20, sy: 0.25, phase: 1.4, color: '200,241,105', alpha: 0.028 }
-    ];
-    for (const blob of blobs) {
-      const cx = width * blob.x + Math.sin(clock * 0.12 + blob.phase) * width * 0.035;
-      const cy = height * blob.y + Math.cos(clock * 0.10 + blob.phase) * height * 0.035;
-      const radius = Math.max(80, Math.min(width * blob.sx, height * blob.sy));
-      const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-      gradient.addColorStop(0, `rgba(${blob.color},${blob.alpha})`);
-      gradient.addColorStop(0.48, `rgba(${blob.color},${blob.alpha * 0.36})`);
-      gradient.addColorStop(1, `rgba(${blob.color},0)`);
-      ctx.fillStyle = gradient;
-      ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
-    }
-  }
-
-  function drawFluidWaves() {
-    const waves = [
-      { y: 0.15, amp: 15, freq: 0.0042, speed: 0.34, phase: 0.3, color: 'rgba(127,230,224,.14)', line: 1.15 },
-      { y: 0.34, amp: 22, freq: 0.0034, speed: -0.26, phase: 2.1, color: 'rgba(167,139,250,.125)', line: 1.0 },
-      { y: 0.57, amp: 17, freq: 0.0047, speed: 0.21, phase: 4.2, color: 'rgba(136,182,255,.105)', line: 0.95 },
-      { y: 0.81, amp: 19, freq: 0.0038, speed: -0.18, phase: 1.4, color: 'rgba(127,230,224,.09)', line: 0.85 }
-    ];
-    const visibleWaves = coarseDevice ? waves.slice(0, 3) : waves;
-    for (const wave of visibleWaves) {
-      ctx.beginPath();
-      for (let x = -16; x <= width + 16; x += coarseDevice ? 16 : 10) {
-        const slow = Math.sin(x * wave.freq + clock * wave.speed + wave.phase);
-        const detail = Math.sin(x * wave.freq * 0.47 - clock * wave.speed * 0.72 + wave.phase * 1.6);
-        const y = height * wave.y + slow * Math.min(wave.amp, height * 0.023) + detail * wave.amp * 0.33;
-        if (x <= -16) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    if (stars.length && oldW > 1 && oldH > 1) {
+      for (const item of [...stars, ...dust]) {
+        item.x = clamp(item.x / oldW * width, 2, width - 2);
+        item.y = clamp(item.y / oldH * height, 2, height - 2);
       }
-      ctx.strokeStyle = wave.color;
-      ctx.lineWidth = wave.line;
-      ctx.stroke();
     }
+    const starCount = coarseDevice ? 66 : 132;
+    const dustCount = coarseDevice ? 22 : 46;
+    if (stars.length !== starCount) stars = makeSpecks(starCount, 'star');
+    if (dust.length !== dustCount) dust = makeSpecks(dustCount, 'dust');
   }
 
-  function drawOrbitRings() {
+  function drawLightVolumes() {
+    const offsetX = pointerX * (coarseDevice ? 0 : 18);
+    const offsetY = pointerY * (coarseDevice ? 0 : 12);
+    const lights = [
+      { x: width * .18 + offsetX, y: height * .20 + offsetY, rx: width * .42, ry: height * .46, color: 'rgba(118,91,255,.19)' },
+      { x: width * .77 - offsetX * .7, y: height * .43 - offsetY, rx: width * .34, ry: height * .54, color: 'rgba(75,207,204,.13)' },
+      { x: width * .49 + offsetX * .35, y: height * .88, rx: width * .42, ry: height * .28, color: 'rgba(176,108,255,.10)' }
+    ];
     ctx.save();
-    ctx.lineWidth = 0.7;
-    ctx.strokeStyle = 'rgba(167,139,250,.055)';
-    ctx.beginPath();
-    ctx.ellipse(width * 0.52, height * 0.48, width * 0.37, height * 0.25, Math.sin(clock * 0.06) * 0.08, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.strokeStyle = 'rgba(127,230,224,.045)';
-    ctx.beginPath();
-    ctx.ellipse(width * 0.48, height * 0.52, width * 0.45, height * 0.34, -Math.cos(clock * 0.05) * 0.06, 0, Math.PI * 2);
-    ctx.stroke();
+    ctx.globalCompositeOperation = 'screen';
+    for (const light of lights) {
+      const radius = Math.max(light.rx, light.ry);
+      const gradient = ctx.createRadialGradient(light.x, light.y, 0, light.x, light.y, radius);
+      gradient.addColorStop(0, light.color);
+      gradient.addColorStop(.38, light.color.replace(/\.\d+\)/, '.045)'));
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.ellipse(light.x, light.y, light.rx, light.ry, -.18, 0, TAU);
+      ctx.fill();
+    }
     ctx.restore();
   }
 
-  function drawConnections() {
-    const linkDistance = Math.min(142, Math.max(94, width * 0.105));
-    const linkDistanceSq = linkDistance * linkDistance;
-    const cols = Math.max(1, Math.ceil(width / linkDistance));
-    const rows = Math.max(1, Math.ceil(height / linkDistance));
-    const cells = new Map();
-
-    for (const particle of particles) {
-      const cx = clamp(Math.floor(particle.x / linkDistance), 0, cols - 1);
-      const cy = clamp(Math.floor(particle.y / linkDistance), 0, rows - 1);
-      const key = cy * cols + cx;
-      if (!cells.has(key)) cells.set(key, []);
-      cells.get(key).push(particle);
-    }
-
-    for (const [key, group] of cells) {
-      const cx = key % cols;
-      const cy = Math.floor(key / cols);
-      for (let oy = -1; oy <= 1; oy++) {
-        for (let ox = -1; ox <= 1; ox++) {
-          const nx = cx + ox;
-          const ny = cy + oy;
-          if (nx < 0 || nx >= cols || ny < 0 || ny >= rows) continue;
-          const other = cells.get(ny * cols + nx);
-          if (!other) continue;
-          for (const a of group) for (const b of other) {
-            if (a.index >= b.index) continue;
-            const dx = a.x - b.x;
-            const dy = a.y - b.y;
-            const distanceSq = dx * dx + dy * dy;
-            if (distanceSq >= linkDistanceSq) continue;
-            const alpha = (1 - Math.sqrt(distanceSq) / linkDistance) * (coarseDevice ? 0.085 : 0.12);
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.lineWidth = 0.55;
-            ctx.strokeStyle = `rgba(${a.tone.r},${a.tone.g},${a.tone.b},${alpha})`;
-            ctx.stroke();
-          }
-        }
-      }
-    }
+  function ribbonX(spec, y, edge = 0) {
+    const travel = clock * spec.speed + spec.phase;
+    const waveA = Math.sin(y * .0025 + travel) * height * spec.amplitude;
+    const waveB = Math.sin(y * .0062 - travel * .73 + spec.phase) * height * spec.amplitude * .24;
+    const waveC = Math.sin(y * .0011 + travel * .46) * width * .012;
+    return width * spec.x + waveA + waveB + waveC + edge;
   }
 
-  function drawParticles() {
-    for (const particle of particles) {
-      const pulse = 0.64 + Math.sin(clock * 1.45 + particle.phase) * 0.28;
-      const radius = particle.radius * (0.9 + pulse * 0.17);
+  function drawAuroraCurtains() {
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    const step = coarseDevice ? 34 : 22;
+    for (const spec of ribbonSpecs) {
+      const baseX = width * spec.x;
+      const half = Math.max(12, width * spec.width);
+      const gradient = ctx.createLinearGradient(baseX - half, 0, baseX + half, height);
+      gradient.addColorStop(0, 'rgba(135,119,255,0)');
+      gradient.addColorStop(.18, spec.hue === 1 ? 'rgba(91,225,218,.025)' : 'rgba(157,125,255,.035)');
+      gradient.addColorStop(.46, spec.hue === 2 ? 'rgba(130,172,255,.12)' : 'rgba(174,136,255,.105)');
+      gradient.addColorStop(.72, spec.hue === 3 ? 'rgba(222,148,255,.075)' : 'rgba(105,220,215,.075)');
+      gradient.addColorStop(1, 'rgba(120,105,255,0)');
+
+      const left = [];
+      const right = [];
+      for (let y = -40; y <= height + 40; y += step) {
+        const center = ribbonX(spec, y);
+        const shape = half * (.72 + .28 * Math.sin(y * .0036 + clock * spec.speed * 1.7 + spec.phase));
+        left.push([center - shape, y]);
+        right.push([center + shape, y]);
+      }
       ctx.beginPath();
-      ctx.arc(particle.x, particle.y, radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${particle.tone.r},${particle.tone.g},${particle.tone.b},${0.42 * pulse * particle.twinkle})`;
+      if (left.length) ctx.moveTo(left[0][0], left[0][1]);
+      for (let i = 1; i < left.length; i++) ctx.lineTo(left[i][0], left[i][1]);
+      for (let i = right.length - 1; i >= 0; i--) ctx.lineTo(right[i][0], right[i][1]);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
       ctx.fill();
-      if (particle.radius > 1.35) {
+
+      // A pair of fine silk edges makes each curtain read as a luminous ribbon.
+      for (const sign of [-.48, .48]) {
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, radius * 2.8, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${particle.tone.r},${particle.tone.g},${particle.tone.b},${0.055 * pulse})`;
-        ctx.fill();
+        for (let y = -30, first = true; y <= height + 30; y += step) {
+          const x = ribbonX(spec, y, half * sign);
+          if (first) { ctx.moveTo(x, y); first = false; } else ctx.lineTo(x, y);
+        }
+        const edgeGradient = ctx.createLinearGradient(baseX, 0, baseX, height);
+        edgeGradient.addColorStop(0, 'rgba(144,132,255,0)');
+        edgeGradient.addColorStop(.34, 'rgba(153,151,255,.11)');
+        edgeGradient.addColorStop(.66, 'rgba(118,237,226,.18)');
+        edgeGradient.addColorStop(1, 'rgba(144,132,255,0)');
+        ctx.strokeStyle = edgeGradient;
+        ctx.lineWidth = coarseDevice ? .8 : 1.15;
+        ctx.stroke();
       }
     }
+    ctx.restore();
+  }
 
-    // A few evenly-spaced glints add depth without turning the whole background into noise.
-    const glints = coarseDevice ? 4 : 7;
-    for (let i = 0; i < glints; i++) {
-      const phase = i * 2.17;
-      const x = ((i + 0.5) / glints) * width + Math.sin(clock * 0.19 + phase) * width * 0.035;
-      const y = height * (0.13 + ((i * 37) % 79) / 100) + Math.cos(clock * 0.15 + phase) * 12;
-      const alpha = 0.22 + (Math.sin(clock * 1.2 + phase) + 1) * 0.12;
+  function drawPrismOrbits() {
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    const cx = width * .57 + pointerX * 9;
+    const cy = height * .43 + pointerY * 7;
+    const rings = [
+      { rx: width * .34, ry: height * .19, rotation: -.25, color: 'rgba(143,128,255,.18)', speed: .045, offset: 0 },
+      { rx: width * .27, ry: height * .25, rotation: .52, color: 'rgba(104,222,218,.14)', speed: -.036, offset: 2.1 },
+      { rx: width * .40, ry: height * .12, rotation: -.62, color: 'rgba(215,164,255,.12)', speed: .027, offset: 4.3 },
+      { rx: width * .20, ry: height * .30, rotation: .18, color: 'rgba(145,185,255,.095)', speed: -.022, offset: 1.2 }
+    ];
+    for (const ring of rings) {
       ctx.beginPath();
-      ctx.arc(x, y, 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(221,226,255,${alpha})`;
-      ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(x - 4, y); ctx.lineTo(x + 4, y);
-      ctx.moveTo(x, y - 4); ctx.lineTo(x, y + 4);
-      ctx.strokeStyle = `rgba(190,205,255,${alpha * 0.42})`;
-      ctx.lineWidth = 0.65;
+      ctx.ellipse(cx, cy, Math.max(40, ring.rx), Math.max(28, ring.ry), ring.rotation + Math.sin(clock * ring.speed + ring.offset) * .035, 0, TAU);
+      ctx.strokeStyle = ring.color;
+      ctx.lineWidth = 1;
       ctx.stroke();
+      const angle = clock * ring.speed + ring.offset;
+      const pointX = cx + Math.cos(angle) * ring.rx * Math.cos(ring.rotation) - Math.sin(angle) * ring.ry * Math.sin(ring.rotation);
+      const pointY = cy + Math.cos(angle) * ring.rx * Math.sin(ring.rotation) + Math.sin(angle) * ring.ry * Math.cos(ring.rotation);
+      const glow = ctx.createRadialGradient(pointX, pointY, 0, pointX, pointY, coarseDevice ? 13 : 20);
+      glow.addColorStop(0, 'rgba(217,239,255,.72)');
+      glow.addColorStop(.25, ring.color);
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(pointX, pointY, coarseDevice ? 13 : 20, 0, TAU);
+      ctx.fill();
     }
+    ctx.restore();
   }
 
-  function render(now) {
-    if (!running) return;
-    frame = requestAnimationFrame(render);
-    if (now - lastFrame < frameInterval()) return;
-    const delta = Math.min(2, lastFrame ? (now - lastFrame) / frameInterval() : 1);
+  function drawStarfield() {
+    ctx.save();
+    for (const star of stars) {
+      const pulse = .34 + (.5 + .5 * Math.sin(clock * star.speed + star.phase)) * .56;
+      ctx.globalAlpha = pulse;
+      ctx.fillStyle = `rgba(${star.tone.r},${star.tone.g},${star.tone.b},.78)`;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, TAU);
+      ctx.fill();
+      if (star.radius > 1.05 && pulse > .68) {
+        const ray = star.radius * 3.4;
+        ctx.globalAlpha = pulse * .34;
+        ctx.strokeStyle = `rgba(${star.tone.r},${star.tone.g},${star.tone.b},.5)`;
+        ctx.lineWidth = .65;
+        ctx.beginPath();
+        ctx.moveTo(star.x - ray, star.y); ctx.lineTo(star.x + ray, star.y);
+        ctx.moveTo(star.x, star.y - ray); ctx.lineTo(star.x, star.y + ray);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  function drawLuminousDust(delta) {
+    const linkRange = coarseDevice ? 82 : 112;
+    const rangeSq = linkRange * linkRange;
+    for (const item of dust) {
+      const flow = clock * item.speed + item.phase;
+      item.x += Math.cos(flow) * item.drift * delta;
+      item.y += Math.sin(flow * .83 + item.x * .001) * item.drift * .8 * delta;
+      if (item.x < 0) item.x = width; else if (item.x > width) item.x = 0;
+      if (item.y < 0) item.y = height; else if (item.y > height) item.y = 0;
+    }
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    for (let i = 0; i < dust.length; i++) {
+      const a = dust[i];
+      for (let j = i + 1; j < dust.length; j++) {
+        const b = dust[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const distSq = dx * dx + dy * dy;
+        if (distSq > rangeSq) continue;
+        const alpha = (1 - Math.sqrt(distSq) / linkRange) * .10;
+        ctx.strokeStyle = `rgba(${a.tone.r},${a.tone.g},${a.tone.b},${alpha})`;
+        ctx.lineWidth = .55;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+      const pulse = .45 + .35 * Math.sin(clock * 1.15 + a.phase);
+      ctx.fillStyle = `rgba(${a.tone.r},${a.tone.g},${a.tone.b},${pulse * .55})`;
+      ctx.beginPath(); ctx.arc(a.x, a.y, a.radius * 1.25, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawMeteorTraces() {
+    const count = coarseDevice ? 1 : 3;
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    for (let index = 0; index < count; index++) {
+      const cycle = (clock * (.018 + index * .004) + index * .37) % 1;
+      if (cycle > .28) continue;
+      const t = cycle / .28;
+      const x = width * (.10 + index * .29) + t * width * .36;
+      const y = height * (.10 + index * .12) + t * height * (.20 + index * .04);
+      const length = coarseDevice ? 22 : 42;
+      const grad = ctx.createLinearGradient(x - length, y - length * .45, x, y);
+      grad.addColorStop(0, 'rgba(160,155,255,0)');
+      grad.addColorStop(1, 'rgba(214,244,255,.62)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.15;
+      ctx.beginPath(); ctx.moveTo(x - length, y - length * .45); ctx.lineTo(x, y); ctx.stroke();
+      ctx.fillStyle = 'rgba(224,248,255,.78)';
+      ctx.beginPath(); ctx.arc(x, y, 1.25, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function renderFrame(now, staticFrame = false) {
+    const frameInterval = coarseDevice ? 1000 / 20 : 1000 / 30;
+    if (!staticFrame && lastFrame && now - lastFrame < frameInterval) return;
+    const delta = Math.min(2.2, lastFrame ? Math.max(.5, (now - lastFrame) / frameInterval) : 1);
     lastFrame = now;
-    clock += delta * 0.018;
+    if (!staticFrame) clock += delta * .018;
     ctx.clearRect(0, 0, width, height);
-    ctx.globalCompositeOperation = 'lighter';
-    drawNebula();
-    drawOrbitRings();
-    drawFluidWaves();
-    updateParticles();
-    drawConnections();
-    drawParticles();
-    ctx.globalCompositeOperation = 'source-over';
+    drawLightVolumes();
+    drawAuroraCurtains();
+    drawPrismOrbits();
+    drawStarfield();
+    drawLuminousDust(delta);
+    if (!staticFrame) drawMeteorTraces();
   }
 
+  function tick(now) {
+    if (!running) return;
+    frame = requestAnimationFrame(tick);
+    renderFrame(now);
+  }
   function stop() {
     running = false;
     if (frame) cancelAnimationFrame(frame);
     frame = 0;
   }
   function start() {
+    if (motionQuery?.matches) { renderFrame(0, true); return; }
     if (running || document.hidden) return;
     running = true;
     lastFrame = 0;
-    frame = requestAnimationFrame(render);
+    frame = requestAnimationFrame(tick);
   }
   function onVisibility() {
     if (document.hidden) stop();
@@ -272,18 +328,22 @@
   function onMotionChange(event) {
     if (event.matches) {
       stop();
-      canvas.hidden = true;
-      ctx.clearRect(0, 0, width, height);
+      renderFrame(0, true);
     } else {
-      canvas.hidden = false;
       resize();
       start();
     }
   }
+  function onPointerMove(event) {
+    if (coarseDevice) return;
+    pointerX = clamp((event.clientX / Math.max(1, width) - .5) * 2, -1, 1);
+    pointerY = clamp((event.clientY / Math.max(1, height) - .5) * 2, -1, 1);
+  }
 
   resize();
   window.addEventListener('resize', resize, { passive: true });
+  window.addEventListener('pointermove', onPointerMove, { passive: true });
   document.addEventListener('visibilitychange', onVisibility, { passive: true });
   motionQuery?.addEventListener?.('change', onMotionChange);
-  frame = requestAnimationFrame(render);
+  start();
 })();
