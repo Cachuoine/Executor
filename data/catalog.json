@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "v1",
-  "updatedAt": "2026-11-22T11:52:49.975Z",
+  "updatedAt": "2026-11-22T11:55:20.086Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -319,14 +319,14 @@
       "name": "REAL",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "maintenance",
-      "version": "3.1.1",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-13T22:21:00.000Z",
+      "status": "online",
+      "version": "3.2.3",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-22T03:35:00.000Z",
       "websiteUrl": "https://realest.gg/",
       "communityUrl": "https://discord.gg/projectreal",
       "icon": "<:real:1552396976052768885>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] big update soon, i'm just too tired rn\n[^] Updated to version-4ea8e85481e34f46\n\n\u001b[1;32m                ✓ FIX\n[!] Changed Compiler options to fix some weird crashes that users with old CPUs were experiencing\n\n\u001b[1;31m               × REMOVE\n[-] Removed threads from getactors (please decide on 1 fucking implementation), now only returns Actor instances\n\n\u001b[1;33m                ◈ NOTE\n[~] Luau 0.745 -> 0.746\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] Fixed exit code -1073741795 and all stability issues that came with the 3.1.1 update\n\n\u001b[1;33m                ◈ NOTE\n[~] Luau 0.747 -> 0.748\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-dd23b7d24d07da9b.png",
       "websiteMainImageUrl": "",
@@ -336,7 +336,7 @@
       "unc": "99",
       "id": "entry-pc-real",
       "createdAt": "2026-11-01T13:11:46.629Z",
-      "modifiedAt": "2026-11-22T10:52:47.899Z",
+      "modifiedAt": "2026-11-22T11:53:49.873Z",
       "idicon": ""
     },
     {
@@ -463,14 +463,14 @@
       "name": "VORTEX",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "maintenance",
-      "version": "1.4.8.32",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-14T01:38:00.000Z",
+      "status": "online",
+      "version": "1.4.8.33",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-22T10:45:00.000Z",
       "websiteUrl": "https://www.getvortex.online/",
       "communityUrl": "https://discord.gg/vortex-993830408208785418",
       "icon": "<:vortex:1552398238437609502>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Update to the new injection program because the old one has been patched by Roblox\n\n\u001b[1;33m                ◈ NOTE\n[~] Luau 0.746 -> 0.747\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;32m                ✓ FIX\n[!] Fix errors associated with error codes to prevent crashes or timeouts\u001b[0m\n```",
       "sourceUrl": "",
       "thumbImageUrl": "./uploads/executor-1ac09b3dd9cb2e37.png",
       "websiteMainImageUrl": "",
@@ -480,7 +480,7 @@
       "unc": "100",
       "id": "entry-pc-vortex",
       "createdAt": "2026-11-01T14:00:34.940Z",
-      "modifiedAt": "2026-11-22T10:52:47.899Z",
+      "modifiedAt": "2026-11-22T11:55:18.400Z",
       "idicon": ""
     },
     {
@@ -510,9 +510,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 5,
+    "online": 7,
     "offline": 1,
-    "maintenance": 15,
+    "maintenance": 13,
     "unknown": 0,
     "platforms": {
       "PC": 16,
