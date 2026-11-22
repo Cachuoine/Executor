@@ -37,6 +37,9 @@
   let lastFrame = 0;
   let running = false;
   let coarseDevice = false;
+  let lowEndDevice = false;
+  let frameIntervalMs = 1000 / 24;
+  let ribbonStep = 28;
   let pointerX = 0;
   let pointerY = 0;
   let stars = [];
@@ -78,7 +81,12 @@
     width = Math.max(1, window.innerWidth || document.documentElement.clientWidth || 1);
     height = Math.max(1, window.innerHeight || document.documentElement.clientHeight || 1);
     coarseDevice = Boolean(window.matchMedia?.('(pointer: coarse)').matches || width <= 760);
-    ratio = Math.min(window.devicePixelRatio || 1, coarseDevice ? 1 : 1.2);
+    const memory = Number(navigator.deviceMemory || 8);
+    const cores = Number(navigator.hardwareConcurrency || 8);
+    lowEndDevice = memory <= 4 || cores <= 4;
+    frameIntervalMs = lowEndDevice ? 1000 / (coarseDevice ? 15 : 18) : 1000 / (coarseDevice ? 18 : 24);
+    ribbonStep = lowEndDevice ? 44 : (coarseDevice ? 38 : 28);
+    ratio = Math.min(window.devicePixelRatio || 1, coarseDevice || lowEndDevice ? 1 : 1.15);
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     canvas.style.width = `${width}px`;
@@ -91,8 +99,8 @@
         item.y = clamp(item.y / oldH * height, 2, height - 2);
       }
     }
-    const starCount = coarseDevice ? 66 : 132;
-    const dustCount = coarseDevice ? 22 : 46;
+    const starCount = lowEndDevice ? 38 : (coarseDevice ? 56 : 96);
+    const dustCount = lowEndDevice ? 8 : (coarseDevice ? 12 : 20);
     if (stars.length !== starCount) stars = makeSpecks(starCount, 'star');
     if (dust.length !== dustCount) dust = makeSpecks(dustCount, 'dust');
   }
@@ -132,7 +140,7 @@
   function drawAuroraCurtains() {
     ctx.save();
     ctx.globalCompositeOperation = 'screen';
-    const step = coarseDevice ? 34 : 22;
+    const step = ribbonStep;
     for (const spec of ribbonSpecs) {
       const baseX = width * spec.x;
       const half = Math.max(12, width * spec.width);
@@ -290,7 +298,7 @@
   }
 
   function renderFrame(now, staticFrame = false) {
-    const frameInterval = coarseDevice ? 1000 / 20 : 1000 / 30;
+    const frameInterval = frameIntervalMs;
     if (!staticFrame && lastFrame && now - lastFrame < frameInterval) return;
     const delta = Math.min(2.2, lastFrame ? Math.max(.5, (now - lastFrame) / frameInterval) : 1);
     lastFrame = now;

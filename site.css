@@ -1286,3 +1286,20 @@ body:not(.admin-page) .ambient-particle-field {
   body:not(.admin-page) .ambient-b,
   body:not(.admin-page) .grid-backdrop { animation: none !important; }
 }
+
+/* v1 performance: postpone expensive paint for sections outside the viewport without changing layout. */
+@supports (content-visibility: auto) {
+  body:not(.admin-page) .platform-section,
+  body:not(.admin-page) .versions-section,
+  body:not(.admin-page) .music-section,
+  body:not(.admin-page) .closing-section { content-visibility: auto; contain-intrinsic-size: auto 680px; }
+}
+@media (max-width: 760px) {
+  body:not(.admin-page) .executor-card, body:not(.admin-page) .platform-card,
+  body:not(.admin-page) .version-primary, body:not(.admin-page) .download-panel,
+  body:not(.admin-page) .music-list-wrap { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body:not(.admin-page) .hero-card-front, body:not(.admin-page) .hero-card-back,
+  body:not(.admin-page) .float-tag, body:not(.admin-page) .closing-orbit { animation: none !important; transition: none !important; }
+}
