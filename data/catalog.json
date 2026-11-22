@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "v1",
-  "updatedAt": "2026-11-19T14:20:12.784Z",
+  "updatedAt": "2026-11-22T11:49:20.659Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -127,14 +127,14 @@
       "name": "ISAEVA",
       "platform": "PC",
       "pcCategory": "paid",
-      "status": "maintenance",
+      "status": "online",
       "version": "2.6.9",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-11T20:45:00.000Z",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-21T22:05:00.000Z",
       "websiteUrl": "https://isaeva.xyz/",
       "communityUrl": "https://discord.gg/ZD7nDurbPj",
       "icon": "<:isaeva:1553227271140147361>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to version-4ea8e85481e34f46\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed crash in trampoline_call\n[!] Fixed crash (FFLags)\n[!] Fixed Script Hub loading\n[!] Fixed decoding of RScripts WebP thumbnails\n[!] Fixed script list scrolling after resizing so more scripts continue loading\n[!] Fixed the theme border by drawing it directly on the window\n\n\u001b[1;31m               × REMOVE\n[-] Removed Mathematics Library\n[-] Removed Timer Library\n[-] Removed Regex Library\n[-] Removed the system frame that appeared when the window lost focus\n\n\u001b[1;34m                ✚ ADD\n[+] Added hookproto, isprotohooked, restoreproto\n[+] Added ProtoProxy\n[+] Added on_actor_state_created, getgamestate, getluastate\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to version-2c6fd5e09aaf4cfa\n\n\u001b[1;32m                ✓ FIX\n[!] Fixed Manager dimming and UI transitions\n[!] Fixed Create Group scrolling\n\n\u001b[1;31m               × REMOVE\n[-] Removed Client page, Auto Inject switch and Snapshot\n\n\u001b[1;34m                ✚ ADD\n[+] Added Window Title, Tile Position and Roblox priorities\n[+] Added Quick Code login, server filters and game URL search\n[+] Added Output pinning, editor docking and onboarding tour\n\n\u001b[1;35m              ✦ IMPROVE\n[*] Improved tile sizing, game cards and window corners\n[*] Improved crash logs and security reports\n[*] Improved performance and autocomplete\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-7ee993100c76c69a.png",
       "websiteMainImageUrl": "",
@@ -144,7 +144,7 @@
       "unc": "99",
       "id": "entry-pc-isaeva",
       "createdAt": "2026-11-01T13:28:47.681Z",
-      "modifiedAt": "2026-11-22T10:52:47.899Z",
+      "modifiedAt": "2026-11-22T11:49:18.528Z",
       "idicon": ""
     },
     {
@@ -510,9 +510,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 2,
+    "online": 3,
     "offline": 1,
-    "maintenance": 18,
+    "maintenance": 17,
     "unknown": 0,
     "platforms": {
       "PC": 16,
