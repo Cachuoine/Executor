@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "v1",
-  "updatedAt": "2026-11-22T11:51:10.643Z",
+  "updatedAt": "2026-11-22T11:52:49.975Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -128,7 +128,7 @@
       "platform": "PC",
       "pcCategory": "paid",
       "status": "online",
-      "version": "2.6.9",
+      "version": "2.7.0",
       "compatibilityVersion": "2c6fd5e09aaf4cfa",
       "updatedAt": "2026-11-21T22:05:00.000Z",
       "websiteUrl": "https://isaeva.xyz/",
@@ -144,7 +144,7 @@
       "unc": "99",
       "id": "entry-pc-isaeva",
       "createdAt": "2026-11-01T13:28:47.681Z",
-      "modifiedAt": "2026-11-22T11:49:18.528Z",
+      "modifiedAt": "2026-11-22T11:51:58.248Z",
       "idicon": ""
     },
     {
@@ -200,7 +200,7 @@
       "platform": "PC",
       "pcCategory": "free",
       "status": "online",
-      "version": "2.9.3",
+      "version": "2.9.9",
       "compatibilityVersion": "2c6fd5e09aaf4cfa",
       "updatedAt": "2026-11-21T00:26:00.000Z",
       "websiteUrl": "https://getmadium.net/",
@@ -216,21 +216,21 @@
       "unc": "98",
       "id": "entry-pc-madium",
       "createdAt": "2026-11-01T11:08:55.612Z",
-      "modifiedAt": "2026-11-22T11:51:08.751Z",
+      "modifiedAt": "2026-11-22T11:51:31.124Z",
       "idicon": ""
     },
     {
       "name": "MADIUS",
       "platform": "PC",
       "pcCategory": "external",
-      "status": "maintenance",
-      "version": "1.11.10",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-13T05:29:00.000Z",
+      "status": "online",
+      "version": "1.11.9",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-20T15:04:00.000Z",
       "websiteUrl": "https://madius.dev/",
       "communityUrl": "https://discord.gg/olemad",
       "icon": "<:madium:1552396311431487630>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Update to latest.\n\n\u001b[1;33m                ◈ NOTE\n[~] \"I'm here\"\n[~] Claude Mythos 5.5\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to latest.\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-a76e5e99206c0242.png",
       "websiteMainImageUrl": "",
@@ -240,7 +240,7 @@
       "unc": "",
       "id": "entry-pc-madius",
       "createdAt": "2026-11-01T13:41:01.752Z",
-      "modifiedAt": "2026-11-22T10:52:47.899Z",
+      "modifiedAt": "2026-11-22T11:52:48.236Z",
       "idicon": ""
     },
     {
@@ -510,9 +510,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 4,
+    "online": 5,
     "offline": 1,
-    "maintenance": 16,
+    "maintenance": 15,
     "unknown": 0,
     "platforms": {
       "PC": 16,
