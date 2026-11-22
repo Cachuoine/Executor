@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "v1",
-  "updatedAt": "2026-11-22T11:49:20.659Z",
+  "updatedAt": "2026-11-22T11:51:10.643Z",
   "items": [
     {
       "name": "ARCEUS X v5 & NEO",
@@ -199,14 +199,14 @@
       "name": "MADIUM",
       "platform": "PC",
       "pcCategory": "free",
-      "status": "maintenance",
+      "status": "online",
       "version": "2.9.3",
-      "compatibilityVersion": "4ea8e85481e34f46",
-      "updatedAt": "2026-11-13T21:57:00.000Z",
+      "compatibilityVersion": "2c6fd5e09aaf4cfa",
+      "updatedAt": "2026-11-21T00:26:00.000Z",
       "websiteUrl": "https://getmadium.net/",
       "communityUrl": "https://discord.com/invite/olemad",
       "icon": "<:madium:1552396311431487630>",
-      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to Luau 747\n\n\u001b[1;33m                ◈ NOTE\n[~] Luau just be adding bullshit \" Add luau_loadlazy: This function is the same as luau_load, but only the main function is built. Other functions are lazy stubs that are loaded on their first use.\" Yo we not using ts\u001b[0m\n```",
+      "summary": "```ansi\n\u001b[1;36m               ✧ UPDATE\n[^] Updated to Luau 0.748\u001b[0m\n```",
       "sourceUrl": "https://whatexpsare.online/",
       "thumbImageUrl": "./uploads/executor-8c0f2a27c3ed50c1.png",
       "websiteMainImageUrl": "",
@@ -216,7 +216,7 @@
       "unc": "98",
       "id": "entry-pc-madium",
       "createdAt": "2026-11-01T11:08:55.612Z",
-      "modifiedAt": "2026-11-22T10:52:47.899Z",
+      "modifiedAt": "2026-11-22T11:51:08.751Z",
       "idicon": ""
     },
     {
@@ -510,9 +510,9 @@
   ],
   "stats": {
     "total": 21,
-    "online": 3,
+    "online": 4,
     "offline": 1,
-    "maintenance": 17,
+    "maintenance": 16,
     "unknown": 0,
     "platforms": {
       "PC": 16,
